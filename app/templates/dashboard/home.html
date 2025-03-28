@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - NubeClinic{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-5 fw-bold">¡Bienvenido, {{ current_user.name }}!</h1>
+        <p class="lead">Tu suscripción a NubeClinic está activa.</p>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Información de la suscripción</h5>
+                <hr>
+                {% if current_user.subscription %}
+                    <p><strong>Plan:</strong> {{ current_user.subscription.plan_name }}</p>
+                    <p><strong>Precio:</strong> {{ current_user.subscription.price }}€/mes</p>
+                    <p><strong>Estado:</strong> 
+                        {% if current_user.subscription.is_active %}
+                            <span class="badge bg-success">Activa</span>
+                        {% else %}
+                            <span class="badge bg-danger">Inactiva</span>
+                        {% endif %}
+                    </p>
+                    <p><strong>Inicio:</strong> {{ current_user.subscription.start_date.strftime('%d/%m/%Y') }}</p>
+                {% else %}
+                    <p>No tienes una suscripción activa.</p>
+                    <a href="{{ url_for('auth.payment', user_id=current_user.id) }}" class="btn btn-primary">Activar suscripción</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Próximas funcionalidades</h5>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="feature-icon bg-primary bg-gradient me-3 p-2 rounded">
+                                <i class="bi bi-people text-white"></i>
+                            </div>
+                            <h6 class="mb-0">Gestión de pacientes</h6>
+                        </div>
+                        <p class="text-muted">Próximamente disponible</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="feature-icon bg-primary bg-gradient me-3 p-2 rounded">
+                                <i class="bi bi-calendar text-white"></i>
+                            </div>
+                            <h6 class="mb-0">Calendario de citas</h6>
+                        </div>
+                        <p class="text-muted">Próximamente disponible</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="feature-icon bg-primary bg-gradient me-3 p-2 rounded">
+                                <i class="bi bi-file-medical text-white"></i>
+                            </div>
+                            <h6 class="mb-0">Historias clínicas</h6>
+                        </div>
+                        <p class="text-muted">Próximamente disponible</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="feature-icon bg-primary bg-gradient me-3 p-2 rounded">
+                                <i class="bi bi-credit-card text-white"></i>
+                            </div>
+                            <h6 class="mb-0">Facturación</h6>
+                        </div>
+                        <p class="text-muted">Próximamente disponible</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Mensajes del sistema</h5>
+                <hr>
+                <div class="alert alert-info">
+                    <h5 class="alert-heading">¡Bienvenido a NubeClinic!</h5>
+                    <p>Estamos construyendo más funcionalidades para ti. Pronto tendrás acceso a todas las herramientas para gestionar tu clínica de manera eficiente.</p>
+                    <hr>
+                    <p class="mb-0">Si tienes alguna pregunta o sugerencia, no dudes en contactarnos.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

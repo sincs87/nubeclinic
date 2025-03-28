@@ -1,0 +1,45 @@
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Entorno Python y virtualenv
+venv/
+env/
+.env
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Archivos de configuración con información sensible
+.env
+*.pem
+*.key
+
+# Base de datos SQLite (desarrollo)
+*.db
+*.sqlite
+*.sqlite3
+
+# Archivos de registro
+*.log
+
+# Archivos IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Archivos de cache
+.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Archivos generados
+instance/

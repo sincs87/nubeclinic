@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Pago de Suscripción - NubeClinic{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">Suscripción a NubeClinic</h3>
+            </div>
+            <div class="card-body text-center">
+                <h2 class="mb-4">Plan Básico</h2>
+                <p class="lead mb-4">Gracias por registrarte, {{ user.name }}. Para activar tu cuenta, es necesario completar el pago de la suscripción.</p>
+                
+                <div class="mb-4">
+                    <h3 class="display-4">49,99€<small class="text-muted">/mes</small></h3>
+                </div>
+                
+                <ul class="list-group mb-4">
+                    <li class="list-group-item">Gestión de pacientes</li>
+                    <li class="list-group-item">Calendario de citas</li>
+                    <li class="list-group-item">Historias clínicas</li>
+                    <li class="list-group-item">Facturación básica</li>
+                    <li class="list-group-item">Recordatorios automáticos</li>
+                </ul>
+                
+                <div class="d-grid gap-2">
+                    <a href="{{ stripe_checkout_url }}" class="btn btn-primary btn-lg">Pagar ahora</a>
+                    <a href="{{ url_for('auth.payment_success', user_id=user.id) }}" class="btn btn-outline-secondary">Confirmar pago manual</a>
+                </div>
+                
+                <p class="mt-3 mb-0 text-muted">
+                    <small>Este es un entorno de prueba. Para simular un pago, usa el número de tarjeta 4242 4242 4242 4242 con cualquier fecha futura y CVC.</small>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

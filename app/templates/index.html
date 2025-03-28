@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}NubeClinic - Gestión de Clínicas{% endblock %}
+
+{% block content %}
+<div class="row align-items-center mb-5">
+    <div class="col-md-6">
+        <h1 class="display-4 fw-bold mb-4">Gestiona tu clínica de manera eficiente</h1>
+        <p class="lead mb-4">NubeClinic es la plataforma integral para profesionales de la salud que quieren optimizar la gestión de su clínica, pacientes y citas.</p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Empezar ahora</a>
+            <a href="#plan" class="btn btn-outline-secondary btn-lg px-4">Ver planes</a>
+        </div>
+    </div>
+    <div class="col-md-6 text-center">
+        <img src="https://via.placeholder.com/600x400?text=NubeClinic" class="img-fluid rounded" alt="NubeClinic">
+    </div>
+</div>
+
+<hr class="my-5">
+
+<section id="plan" class="py-5">
+    <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold">Nuestro Plan</h2>
+        <p class="lead">Simple y accesible para todos los profesionales</p>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h3 class="my-0 fw-normal">Plan Básico</h3>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title text-center">
+                        <span class="display-4">49,99€</span>
+                        <small class="text-muted fw-light">/mes</small>
+                    </h1>
+                    <ul class="list-unstyled mt-4 mb-5">
+                        <li class="mb-2"><i class="bi bi-check text-success me-2"></i> Gestión de pacientes</li>
+                        <li class="mb-2"><i class="bi bi-check text-success me-2"></i> Calendario de citas</li>
+                        <li class="mb-2"><i class="bi bi-check text-success me-2"></i> Historias clínicas</li>
+                        <li class="mb-2"><i class="bi bi-check text-success me-2"></i> Facturación básica</li>
+                        <li class="mb-2"><i class="bi bi-check text-success me-2"></i> Recordatorios automáticos</li>
+                    </ul>
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg">Suscribirse</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="my-5">
+
+<section class="py-5">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="h-100 p-4 bg-light rounded-3">
+                <h2>Gestión de pacientes</h2>
+                <p>Mantén toda la información de tus pacientes organizada y accesible desde cualquier dispositivo.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="h-100 p-4 bg-light rounded-3">
+                <h2>Calendario de citas</h2>
+                <p>Organiza tu agenda de manera eficiente y evita solapamientos o inconvenientes.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="h-100 p-4 bg-light rounded-3">
+                <h2>Historias clínicas</h2>
+                <p>Registra y consulta el historial médico de cada paciente de forma segura y conforme a la normativa.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
