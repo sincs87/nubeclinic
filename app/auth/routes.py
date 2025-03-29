@@ -8,3 +8,7 @@ def login():
         return "<h3>Login recibido</h3>"
 
     return render_template("login.html")
+@auth_bp.route("/register")
+def register():
+    return "<h1>Página de registro</h1>"
+
