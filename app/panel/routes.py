@@ -13,9 +13,9 @@ def panel_inicio():
 
     user = db.session.get(User, user_id)
     if not user or not user.stripe_customer_id:
-        return redirect(url_for("auth.suscripcion"))
+        return redirect(url_for("auth.crear_suscripcion"))
 
     if not tiene_suscripcion_activa(user.stripe_customer_id):
-        return redirect(url_for("auth.suscripcion"))
+        return redirect(url_for("auth.crear_suscripcion"))
 
     return render_template("panel.html", user=user)
