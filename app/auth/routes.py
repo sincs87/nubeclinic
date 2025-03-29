@@ -42,3 +42,8 @@ def login():
             error = "Credenciales incorrectas"
 
     return render_template("login.html", error=error)
+
+@auth_bp.route("/suscripcion")
+def suscripcion():
+    return render_template("suscripcion.html")
+
