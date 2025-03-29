@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block title %}NubeClinic | Tu consulta online{% endblock %}
+
+{% block content %}
+<section class="landing">
+    <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="NubeClinic" class="logo">
+    <h1>Haz crecer tu consulta privada</h1>
+    <p>Recibe nuevos pacientes, gestiona tus citas y automatiza tu día a día.</p>
+    <a href="{{ url_for('auth.register') }}" class="btn-principal">Empieza ahora</a>
+</section>
+{% endblock %}

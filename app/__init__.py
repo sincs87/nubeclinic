@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
 
@@ -12,5 +12,9 @@ def create_app():
 
     from app.auth.routes import auth_bp
     app.register_blueprint(auth_bp)
+
+    @app.route("/")
+    def index():
+        return render_template("landing.html")
 
     return app
