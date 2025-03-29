@@ -14,3 +14,5 @@ class User(db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     stripe_customer_id = db.Column(db.String(100))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    tiene_suscripcion = db.Column(db.Boolean, default=False)
+
