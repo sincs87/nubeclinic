@@ -16,5 +16,7 @@ def create_app():
     @app.route("/")
     def index():
         return render_template("landing.html")
-
+    @app.route("/panel")
+    def panel():
+        return "<h2>Bienvenida al panel, profesional</h2>"
     return app

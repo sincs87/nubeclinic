@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}Registro profesional | NubeClinic{% endblock %}
+
+{% block content %}
+<h2>Crear cuenta profesional</h2>
+<form method="POST">
+    <input type="text" name="name" placeholder="Nombre" required><br>
+    <input type="text" name="surname" placeholder="Apellidos" required><br>
+    <input type="text" name="specialty" placeholder="Especialidad" required><br>
+    <input type="text" name="location" placeholder="Localidad" required><br>
+    <input type="tel" name="phone" placeholder="Teléfono" required><br>
+    <input type="email" name="email" placeholder="Correo electrónico" required><br>
+    <input type="password" name="password" placeholder="Contraseña" required><br>
+    <button type="submit">Registrarme</button>
+</form>
+{% endblock %}
