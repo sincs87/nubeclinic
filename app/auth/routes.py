@@ -72,7 +72,7 @@ def crear_suscripcion():
         customer=customer.id,
         payment_method_types=["card"],
         line_items=[{
-            "price": "price_1P2HxWIQAnRov0ZCdqsKAp5D",  # ID de tu producto
+            "price": "price_1OaxhGAhf7qybv3y5EO168s3",  # ID de tu producto
             "quantity": 1,
         }],
         mode="subscription",
