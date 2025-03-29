@@ -3,10 +3,15 @@
 {% block title %}Iniciar sesión | NubeClinic{% endblock %}
 
 {% block content %}
-    <h2>Iniciar sesión</h2>
-    <form method="POST">
-        <input type="email" name="email" placeholder="Correo electrónico" required><br>
-        <input type="password" name="password" placeholder="Contraseña" required><br>
-        <button type="submit">Entrar</button>
-    </form>
+<h2>Iniciar sesión</h2>
+
+{% if error %}
+<p style="color: red;">{{ error }}</p>
+{% endif %}
+
+<form method="POST">
+    <input type="email" name="email" placeholder="Correo electrónico" required><br>
+    <input type="password" name="password" placeholder="Contraseña" required><br>
+    <button type="submit">Entrar</button>
+</form>
 {% endblock %}

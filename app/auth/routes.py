@@ -26,6 +26,19 @@ def register():
     return render_template("register.html")
 
 
-@auth_bp.route("/login")
+@auth_bp.route("/login", methods=["GET", "POST"])
 def login():
-    return "<h1>Pantalla de login (pendiente)</h1>"
+    error = None
+
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+
+        user = User.query.filter_by(email=email).first()
+
+        if user and check_password_hash(user.password_hash, password):
+            return redirect("/panel")
+        else:
+            error = "Credenciales incorrectas"
+
+    return render_template("login.html", error=error)
