@@ -1,10 +1,17 @@
 {% extends "layout.html" %}
-{% block title %}NubeClinic Pro - Inicio{% endblock %}
 
 {% block content %}
-  <section style="text-align: center; margin-top: 4rem;">
-    <h1>Impulsa tu consulta con NubeClinic</h1>
-    <p style="font-size: 1.2rem;">La plataforma privada de gestión para profesionales de la salud.</p>
-    <a href="{{ url_for('auth.register') }}" class="btn">Empieza ahora</a>
-  </section>
+<section class="hero">
+    <h1>Impulsa tu crecimiento con NubeClinic,<br><span class="destacado">la plataforma de salud líder en el mundo</span></h1>
+    <p>Haz que los pacientes te encuentren fácilmente, gestiona tu consulta y ahorra tiempo.</p>
+    <div class="cta">
+        <form class="demo-form">
+            <input type="email" placeholder="Email">
+            <select>
+                <option>¿Dónde necesitas implementar la solución?</option>
+            </select>
+            <button class="btn-primary">Solicitar una demo</button>
+        </form>
+    </div>
+</section>
 {% endblock %}
