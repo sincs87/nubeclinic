@@ -1,5 +1,104 @@
 {% extends "layout.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/precios.css') }}">
+{% endblock %}
+
 {% block content %}
-<h2>Activa tu suscripción para acceder al panel</h2>
-<a href="{{ url_for('auth.crear_suscripcion') }}" class="btn-principal">Suscribirme</a>
+<section class="pricing-section">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="main-heading">Selecciona tu plan de suscripción</h1>
+            <p class="sub-text">Elige el plan que mejor se adapte a tus necesidades</p>
+            
+            {% if user.tiene_suscripcion %}
+            <div class="alert alert-success" role="alert">
+                <i class="fas fa-check-circle me-2"></i> Ya tienes una suscripción activa. 
+                <a href="{{ url_for('panel.panel_inicio') }}" class="alert-link">Ir a mi panel</a>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="plan-card h-100">
+                    <div class="plan-header">
+                        <h2>Starter</h2>
+                    </div>
+                    <div class="plan-body">
+                        <p class="plan-description">Mejora tu visibilidad y reputación mientras simplificas tu proceso de gestión de reservas.</p>
+                        <div class="price">
+                            <h3>79 €</h3>
+                            <span>al mes +IVA</span>
+                        </div>
+                        <a href="{{ url_for('auth.crear_suscripcion', plan='starter') }}" class="btn btn-outline-primary btn-lg w-100">Seleccionar plan</a>
+                        
+                        <div class="mt-4">
+                            <h4>Tu plan incluye:</h4>
+                            <ul class="plan-features">
+                                <li>Perfil profesional destacado</li>
+                                <li>Gestión básica de citas</li>
+                                <li>Recordatorios automáticos</li>
+                                <li>Soporte por email</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="plan-card h-100 plan-recommended">
+                    <div class="plan-header">
+                        <span class="badge bg-light text-dark position-absolute">Recomendado</span>
+                        <h2>Plus</h2>
+                    </div>
+                    <div class="plan-body">
+                        <p class="plan-description">Refuerza tu presencia online mientras nosotros gestionamos las tareas manuales durante las visitas.</p>
+                        <div class="price">
+                            <h3>99 €</h3>
+                            <span>al mes +IVA</span>
+                        </div>
+                        <a href="{{ url_for('auth.crear_suscripcion', plan='plus') }}" class="btn btn-primary btn-lg w-100">Seleccionar plan</a>
+                        
+                        <div class="mt-4">
+                            <h4>Todos los beneficios del plan Starter y:</h4>
+                            <ul class="plan-features">
+                                <li>Historia clínica digital</li>
+                                <li>Telemedicina integrada</li>
+                                <li>Facturación automática</li>
+                                <li>Soporte prioritario</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="plan-card h-100">
+                    <div class="plan-header">
+                        <h2>VIP</h2>
+                    </div>
+                    <div class="plan-body">
+                        <p class="plan-description">Fideliza a tus pacientes y genera confianza mejorando tu marca y optimizando la gestión de tu consulta.</p>
+                        <div class="price">
+                            <h3>129 €</h3>
+                            <span>al mes +IVA</span>
+                        </div>
+                        <a href="{{ url_for('auth.crear_suscripcion', plan='vip') }}" class="btn btn-outline-primary btn-lg w-100">Seleccionar plan</a>
+                        
+                        <div class="mt-4">
+                            <h4>Todos los beneficios de Plus y:</h4>
+                            <ul class="plan-features">
+                                <li>Asistente virtual</li>
+                                <li>Análisis avanzado de datos</li>
+                                <li>Integración con terceros</li>
+                                <li>Gerente de cuenta dedicado</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

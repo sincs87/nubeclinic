@@ -5,6 +5,7 @@ from app.models.user import User
 import uuid
 import stripe
 import os
+from datetime import datetime
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -26,6 +27,8 @@ def register():
             phone=request.form["phone"],
             email=request.form["email"],
             password_hash=generate_password_hash(request.form["password"]),
+            created_at=datetime.utcnow(),
+            updated_at=datetime.utcnow()
         )
         
         try:
@@ -66,6 +69,17 @@ stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 
 @auth_bp.route("/crear-suscripcion")
 def crear_suscripcion():
+    plan = request.args.get("plan", "plus")  # Por defecto, plan Plus
+    
+    # Mapeo de planes a IDs de productos en Stripe
+    planes_stripe = {
+        "starter": "price_1OaxhGAhf7qybv3y5EO168s3",  # ID del plan Starter
+        "plus": "price_1OaxhGAhf7qybv3y5EO168s3",     # ID del plan Plus (usar el ID real)
+        "vip": "price_1OaxhGAhf7qybv3y5EO168s3"       # ID del plan VIP (usar el ID real)
+    }
+    
+    price_id = planes_stripe.get(plan, planes_stripe["plus"])
+    
     user_id = session.get("user_id")
     if not user_id:
         flash("Debes iniciar sesión para crear una suscripción", "warning")
@@ -85,16 +99,17 @@ def crear_suscripcion():
                 name=f"{user.name} {user.surname}",
             )
             user.stripe_customer_id = customer.id
+            user.updated_at = datetime.utcnow()
             db.session.commit()
         except Exception as e:
             flash(f"Error al crear cliente en Stripe: {str(e)}", "danger")
-            return redirect(url_for("suscripcion"))
+            return redirect(url_for("auth.suscripcion_page"))
     else:
         try:
             customer = stripe.Customer.retrieve(user.stripe_customer_id)
         except Exception as e:
             flash(f"Error al recuperar cliente de Stripe: {str(e)}", "danger")
-            return redirect(url_for("suscripcion"))
+            return redirect(url_for("auth.suscripcion_page"))
 
     # Crear sesión de Checkout
     try:
@@ -102,7 +117,7 @@ def crear_suscripcion():
             customer=user.stripe_customer_id,
             payment_method_types=["card"],
             line_items=[{
-                "price": "price_1OaxhGAhf7qybv3y5EO168s3",  # ID de tu producto
+                "price": price_id,
                 "quantity": 1,
             }],
             mode="subscription",
@@ -112,7 +127,7 @@ def crear_suscripcion():
         return redirect(session_stripe.url, code=303)
     except Exception as e:
         flash(f"Error al crear sesión de pago: {str(e)}", "danger")
-        return redirect(url_for("suscripcion"))
+        return redirect(url_for("auth.suscripcion_page"))
 
 @auth_bp.route("/webhook", methods=["POST"])
 def stripe_webhook():
@@ -135,10 +150,7 @@ def stripe_webhook():
         user = User.query.filter_by(stripe_customer_id=customer_id).first()
         if user:
             user.tiene_suscripcion = True
-            from datetime import datetime, timedelta
-            user.suscripcion_activa_desde = datetime.utcnow()
-            # Asumiendo una suscripción mensual
-            user.suscripcion_expira = datetime.utcnow() + timedelta(days=30)
+            user.updated_at = datetime.utcnow()
             db.session.commit()
     
     # Evento de cancelación o expiración
@@ -149,6 +161,7 @@ def stripe_webhook():
         user = User.query.filter_by(stripe_customer_id=customer_id).first()
         if user:
             user.tiene_suscripcion = False
+            user.updated_at = datetime.utcnow()
             db.session.commit()
 
     return "OK", 200
@@ -157,7 +170,7 @@ def stripe_webhook():
 def logout():
     session.clear()
     flash("Has cerrado sesión correctamente", "info")
-    return redirect(url_for("index"))
+    return redirect(url_for("main.index"))
 
 @auth_bp.route("/suscripcion")
 def suscripcion_page():

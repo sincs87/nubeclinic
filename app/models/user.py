@@ -10,29 +10,12 @@ class User(db.Model):
     specialty = db.Column(db.String(100), nullable=False)
     location = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.String(20), nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    password_hash = db.Column(db.String(200), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
-    # Profile fields
-    profile_image = db.Column(db.String(255), nullable=True)
-    bio = db.Column(db.Text, nullable=True)
-    consultation_price = db.Column(db.Float, nullable=True)
-    consultation_duration = db.Column(db.Integer, nullable=True)  # in minutes
-    languages = db.Column(db.String(255), nullable=True)
-    education = db.Column(db.Text, nullable=True)
-    experience = db.Column(db.Text, nullable=True)
-    
-    # Stripe subscription fields
-    stripe_customer_id = db.Column(db.String(255), nullable=True)
+    email = db.Column(db.String(120), nullable=False, unique=True)
+    password_hash = db.Column(db.String(255), nullable=False)
+    stripe_customer_id = db.Column(db.String(100), nullable=True)
+    created_at = db.Column(db.DateTime)
     tiene_suscripcion = db.Column(db.Boolean, default=False)
-    suscripcion_activa_desde = db.Column(db.DateTime, nullable=True)
-    suscripcion_expira = db.Column(db.DateTime, nullable=True)
-    
-    # Settings and preferences
-    notifications_enabled = db.Column(db.Boolean, default=True)
-    calendar_sync_enabled = db.Column(db.Boolean, default=False)
+    updated_at = db.Column(db.DateTime)
     
     def __repr__(self):
         return f'<User {self.email}>'
