@@ -10,14 +10,14 @@
     <header class="main-header">
         <div class="logo">
             <a href="{{ url_for('index') }}">
-                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="NubeClinic">
+              <img src="{{ url_for('static', filename='img/logo-nubeclinic.png') }}" alt="NubeClinic" class="logo">
             </a>
         </div>
         <nav class="main-nav">
             <ul>
                 <li><a href="#">Producto</a></li>
                 <li><a href="#">Soluciones</a></li>
-                <li><a href="#">Precios</a></li>
+                <li><a href="{{ url_for('precios') }}">Precios</a></li>
                 <li><a href="#">Biblioteca</a></li>
                 {% if session.get("user_id") %}
                     <li><a href="{{ url_for('auth.logout') }}" class="btn-cerrar">Cerrar sesión</a></li>

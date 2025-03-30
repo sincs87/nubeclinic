@@ -1,17 +1,37 @@
 {% extends "layout.html" %}
-
-{% block title %}Registro profesional | NubeClinic{% endblock %}
-
 {% block content %}
-<h2>Crear cuenta profesional</h2>
-<form method="POST">
-    <input type="text" name="name" placeholder="Nombre" required><br>
-    <input type="text" name="surname" placeholder="Apellidos" required><br>
-    <input type="text" name="specialty" placeholder="Especialidad" required><br>
-    <input type="text" name="location" placeholder="Localidad" required><br>
-    <input type="tel" name="phone" placeholder="Teléfono" required><br>
-    <input type="email" name="email" placeholder="Correo electrónico" required><br>
-    <input type="password" name="password" placeholder="Contraseña" required><br>
-    <button type="submit">Registrarme</button>
-</form>
+<div class="form-container">
+    <h2>Configura tu cuenta de NubeClinic</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" name="name" required>
+        </div>
+        <div class="form-group">
+            <label>Apellido</label>
+            <input type="text" name="surname" required>
+        </div>
+        <div class="form-group">
+            <label>Especialidad</label>
+            <input type="text" name="specialty" required>
+        </div>
+        <div class="form-group">
+            <label>Ubicación de tu consulta</label>
+            <input type="text" name="location" required>
+        </div>
+        <div class="form-group">
+            <label>Teléfono móvil</label>
+            <input type="tel" name="phone" required>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" name="password" required>
+        </div>
+        <button type="submit" class="btn-principal">Crear cuenta de especialista</button>
+    </form>
+</div>
 {% endblock %}

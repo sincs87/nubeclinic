@@ -1,14 +1,33 @@
 {% extends "layout.html" %}
-{% block title %}Planes - NubeClinic{% endblock %}
 
 {% block content %}
-  <section style="text-align: center;">
-    <h2>Elige tu plan</h2>
-    <div style="margin-top: 2rem;">
-      <h3>Plan Profesional</h3>
-      <p>Acceso completo al panel y herramientas de gestión.</p>
-      <p><strong>49,99€/mes</strong></p>
-      <a href="{{ url_for('auth.crear_suscripcion') }}" class="btn">Suscribirme</a>
+<section class="planes">
+  <h1>Elige tu plan ideal</h1>
+  <p class="sub">O prueba nuestra <a href="#">versión gratuita</a>.</p>
+  <div class="selector">
+    <button class="active">Para especialistas</button>
+    <button>Para centros médicos</button>
+  </div>
+  <div class="planes-grid">
+    <div class="plan">
+      <h2>Starter</h2>
+      <p>Mejora tu visibilidad y reputación mientras simplificas tu proceso de gestión de reservas.</p>
+      <p class="precio">79 € <span>al mes +IVA</span></p>
+      <a href="{{ url_for('auth.register') }}" class="btn-outline">Escoger plan</a>
     </div>
-  </section>
+    <div class="plan destacado">
+      <h2>Plus</h2>
+      <span class="badge">Recomendado</span>
+      <p>Refuerza tu presencia online mientras nosotros gestionamos las tareas manuales durante las visitas.</p>
+      <p class="precio">99 € <span>al mes +IVA</span></p>
+      <a href="{{ url_for('auth.register') }}" class="btn-principal">Escoger plan</a>
+    </div>
+    <div class="plan">
+      <h2>VIP</h2>
+      <p>Fideliza a tus pacientes y genera confianza mejorando tu marca y optimizando la gestión de tu consulta.</p>
+      <p class="precio">129 € <span>al mes +IVA</span></p>
+      <a href="{{ url_for('auth.register') }}" class="btn-outline">Escoger plan</a>
+    </div>
+  </div>
+</section>
 {% endblock %}

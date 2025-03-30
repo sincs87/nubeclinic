@@ -25,6 +25,4 @@ def create_app():
     @app.route("/precios")
     def precios():
         return render_template("precios.html")
-
-
     return app

@@ -43,6 +43,7 @@ def login():
             error = "Credenciales incorrectas"
 
     return render_template("login.html", error=error)
+
 import stripe
 import os
 

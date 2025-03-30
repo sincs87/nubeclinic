@@ -1,17 +1,21 @@
 {% extends "layout.html" %}
-
-{% block title %}Iniciar sesión | NubeClinic{% endblock %}
-
 {% block content %}
-<h2>Iniciar sesión</h2>
-
-{% if error %}
-<p style="color: red;">{{ error }}</p>
-{% endif %}
-
-<form method="POST">
-    <input type="email" name="email" placeholder="Correo electrónico" required><br>
-    <input type="password" name="password" placeholder="Contraseña" required><br>
-    <button type="submit">Entrar</button>
-</form>
+<div class="form-container">
+    <h2>Accede a tu cuenta</h2>
+    <form method="POST">
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" name="password" required>
+        </div>
+        <button type="submit" class="btn-principal">Iniciar sesión</button>
+    </form>
+    <p>¿Todavía sin cuenta? <a href="{{ url_for('auth.register') }}">Quiero registrarme</a></p>
+</div>
 {% endblock %}
