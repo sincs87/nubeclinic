@@ -1,37 +1,245 @@
-{% extends "layout.html" %}
-{% block content %}
-<div class="form-container">
-    <h2>Configura tu cuenta de NubeClinic</h2>
-    <form method="POST">
-        <div class="form-group">
-            <label>Nombre</label>
-            <input type="text" name="name" required>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - NubeClinic</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="text-center mb-4">
+                    <a href="{{ url_for('main.index') }}">
+                        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="NubeClinic Logo" height="40">
+                    </a>
+                    <div class="mt-2">
+                        <span class="text-muted">¿Ya tienes una cuenta?</span>
+                        <a href="{{ url_for('auth.login') }}" class="ms-2">Iniciar sesión</a>
+                    </div>
+                </div>
+                
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <h2 class="text-center mb-2">Configura tu cuenta de NubeClinic</h2>
+                        <p class="text-center text-muted mb-4">Cada mes millones de pacientes reservan sus citas en NubeClinic.</p>
+                        
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                            
+                            <div class="d-grid">
+                                {{ form.submit(class="btn btn-primary btn-lg", value="Crear una cuenta de especialista") }}
+                            </div>
+                        </form>
+                        
+                        <div class="mt-4">
+                            <div class="text-center">
+                                <p class="text-muted small">
+                                    Al crear una cuenta, aceptas los <a href="#">Términos y Condiciones</a> y la <a href="#">Política de Privacidad</a> de NubeClinic
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Preview of profile -->
+                <div class="card mt-4 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-md-4 text-center">
+                                <div class="profile-preview bg-light rounded p-3">
+                                    <div class="avatar mb-3">
+                                        <img src="{{ url_for('static', filename='img/default-avatar.png') }}" alt="Avatar preview" class="rounded-circle" width="100" height="100">
+                                    </div>
+                                    <h5>Tu nombre</h5>
+                                    <p class="text-muted small">Tu especialidad · Tu ciudad</p>
+                                    <div class="rating">
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <h4>Así se verá tu perfil en NubeClinic</h4>
+                                <p class="text-muted">Una vez completado el registro, podrás añadir más detalles como:</p>
+                                <ul class="text-muted">
+                                    <li>Horarios de consulta</li>
+                                    <li>Precios de consulta</li>
+                                    <li>Formación académica</li>
+                                    <li>Experiencia profesional</li>
+                                    <li>Idiomas</li>
+                                    <li>Métodos de pago aceptados</li>
+                                </ul>
+                                <p class="mt-3">
+                                    <i class="fas fa-info-circle text-primary"></i>
+                                    <span class="ms-2">Un perfil completo aumenta la confianza de los pacientes y mejora tu posicionamiento en búsquedas.</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Apellido</label>
-            <input type="text" name="surname" required>
-        </div>
-        <div class="form-group">
-            <label>Especialidad</label>
-            <input type="text" name="specialty" required>
-        </div>
-        <div class="form-group">
-            <label>Ubicación de tu consulta</label>
-            <input type="text" name="location" required>
-        </div>
-        <div class="form-group">
-            <label>Teléfono móvil</label>
-            <input type="tel" name="phone" required>
-        </div>
-        <div class="form-group">
-            <label>Email</label>
-            <input type="email" name="email" required>
-        </div>
-        <div class="form-group">
-            <label>Contraseña</label>
-            <input type="password" name="password" required>
-        </div>
-        <button type="submit" class="btn-principal">Crear cuenta de especialista</button>
-    </form>
-</div>
-{% endblock %}
+    </div>
+    
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                        
+                        <form method="POST" action="{{ url_for('auth.register') }}">
+                            {{ form.hidden_tag() }}
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    {{ form.first_name.label(class="form-label") }}
+                                    {{ form.first_name(class="form-control", placeholder="Nombre") }}
+                                    {% if form.first_name.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.first_name.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form.last_name.label(class="form-label") }}
+                                    {{ form.last_name(class="form-control", placeholder="Apellido") }}
+                                    {% if form.last_name.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.last_name.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                {{ form.specialty.label(class="form-label") }}
+                                {{ form.specialty(class="form-control", placeholder="Buscar especialidad...") }}
+                                {% if form.specialty.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.specialty.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                {{ form.location.label(class="form-label") }}
+                                {{ form.location(class="form-control", placeholder="Introduzca la ciudad...") }}
+                                {% if form.location.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.location.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                {{ form.phone.label(class="form-label") }}
+                                <div class="input-group">
+                                    <span class="input-group-text">+34</span>
+                                    {{ form.phone(class="form-control", placeholder="Número de teléfono móvil") }}
+                                </div>
+                                <small class="text-muted">Necesitamos tu teléfono para configurar tu cuenta. No se mostrará en tu perfil.</small>
+                                {% if form.phone.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.phone.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                {{ form.email.label(class="form-label") }}
+                                {{ form.email(class="form-control", placeholder="Email") }}
+                                <small class="text-muted">Necesitamos tu email para configurar tu cuenta. No se mostrará en tu perfil.</small>
+                                {% if form.email.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.email.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                {{ form.password.label(class="form-label") }}
+                                {{ form.password(class="form-control", placeholder="Contraseña") }}
+                                {% if form.password.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.password.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    {{ form.marketing_opt_in(class="form-check-input") }}
+                                    {{ form.marketing_opt_in.label(class="form-check-label") }}
+                                    <small class="d-block text-muted">
+                                        Quiero recibir estadísticas del perfil, notificaciones sobre opiniones, e información sobre funcionalidades de NubeClinic.
+                                        Puedes elegir no recibir estos mensajes en cualquier momento.
+                                    </small>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    {{ form.terms(class="form-check-input") }}
+                                    {{ form.terms.label(class="form-check-label") }}
+                                    {% if form.terms.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.terms.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <small class="d-block text-muted mt-1">
+                                    Al registrarte, confirmas que estás de acuerdo con nuestros 
+                                    <a href="#" target="_blank">términos y condiciones</a> y que entiendes nuestra 
+                                    <a href="#" target="_blank">política de privacidad</a>.
+                                </small>
+                            </div>
+                            
+                            <div class="mb-3">
+                                {{ form.recaptcha }}
+                                {% if form.recaptcha.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.recaptcha.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>

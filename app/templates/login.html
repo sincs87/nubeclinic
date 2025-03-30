@@ -1,21 +1,127 @@
-{% extends "layout.html" %}
-{% block content %}
-<div class="form-container">
-    <h2>Accede a tu cuenta</h2>
-    <form method="POST">
-        {% if error %}
-            <p class="error">{{ error }}</p>
-        {% endif %}
-        <div class="form-group">
-            <label>Email</label>
-            <input type="email" name="email" required>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión - NubeClinic</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="text-center mb-4">
+                    <a href="{{ url_for('main.index') }}">
+                        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="NubeClinic Logo" height="40">
+                    </a>
+                </div>
+                
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <h2 class="text-center mb-4">Accede a tu cuenta</h2>
+                        
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                        
+                        <div class="social-login mb-3">
+                            <button class="btn btn-outline-secondary w-100 mb-2">
+                                <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google logo" class="me-2">
+                                Continuar con Google
+                            </button>
+                            <button class="btn btn-outline-secondary w-100">
+                                <i class="fab fa-apple me-2"></i> Continuar con Apple
+                            </button>
+                        </div>
+                        
+                        <div class="text-center my-3">
+                            <span class="bg-white px-2">o</span>
+                            <hr class="mt-0">
+                        </div>
+                        
+                        <form method="POST" action="{{ url_for('auth.login') }}">
+                            {{ form.hidden_tag() }}
+                            
+                            <div class="mb-3">
+                                {{ form.email.label(class="form-label") }}
+                                {{ form.email(class="form-control", placeholder="Correo electrónico") }}
+                                {% if form.email.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.email.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                {{ form.password.label(class="form-label") }}
+                                {{ form.password(class="form-control", placeholder="Contraseña") }}
+                                {% if form.password.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.password.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="form-check">
+                                        {{ form.remember(class="form-check-input") }}
+                                        {{ form.remember.label(class="form-check-label") }}
+                                    </div>
+                                    <a href="{{ url_for('auth.reset_password_request') }}" class="text-decoration-none">
+                                        He olvidado mi contraseña
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                {{ form.recaptcha }}
+                                {% if form.recaptcha.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.recaptcha.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="d-grid">
+                                {{ form.submit(class="btn btn-primary btn-lg") }}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <p>¿Todavía sin cuenta? <a href="{{ url_for('auth.register') }}" class="text-decoration-none fw-bold">Quiero registrarme</a></p>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Contraseña</label>
-            <input type="password" name="password" required>
-        </div>
-        <button type="submit" class="btn-principal">Iniciar sesión</button>
-    </form>
-    <p>¿Todavía sin cuenta? <a href="{{ url_for('auth.register') }}">Quiero registrarme</a></p>
-</div>
-{% endblock %}
+    </div>
+    
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
