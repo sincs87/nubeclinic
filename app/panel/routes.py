@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, session, reques
 from app import db
 from app.models.user import User
 from functools import wraps
+from datetime import datetime
 
 panel_bp = Blueprint("panel", __name__, url_prefix="/panel")
 
@@ -34,14 +35,23 @@ def subscription_required(f):
 @panel_bp.route("/")
 @login_required
 def panel_inicio():
+    user_id = session.get("user_id")
+    if not user_id:
+        return redirect(url_for("auth.login"))
+        
+    user = db.session.get(User, user_id)
+    if not user:
+        session.clear()
+        return redirect(url_for("auth.login"))
+        
+    return render_template("panel.html", user=user)
+
+@panel_bp.route("/perfil", methods=["GET", "POST"])
+@login_required
+def perfil():
     user = db.session.get(User, session["user_id"])
     if not user:
         session.clear()
         return redirect(url_for("auth.login"))
     
-    # Si el usuario no tiene suscripción, redirigir a la página de suscripción
-    if not user.tiene_suscripcion:
-        flash("Necesitas una suscripción activa para acceder al panel", "warning")
-        return redirect(url_for("auth.suscripcion_page"))
-        
-    return render_template("panel.html", user=user)
+    return render_template("perfil.html", user=user)

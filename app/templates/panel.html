@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Control - NubeClinic</title>
+    <title>Panel - NubeClinic</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -16,292 +16,77 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/panel.css') }}">
 </head>
 <body>
-    <div class="d-flex" id="wrapper">
-        <!-- Sidebar -->
-        <div class="border-end bg-white" id="sidebar-wrapper">
-            <div class="sidebar-heading border-bottom">
-                <a href="{{ url_for('index') }}">
-                    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="NubeClinic Logo" height="40">
-                </a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="NubeClinic Logo" height="40">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.logout') }}">Cerrar sesión</a>
+                    </li>
+                </ul>
             </div>
-            <div class="list-group list-group-flush">
-                <a href="{{ url_for('panel.panel_inicio') }}" class="list-group-item list-group-item-action p-3 {% if request.endpoint == 'panel.panel_inicio' %}active{% endif %}">
-                    <i class="fas fa-tachometer-alt me-2"></i> Dashboard
-                </a>
-                <a href="{{ url_for('panel.perfil') }}" class="list-group-item list-group-item-action p-3 {% if request.endpoint == 'panel.perfil' %}active{% endif %}">
-                    <i class="fas fa-user-md me-2"></i> Mi Perfil
-                </a>
-                <a href="{{ url_for('panel.agenda') }}" class="list-group-item list-group-item-action p-3 {% if request.endpoint == 'panel.agenda' %}active{% endif %}">
-                    <i class="fas fa-calendar-alt me-2"></i> Agenda
-                </a>
-                <a href="{{ url_for('panel.pacientes') }}" class="list-group-item list-group-item-action p-3 {% if request.endpoint == 'panel.pacientes' %}active{% endif %}">
-                    <i class="fas fa-users me-2"></i> Pacientes
-                </a>
-                <a href="{{ url_for('panel.consultas') }}" class="list-group-item list-group-item-action p-3 {% if request.endpoint == 'panel.consultas' %}active{% endif %}">
-                    <i class="fas fa-stethoscope me-2"></i> Consultas
-                </a>
-                <a href="{{ url_for('panel.telemedicina') }}" class="list-group-item list-group-item-action p-3 {% if request.endpoint == 'panel.telemedicina' %}active{% endif %}">
-                    <i class="fas fa-video me-2"></i> Telemedicina
-                </a>
-                <a href="{{ url_for('panel.facturacion') }}" class="list-group-item list-group-item-action p-3 {% if request.endpoint == 'panel.facturacion' %}active{% endif %}">
-                    <i class="fas fa-file-invoice-dollar me-2"></i> Facturación
-                </a>
-                <a href="{{ url_for('panel.estadisticas') }}" class="list-group-item list-group-item-action p-3 {% if request.endpoint == 'panel.estadisticas' %}active{% endif %}">
-                    <i class="fas fa-chart-bar me-2"></i> Estadísticas
-                </a>
-                <a href="{{ url_for('panel.configuracion') }}" class="list-group-item list-group-item-action p-3 {% if request.endpoint == 'panel.configuracion' %}active{% endif %}">
-                    <i class="fas fa-cog me-2"></i> Configuración
-                </a>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="row">
+            <div class="col-12">
+                <h1>Bienvenido, {{ user.name }}</h1>
+                <p>Este es tu panel de control.</p>
+                
+                {% if not user.tiene_suscripcion %}
+                    <div class="alert alert-warning">
+                        <p>No tienes una suscripción activa. <a href="{{ url_for('auth.suscripcion_page') }}">Activa tu suscripción</a> para acceder a todas las funcionalidades.</p>
+                    </div>
+                {% endif %}
             </div>
         </div>
         
-        <!-- Page content wrapper -->
-        <div id="page-content-wrapper">
-            <!-- Top navigation -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <div class="container-fluid">
-                    <button class="btn btn-link" id="sidebarToggle">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    
-                    <div class="dropdown ms-auto">
-                        <button class="btn btn-link dropdown-toggle text-decoration-none" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="me-2">{{ user.name }}</span>
-                            {% if user.profile_image %}
-                                <img src="{{ user.profile_image }}" alt="Profile" class="rounded-circle" width="32" height="32">
-                            {% else %}
-                                <i class="fas fa-user-circle fa-lg"></i>
-                            {% endif %}
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="{{ url_for('panel.perfil') }}"><i class="fas fa-user me-2"></i> Mi Perfil</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('panel.configuracion') }}"><i class="fas fa-cog me-2"></i> Configuración</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión</a></li>
-                        </ul>
-                    </div>
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="list-group">
+                    <a href="{{ url_for('panel.panel_inicio') }}" class="list-group-item list-group-item-action active">Dashboard</a>
+                    <a href="{{ url_for('panel.perfil') }}" class="list-group-item list-group-item-action">Mi perfil</a>
+                    <!-- Añade más opciones aquí -->
                 </div>
-            </nav>
-            
-            <!-- Page content -->
-            <div class="container-fluid p-4">
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-                
-                <div class="row">
-                    <div class="col-12">
-                        <h1 class="mb-4">Bienvenido, {{ user.name }}</h1>
+            </div>
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-body">
+                        <h2>Dashboard</h2>
+                        <p>Aquí podrás gestionar tu cuenta y ver tus estadísticas.</p>
                         
-                        {% if not user.tiene_suscripcion %}
-                            <div class="alert alert-warning" role="alert">
-                                <h4 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i> Suscripción no activa</h4>
-                                <p>Para acceder a todas las funcionalidades de NubeClinic, necesitas activar tu suscripción.</p>
-                                <hr>
-                                <p class="mb-0">
-                                    <a href="{{ url_for('auth.suscripcion_page') }}" class="btn btn-primary">Activar suscripción</a>
-                                </p>
+                        {% if user.tiene_suscripcion %}
+                            <div class="alert alert-success">
+                                <p>Tu suscripción está activa. ¡Disfruta de todas las funcionalidades!</p>
                             </div>
                         {% endif %}
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title"><i class="fas fa-calendar-check me-2 text-primary"></i> Citas para hoy</h5>
-                                {% if user.tiene_suscripcion %}
-                                    <p class="display-4 text-center my-4">0</p>
-                                    <p class="text-muted text-center">No tienes citas programadas para hoy</p>
-                                    <a href="{{ url_for('panel.agenda') }}" class="btn btn-outline-primary w-100">Ver agenda</a>
-                                {% else %}
-                                    <div class="text-center my-4">
-                                        <i class="fas fa-lock fa-3x text-muted mb-3"></i>
-                                        <p>Función disponible con suscripción activa</p>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title"><i class="fas fa-user-plus me-2 text-success"></i> Nuevos pacientes</h5>
-                                {% if user.tiene_suscripcion %}
-                                    <p class="display-4 text-center my-4">0</p>
-                                    <p class="text-muted text-center">No has registrado pacientes nuevos este mes</p>
-                                    <a href="{{ url_for('panel.pacientes') }}" class="btn btn-outline-success w-100">Ver pacientes</a>
-                                {% else %}
-                                    <div class="text-center my-4">
-                                        <i class="fas fa-lock fa-3x text-muted mb-3"></i>
-                                        <p>Función disponible con suscripción activa</p>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title"><i class="fas fa-file-invoice-dollar me-2 text-warning"></i> Ingresos del mes</h5>
-                                {% if user.tiene_suscripcion %}
-                                    <p class="display-4 text-center my-4">€0</p>
-                                    <p class="text-muted text-center">No has registrado ingresos este mes</p>
-                                    <a href="{{ url_for('panel.facturacion') }}" class="btn btn-outline-warning w-100">Ver facturación</a>
-                                {% else %}
-                                    <div class="text-center my-4">
-                                        <i class="fas fa-lock fa-3x text-muted mb-3"></i>
-                                        <p>Función disponible con suscripción activa</p>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title"><i class="fas fa-tasks me-2 text-info"></i> Tareas pendientes</h5>
-                                {% if user.tiene_suscripcion %}
-                                    <ul class="list-group list-group-flush mt-3">
-                                        {% if not user.profile_image %}
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                <span>
-                                                    <i class="fas fa-user-circle text-primary me-2"></i>
-                                                    Subir foto de perfil
-                                                </span>
-                                                <a href="{{ url_for('panel.perfil') }}" class="btn btn-sm btn-outline-primary">Completar</a>
-                                            </li>
-                                        {% endif %}
-                                        {% if not user.bio or user.bio|length < 10 %}
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                <span>
-                                                    <i class="fas fa-info-circle text-primary me-2"></i>
-                                                    Completar biografía profesional
-                                                </span>
-                                                <a href="{{ url_for('panel.perfil') }}" class="btn btn-sm btn-outline-primary">Completar</a>
-                                            </li>
-                                        {% endif %}
-                                        {% if not user.consultation_price or user.consultation_price == 0 %}
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                <span>
-                                                    <i class="fas fa-euro-sign text-primary me-2"></i>
-                                                    Definir precio de consulta
-                                                </span>
-                                                <a href="{{ url_for('panel.perfil') }}" class="btn btn-sm btn-outline-primary">Completar</a>
-                                            </li>
-                                        {% endif %}
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span>
-                                                <i class="fas fa-clock text-primary me-2"></i>
-                                                Configurar horarios de consulta
-                                            </span>
-                                            <a href="{{ url_for('panel.configuracion') }}" class="btn btn-sm btn-outline-primary">Completar</a>
-                                        </li>
-                                    </ul>
-                                {% else %}
-                                    <div class="text-center my-4">
-                                        <i class="fas fa-lock fa-3x text-muted mb-3"></i>
-                                        <p>Función disponible con suscripción activa</p>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title"><i class="fas fa-star me-2 text-warning"></i> Completar perfil</h5>
-                                <div class="progress mt-4 mb-2">
-                                    {% set profile_completion = 20 %}
-                                    {% if user.profile_image %}{% set profile_completion = profile_completion + 10 %}{% endif %}
-                                    {% if user.bio %}{% set profile_completion = profile_completion + 20 %}{% endif %}
-                                    {% if user.consultation_price > 0 %}{% set profile_completion = profile_completion + 10 %}{% endif %}
-                                    {% if user.education %}{% set profile_completion = profile_completion + 20 %}{% endif %}
-                                    {% if user.experience %}{% set profile_completion = profile_completion + 20 %}{% endif %}
-                                    
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ profile_completion }}%" aria-valuenow="{{ profile_completion }}" aria-valuemin="0" aria-valuemax="100">{{ profile_completion }}%</div>
-                                </div>
-                                <p class="text-muted text-center">Completa tu perfil para atraer más pacientes</p>
-                                
-                                <!-- Los estilos ya están definidos en panel.css -->
-                                <div class="row mt-4">
-                                    <div class="col-4 text-center">
-                                        <div class="circle-icon {% if user.profile_image %}bg-success{% else %}bg-light{% endif %} mb-2">
-                                            <i class="fas fa-user-circle {% if user.profile_image %}text-white{% else %}text-muted{% endif %}"></i>
-                                        </div>
-                                        <p class="small">Foto</p>
-                                    </div>
-                                    <div class="col-4 text-center">
-                                        <div class="circle-icon {% if user.bio %}bg-success{% else %}bg-light{% endif %} mb-2">
-                                            <i class="fas fa-info-circle {% if user.bio %}text-white{% else %}text-muted{% endif %}"></i>
-                                        </div>
-                                        <p class="small">Bio</p>
-                                    </div>
-                                    <div class="col-4 text-center">
-                                        <div class="circle-icon {% if user.education %}bg-success{% else %}bg-light{% endif %} mb-2">
-                                            <i class="fas fa-graduation-cap {% if user.education %}text-white{% else %}text-muted{% endif %}"></i>
-                                        </div>
-                                        <p class="small">Formación</p>
-                                    </div>
-                                </div>
-                                
-                                <a href="{{ url_for('panel.perfil') }}" class="btn btn-primary w-100 mt-3">Completar perfil</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title"><i class="fas fa-info-circle me-2 text-primary"></i> Novedades y consejos</h5>
-                                <div class="alert alert-info mt-3">
-                                    <h5><i class="fas fa-lightbulb me-2"></i> Consejos para optimizar tu perfil</h5>
-                                    <ul>
-                                        <li>Sube una foto profesional para generar confianza</li>
-                                        <li>Detalla tu experiencia y formación académica</li>
-                                        <li>Especifica los tratamientos y servicios que ofreces</li>
-                                        <li>Actualiza regularmente tus horarios de disponibilidad</li>
-                                        <li>Responde rápidamente a las solicitudes de cita</li>
-                                    </ul>
-                                    <a href="#" class="btn btn-sm btn-outline-info mt-2">Ver más consejos</a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Custom JS -->
-    <script>
-        // Toggle sidebar
-        document.getElementById('sidebarToggle').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('wrapper').classList.toggle('toggled');
-        });
-    </script>
 </body>
 </html>
