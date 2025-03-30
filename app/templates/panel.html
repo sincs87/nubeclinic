@@ -14,78 +14,670 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --primary-light: #4a90e2;
+            --primary-dark: #0d65d9;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-400: #ced4da;
+            --gray-500: #adb5bd;
+            --gray-600: #6c757d;
+            --gray-700: #495057;
+            --gray-800: #343a40;
+            --gray-900: #212529;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 64px;
+            height: 100vh;
+            background-color: #ffffff;
+            border-right: 1px solid var(--gray-300);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-top {
+            padding: 15px 0;
+            text-align: center;
+            border-bottom: 1px solid var(--gray-300);
+        }
+        
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            padding: 15px 0;
+        }
+        
+        .sidebar-nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-700);
+            text-decoration: none;
+            padding: 15px 0;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-nav-item:hover, .sidebar-nav-item.active {
+            color: var(--primary-color);
+            background-color: var(--gray-100);
+        }
+        
+        .sidebar-nav-item i {
+            font-size: 20px;
+        }
+        
+        /* Main content */
+        .main-content {
+            margin-left: 64px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .header {
+            padding: 10px 20px;
+            border-bottom: 1px solid var(--gray-300);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #ffffff;
+        }
+        
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-nav {
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-btn {
+            background: none;
+            border: none;
+            color: var(--gray-700);
+            margin: 0 5px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .header-btn:hover {
+            background-color: var(--gray-100);
+        }
+        
+        .header-btn.primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .header-btn.primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .month-nav {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        
+        .month-title {
+            margin: 0 15px;
+            font-weight: 500;
+        }
+        
+        .search-bar {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            background-color: var(--gray-100);
+            border-radius: 24px;
+            padding: 5px 15px;
+            margin: 0 20px;
+            max-width: 600px;
+        }
+        
+        .search-bar input {
+            background: none;
+            border: none;
+            padding: 8px 10px;
+            flex-grow: 1;
+            outline: none;
+        }
+        
+        /* Calendar */
+        .calendar-container {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        
+        .calendar-sidebar {
+            width: 300px;
+            border-right: 1px solid var(--gray-300);
+            background-color: var(--gray-100);
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .mini-calendar {
+            margin-bottom: 20px;
+        }
+        
+        .mini-calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .mini-calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+        
+        .mini-calendar-day {
+            text-align: center;
+            padding: 5px;
+            font-size: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .mini-calendar-day.today {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .mini-calendar-day:hover:not(.today) {
+            background-color: var(--gray-200);
+        }
+        
+        .mini-calendar-weekday {
+            text-align: center;
+            padding: 5px;
+            font-size: 12px;
+            color: var(--gray-600);
+            text-transform: uppercase;
+        }
+        
+        .calendar-actions {
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            margin-bottom: 10px;
+            color: var(--gray-700);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            background-color: var(--gray-200);
+        }
+        
+        .action-btn i {
+            margin-right: 10px;
+        }
+        
+        .status-badge {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            margin-left: 5px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 20px 0 10px;
+            color: var(--gray-700);
+        }
+        
+        /* Calendar grid */
+        .calendar-grid {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .day-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-rows: repeat(12, 1fr);
+            grid-gap: 0;
+            height: calc(100vh - 150px);
+        }
+        
+        .time-slot {
+            border-top: 1px solid var(--gray-300);
+            padding: 10px;
+            position: relative;
+        }
+        
+        .time-label {
+            position: absolute;
+            top: -10px;
+            left: 0;
+            font-size: 12px;
+            color: var(--gray-600);
+            background-color: white;
+            padding: 0 5px;
+        }
+        
+        /* Filter section */
+        .filter-section {
+            margin-bottom: 20px;
+        }
+        
+        .filter-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--gray-700);
+        }
+        
+        .filter-select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--gray-400);
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .filter-search {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border: 1px solid var(--gray-400);
+            border-radius: 4px;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+        }
+        
+        .filter-search input {
+            background: none;
+            border: none;
+            padding: 3px 5px;
+            flex-grow: 1;
+            outline: none;
+            font-size: 14px;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--gray-400);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+        
+        .option-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .option-label {
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 18px;
+            height: 18px;
+            background-color: #e53935;
+            color: white;
+            border-radius: 50%;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">
-                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="NubeClinic Logo" height="40">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-top">
+            <a href="{{ url_for('main.index') }}">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="NubeClinic" width="30">
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('auth.logout') }}">Cerrar sesión</a>
-                    </li>
-                </ul>
-            </div>
         </div>
-    </nav>
-
-    <div class="container py-5">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-        
-        <div class="row">
-            <div class="col-12">
-                <h1>Bienvenido, {{ user.name }}</h1>
-                <p>Este es tu panel de control.</p>
-                
-                {% if not user.tiene_suscripcion %}
-                    <div class="alert alert-warning">
-                        <p>No tienes una suscripción activa. <a href="{{ url_for('auth.suscripcion_page') }}">Activa tu suscripción</a> para acceder a todas las funcionalidades.</p>
-                    </div>
-                {% endif %}
-            </div>
+        <div class="sidebar-nav">
+            <a href="#" class="sidebar-nav-item active">
+                <i class="far fa-calendar-alt"></i>
+            </a>
+            <a href="#" class="sidebar-nav-item">
+                <i class="far fa-user"></i>
+            </a>
+            <a href="#" class="sidebar-nav-item">
+                <i class="far fa-comment-alt"></i>
+            </a>
+            <a href="#" class="sidebar-nav-item">
+                <i class="far fa-chart-bar"></i>
+            </a>
+            <a href="#" class="sidebar-nav-item">
+                <i class="far fa-file-alt"></i>
+            </a>
+            <a href="#" class="sidebar-nav-item">
+                <i class="fas fa-cog"></i>
+            </a>
         </div>
-        
-        <div class="row mt-4">
-            <div class="col-md-3">
-                <div class="list-group">
-                    <a href="{{ url_for('panel.panel_inicio') }}" class="list-group-item list-group-item-action active">Dashboard</a>
-                    <a href="{{ url_for('panel.perfil') }}" class="list-group-item list-group-item-action">Mi perfil</a>
-                    <!-- Añade más opciones aquí -->
+        <div class="sidebar-bottom">
+            <a href="#" class="sidebar-nav-item position-relative">
+                <i class="far fa-bell"></i>
+                <span class="notification-badge">5</span>
+            </a>
+            <a href="#" class="sidebar-nav-item">
+                <i class="far fa-user-circle"></i>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Main content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="month-nav">
+                    <button class="header-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <span class="month-title">Marzo 2025</span>
+                    <button class="header-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <button class="header-btn primary">Hoy</button>
+                <div class="header-nav ms-3">
+                    <button class="header-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="header-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <span class="ms-2">dom., 30 de mar de 2025</span>
                 </div>
             </div>
-            <div class="col-md-9">
-                <div class="card">
-                    <div class="card-body">
-                        <h2>Dashboard</h2>
-                        <p>Aquí podrás gestionar tu cuenta y ver tus estadísticas.</p>
+            <div class="search-bar">
+                <i class="fas fa-search text-muted"></i>
+                <input type="text" placeholder="Buscar paciente por nombre, teléfono o DNI">
+            </div>
+            <div class="header-right">
+                <button class="header-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="header-btn">
+                    <i class="fas fa-th-large"></i>
+                </button>
+                <div class="dropdown d-inline-block">
+                    <button class="header-btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Día
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="#">Día</a></li>
+                        <li><a class="dropdown-item" href="#">Semana</a></li>
+                        <li><a class="dropdown-item" href="#">Mes</a></li>
+                    </ul>
+                </div>
+                <button class="header-btn">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <button class="header-btn">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+            </div>
+        </header>
+        
+        <!-- Calendar container -->
+        <div class="calendar-container">
+            <!-- Calendar sidebar -->
+            <div class="calendar-sidebar">
+                <!-- Mini calendar -->
+                <div class="mini-calendar">
+                    <div class="mini-calendar-header">
+                        <span>Lun</span>
+                        <span>Mar</span>
+                        <span>Mié</span>
+                        <span>Jue</span>
+                        <span>Vie</span>
+                        <span>Sáb</span>
+                        <span>Dom</span>
+                    </div>
+                    <div class="mini-calendar-grid">
+                        <div class="mini-calendar-day">24</div>
+                        <div class="mini-calendar-day">25</div>
+                        <div class="mini-calendar-day">26</div>
+                        <div class="mini-calendar-day">27</div>
+                        <div class="mini-calendar-day">28</div>
+                        <div class="mini-calendar-day">1</div>
+                        <div class="mini-calendar-day">2</div>
                         
-                        {% if user.tiene_suscripcion %}
-                            <div class="alert alert-success">
-                                <p>Tu suscripción está activa. ¡Disfruta de todas las funcionalidades!</p>
-                            </div>
-                        {% endif %}
+                        <div class="mini-calendar-day">3</div>
+                        <div class="mini-calendar-day">4</div>
+                        <div class="mini-calendar-day">5</div>
+                        <div class="mini-calendar-day">6</div>
+                        <div class="mini-calendar-day">7</div>
+                        <div class="mini-calendar-day">8</div>
+                        <div class="mini-calendar-day">9</div>
+                        
+                        <div class="mini-calendar-day">10</div>
+                        <div class="mini-calendar-day">11</div>
+                        <div class="mini-calendar-day">12</div>
+                        <div class="mini-calendar-day">13</div>
+                        <div class="mini-calendar-day">14</div>
+                        <div class="mini-calendar-day">15</div>
+                        <div class="mini-calendar-day">16</div>
+                        
+                        <div class="mini-calendar-day">17</div>
+                        <div class="mini-calendar-day">18</div>
+                        <div class="mini-calendar-day">19</div>
+                        <div class="mini-calendar-day">20</div>
+                        <div class="mini-calendar-day">21</div>
+                        <div class="mini-calendar-day">22</div>
+                        <div class="mini-calendar-day">23</div>
+                        
+                        <div class="mini-calendar-day">24</div>
+                        <div class="mini-calendar-day">25</div>
+                        <div class="mini-calendar-day">26</div>
+                        <div class="mini-calendar-day">27</div>
+                        <div class="mini-calendar-day">28</div>
+                        <div class="mini-calendar-day">29</div>
+                        <div class="mini-calendar-day today">30</div>
+                        
+                        <div class="mini-calendar-day">31</div>
+                        <div class="mini-calendar-day">1</div>
+                        <div class="mini-calendar-day">2</div>
+                        <div class="mini-calendar-day">3</div>
+                        <div class="mini-calendar-day">4</div>
+                        <div class="mini-calendar-day">5</div>
+                        <div class="mini-calendar-day">6</div>
+                    </div>
+                </div>
+                
+                <!-- Calendar actions -->
+                <div class="calendar-actions">
+                    <a href="#" class="action-btn">
+                        <i class="far fa-calendar-plus text-primary"></i>
+                        Lista de espera
+                        <span class="status-badge ms-auto">NUEVO</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="fas fa-lock text-primary"></i>
+                        Bloquear fechas
+                    </a>
+                </div>
+                
+                <!-- Filter sections -->
+                <div class="section-title">Direcciones</div>
+                <div class="filter-section">
+                    <select class="filter-select">
+                        <option>Elige una dirección</option>
+                    </select>
+                </div>
+                
+                <div class="section-title">Especialidad</div>
+                <div class="filter-section">
+                    <select class="filter-select">
+                        <option>Elige una especialidad</option>
+                    </select>
+                </div>
+                
+                <div class="section-title">Agendas</div>
+                <div class="filter-section">
+                    <div class="filter-search">
+                        <i class="fas fa-search text-muted"></i>
+                        <input type="text" placeholder="Buscar por agenda">
+                    </div>
+                    <div class="option-item">
+                        <span class="option-label">Trabajan hoy</span>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="option-item ps-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="especialistasCheck">
+                            <label class="form-check-label" for="especialistasCheck">
+                                Especialistas
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section-title">Servicios</div>
+                <div class="filter-section">
+                    <div class="option-item">
+                        <span class="option-label">Servicios</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Calendar grid -->
+            <div class="calendar-grid">
+                <div class="time-slots">
+                    <div class="time-slot">
+                        <span class="time-label">01:00</span>
+                    </div>
+                    <div class="time-slot">
+                        <span class="time-label">02:00</span>
+                    </div>
+                    <div class="time-slot">
+                        <span class="time-label">03:00</span>
+                    </div>
+                    <div class="time-slot">
+                        <span class="time-label">04:00</span>
+                    </div>
+                    <div class="time-slot">
+                        <span class="time-label">05:00</span>
+                    </div>
+                    <div class="time-slot">
+                        <span class="time-label">06:00</span>
+                    </div>
+                    <div class="time-slot">
+                        <span class="time-label">07:00</span>
+                    </div>
+                    <div class="time-slot">
+                        <span class="time-label">08:00</span>
+                    </div>
+                    <div class="time-slot">
+                        <span class="time-label">09:00</span>
+                    </div>
+                    <div class="time-slot">
+                        <span class="time-label">10:00</span>
+                    </div>
+                    <div class="time-slot">
+                        <span class="time-label">11:00</span>
+                    </div>
+                    <div class="time-slot">
+                        <span class="time-label">12:00</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+    
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
