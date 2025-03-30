@@ -1,7 +1,7 @@
 /* Base Styles */
 :root {
-  --primary-color: #49c387; /* Your brand green color from your logo */
-  --primary-dark: #3da76f;
+  --primary-color: #1a73e8; /* Color azul de NubeClinic */
+  --primary-dark: #0d65d9;
   --secondary-color: #4a90e2;
   --text-color: #333333;
   --light-gray: #f8f9fa;
@@ -247,7 +247,7 @@ footer ul li {
 
 .form-control:focus {
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 0.2rem rgba(73, 195, 135, 0.25);
+  box-shadow: 0 0 0 0.2rem rgba(26, 115, 232, 0.25);
 }
 
 .invalid-feedback {

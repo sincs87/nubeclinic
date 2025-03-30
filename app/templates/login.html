@@ -16,81 +16,190 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            background-color: #f9f9f9;
+            font-family: 'Poppins', sans-serif;
+        }
+        .login-container {
+            max-width: 600px;
+            margin: 50px auto;
+        }
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo-container img {
+            height: 50px;
+        }
+        .login-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 500;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .login-divider {
+            position: relative;
+            text-align: center;
+            margin: 25px 0;
+        }
+        .login-divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #e0e0e0;
+            z-index: -1;
+        }
+        .login-divider span {
+            background-color: #f9f9f9;
+            padding: 0 15px;
+            color: #888;
+        }
+        .social-btn {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .social-btn:hover {
+            background-color: #f5f5f5;
+        }
+        .social-btn img, .social-btn i {
+            margin-right: 10px;
+        }
+        .form-control {
+            padding: 12px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background-color: #1a73e8;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+        .btn-login:hover {
+            background-color: #0d65d9;
+        }
+        .forgot-password {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .forgot-password a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+        .register-link {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .register-link a {
+            color: #1a73e8;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .verification-box {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .verification-box .icon {
+            color: #1a73e8;
+            margin-right: 15px;
+            font-size: 24px;
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-5">
-                <div class="text-center mb-4">
-                    <a href="{{ url_for('main.index') }}">
-                        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="NubeClinic Logo" height="40">
-                    </a>
-                </div>
-                
-                <div class="card shadow-sm">
-                    <div class="card-body p-4">
-                        <h2 class="text-center mb-4">Accede a tu cuenta</h2>
-                        
-                        {% with messages = get_flashed_messages(with_categories=true) %}
-                            {% if messages %}
-                                {% for category, message in messages %}
-                                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                                        {{ message }}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                        {% endwith %}
-                        
-                        <div class="social-login mb-3">
-                            <button class="btn btn-outline-secondary w-100 mb-2">
-                                <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google logo" class="me-2">
-                                Continuar con Google
-                            </button>
-                            <button class="btn btn-outline-secondary w-100">
-                                <i class="fab fa-apple me-2"></i> Continuar con Apple
-                            </button>
-                        </div>
-                        
-                        <div class="text-center my-3">
-                            <span class="bg-white px-2">o</span>
-                            <hr class="mt-0">
-                        </div>
-                        
-                        <form method="POST" action="{{ url_for('auth.login') }}">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Correo electrónico</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico" required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="remember" name="remember">
-                                        <label class="form-check-label" for="remember">Recordarme</label>
-                                    </div>
-                                    <a href="#" class="text-decoration-none">
-                                        He olvidado mi contraseña
-                                    </a>
-                                </div>
-                            </div>
-                            
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg">Iniciar sesión</button>
-                            </div>
-                        </form>
+<body>
+    <div class="container login-container">
+        <div class="logo-container">
+            <a href="{{ url_for('main.index') }}">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="NubeClinic Logo">
+            </a>
+        </div>
+        
+        <h1 class="login-title">Accede a tu cuenta</h1>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <div class="social-login mb-3">
+                    <button class="social-btn mb-3">
+                        <img src="https://img.icons8.com/color/20/000000/google-logo.png" alt="Google logo">
+                        Continuar con Google
+                    </button>
+                    <button class="social-btn">
+                        <i class="fab fa-apple" style="font-size: 20px;"></i>
+                        Continuar con Apple
+                    </button>
                 </div>
                 
-                <div class="text-center mt-3">
-                    <p>¿Todavía sin cuenta? <a href="{{ url_for('auth.register') }}" class="text-decoration-none fw-bold">Quiero registrarme</a></p>
+                <div class="login-divider">
+                    <span>o</span>
+                </div>
+                
+                <form method="POST" action="{{ url_for('auth.login') }}">
+                    <div class="mb-3">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required>
+                    </div>
+                    
+                    <div class="verification-box">
+                        <div class="icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="text">
+                            Haga clic para iniciar la verificación
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-login">Iniciar sesión</button>
+                </form>
+                
+                <div class="forgot-password">
+                    <a href="#">He olvidado mi contraseña</a>
                 </div>
             </div>
+        </div>
+        
+        <div class="register-link">
+            <p>¿Todavía sin cuenta? <a href="{{ url_for('auth.register') }}">Quiero registrarme</a></p>
         </div>
     </div>
     
