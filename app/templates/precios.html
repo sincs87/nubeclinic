@@ -1,33 +1,107 @@
 {% extends "layout.html" %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/precios.css') }}">
+{% endblock %}
+
 {% block content %}
-<section class="planes">
-  <h1>Elige tu plan ideal</h1>
-  <p class="sub">O prueba nuestra <a href="#">versión gratuita</a>.</p>
-  <div class="selector">
-    <button class="active">Para especialistas</button>
-    <button>Para centros médicos</button>
-  </div>
-  <div class="planes-grid">
-    <div class="plan">
-      <h2>Starter</h2>
-      <p>Mejora tu visibilidad y reputación mientras simplificas tu proceso de gestión de reservas.</p>
-      <p class="precio">79 € <span>al mes +IVA</span></p>
-      <a href="{{ url_for('auth.register') }}" class="btn-outline">Escoger plan</a>
+<section class="pricing-section">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="main-heading">Elige tu plan ideal</h1>
+            <p class="sub-text">O prueba nuestra <a href="#">versión gratuita</a>.</p>
+            
+            <div class="plan-selector mb-4">
+                <button class="btn btn-selector active">Para especialistas</button>
+                <button class="btn btn-selector">Para centros médicos</button>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="plan-card h-100">
+                    <div class="plan-header">
+                        <h2>Starter</h2>
+                    </div>
+                    <div class="plan-body">
+                        <p class="plan-description">Mejora tu visibilidad y reputación mientras simplificas tu proceso de gestión de reservas.</p>
+                        <div class="price">
+                            <h3>79 €</h3>
+                            <span>al mes +IVA</span>
+                        </div>
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-outline-primary btn-lg w-100">Escoger plan</a>
+                        
+                        <div class="mt-4">
+                            <h4>Tu plan incluye:</h4>
+                            <ul class="plan-features">
+                                <li>Perfil profesional destacado</li>
+                                <li>Gestión básica de citas</li>
+                                <li>Recordatorios automáticos</li>
+                                <li>Soporte por email</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="plan-card h-100 plan-recommended">
+                    <div class="plan-header">
+                        <span class="badge bg-light text-dark position-absolute">Recomendado</span>
+                        <h2>Plus</h2>
+                    </div>
+                    <div class="plan-body">
+                        <p class="plan-description">Refuerza tu presencia online mientras nosotros gestionamos las tareas manuales durante las visitas.</p>
+                        <div class="price">
+                            <h3>99 €</h3>
+                            <span>al mes +IVA</span>
+                        </div>
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg w-100">Escoger plan</a>
+                        
+                        <div class="mt-4">
+                            <h4>Todos los beneficios del plan Starter y:</h4>
+                            <ul class="plan-features">
+                                <li>Historia clínica digital</li>
+                                <li>Telemedicina integrada</li>
+                                <li>Facturación automática</li>
+                                <li>Soporte prioritario</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="plan-card h-100">
+                    <div class="plan-header">
+                        <h2>VIP</h2>
+                    </div>
+                    <div class="plan-body">
+                        <p class="plan-description">Fideliza a tus pacientes y genera confianza mejorando tu marca y optimizando la gestión de tu consulta.</p>
+                        <div class="price">
+                            <h3>129 €</h3>
+                            <span>al mes +IVA</span>
+                        </div>
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-outline-primary btn-lg w-100">Escoger plan</a>
+                        
+                        <div class="mt-4">
+                            <h4>Todos los beneficios de Plus y:</h4>
+                            <ul class="plan-features">
+                                <li>Asistente virtual</li>
+                                <li>Análisis avanzado de datos</li>
+                                <li>Integración con terceros</li>
+                                <li>Gerente de cuenta dedicado</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5">
+            <p class="compare-text">¿Necesitas comparar planes con más detalle?</p>
+            <a href="#" class="btn btn-link">Ver tabla comparativa completa</a>
+        </div>
     </div>
-    <div class="plan destacado">
-      <h2>Plus</h2>
-      <span class="badge">Recomendado</span>
-      <p>Refuerza tu presencia online mientras nosotros gestionamos las tareas manuales durante las visitas.</p>
-      <p class="precio">99 € <span>al mes +IVA</span></p>
-      <a href="{{ url_for('auth.register') }}" class="btn-principal">Escoger plan</a>
-    </div>
-    <div class="plan">
-      <h2>VIP</h2>
-      <p>Fideliza a tus pacientes y genera confianza mejorando tu marca y optimizando la gestión de tu consulta.</p>
-      <p class="precio">129 € <span>al mes +IVA</span></p>
-      <a href="{{ url_for('auth.register') }}" class="btn-outline">Escoger plan</a>
-    </div>
-  </div>
 </section>
 {% endblock %}
