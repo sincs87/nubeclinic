@@ -1,11 +1,10 @@
 {% extends "layout.html" %}
-{% block title %}NubeClinic | Tu consulta online{% endblock %}
+{% block title %}NubeClinic Pro - Inicio{% endblock %}
 
 {% block content %}
-<section class="landing">
-    <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="NubeClinic" class="logo">
-    <h1>Haz crecer tu consulta privada</h1>
-    <p>Recibe nuevos pacientes, gestiona tus citas y automatiza tu día a día.</p>
-    <a href="{{ url_for('auth.register') }}" class="btn-principal">Empieza ahora</a>
-</section>
+  <section style="text-align: center; margin-top: 4rem;">
+    <h1>Impulsa tu consulta con NubeClinic</h1>
+    <p style="font-size: 1.2rem;">La plataforma privada de gestión para profesionales de la salud.</p>
+    <a href="{{ url_for('auth.register') }}" class="btn">Empieza ahora</a>
+  </section>
 {% endblock %}

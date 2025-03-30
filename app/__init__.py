@@ -22,5 +22,9 @@ def create_app():
     @app.route("/")
     def index():
         return render_template("landing.html")
+    @app.route("/precios")
+    def precios():
+        return render_template("precios.html")
+
 
     return app

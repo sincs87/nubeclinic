@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}NubeClinic{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='img/icon.png') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}NubeClinic Pro{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-
-<header>
-    <img src="{{ url_for('static', filename='img/logo-white.png') }}" alt="NubeClinic" height="40">
-    <nav>
-        <a href="/" class="btn-principal">Inicio</a>
-        <a href="/auth/login" class="btn-principal">Acceder</a>
-        <a href="/auth/register" class="btn-principal">Registrarse</a>
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='img/logo-azul.png') }}" alt="NubeClinic Logo">
+      </div>
+      <ul class="menu">
+        <li><a href="/">Inicio</a></li>
+        <li><a href="{{ url_for('precios') }}">Precios</a></li>
+        {% if session.get('user_id') %}
+          <li><a href="{{ url_for('panel.panel_inicio') }}">Panel</a></li>
+          <li><a href="{{ url_for('auth.logout') }}">Cerrar sesión</a></li>
+        {% else %}
+          <li><a href="{{ url_for('auth.login') }}">Iniciar sesión</a></li>
+          <li><a href="{{ url_for('auth.register') }}" class="btn">Regístrate</a></li>
+        {% endif %}
+      </ul>
     </nav>
-</header>
+  </header>
 
-<main>
+  <main>
     {% block content %}{% endblock %}
-</main>
-
+  </main>
 </body>
 </html>
