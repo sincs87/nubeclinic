@@ -26,7 +26,7 @@ def register():
             location=request.form["location"],
             phone=request.form["phone"],
             email=request.form["email"],
-            password_hash=generate_password_hash(request.form["password"]),
+            password_hash=generate_password_hash(request.form["password"], method='pbkdf2:sha256')
             created_at=datetime.utcnow(),
             updated_at=datetime.utcnow()
         )
