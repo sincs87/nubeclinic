@@ -1,38 +1,30 @@
 body {
+    font-family: 'Helvetica Neue', sans-serif;
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: #f6f9fc;
+    background-color: #f9f9f9;
     color: #333;
-    text-align: center;
 }
 
-.landing {
-    padding: 5rem 1rem;
-}
-
-.logo {
-    width: 150px;
-    margin-bottom: 2rem;
-}
-
-h1 {
-    color: #004ec2;
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
-
-p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
+header {
+    background-color: #003e7e;
+    padding: 1rem 2rem;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .btn-principal {
-    display: inline-block;
-    padding: 1rem 2rem;
-    background-color: #004ec2;
-    color: #fff;
-    border-radius: 12px;
-    font-size: 1rem;
-    text-decoration: none;
+    background-color: #0072ff;
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 6px;
     font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-principal:hover {
+    background-color: #005cc5;
 }

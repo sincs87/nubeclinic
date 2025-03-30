@@ -4,8 +4,22 @@
     <meta charset="UTF-8">
     <title>{% block title %}NubeClinic{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/icon.png') }}">
 </head>
 <body>
+
+<header>
+    <img src="{{ url_for('static', filename='img/logo-white.png') }}" alt="NubeClinic" height="40">
+    <nav>
+        <a href="/" class="btn-principal">Inicio</a>
+        <a href="/auth/login" class="btn-principal">Acceder</a>
+        <a href="/auth/register" class="btn-principal">Registrarse</a>
+    </nav>
+</header>
+
+<main>
     {% block content %}{% endblock %}
+</main>
+
 </body>
 </html>
