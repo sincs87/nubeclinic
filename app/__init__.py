@@ -22,19 +22,7 @@ def create_app(config_class=Config):
     from app.panel.routes import panel_bp
     app.register_blueprint(panel_bp)
     
-    # Create a route for the landing page
-    from flask import render_template
-    
-    @app.route('/')
-    def index():
-        return render_template('landing.html')
-    
-    @app.route('/precios')
-    def precios():
-        return render_template('precios.html')
-    
-    @app.route('/suscripcion')
-    def suscripcion():
-        return render_template('suscripcion.html')
+    from app.main.routes import main_bp
+    app.register_blueprint(main_bp)
     
     return app
