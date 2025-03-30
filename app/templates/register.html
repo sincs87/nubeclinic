@@ -30,41 +30,44 @@
             margin-bottom: 20px;
         }
         .logo-container img {
-            height: 40px;
+            height: 50px;
         }
         .register-title {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 500;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #333;
         }
         .register-subtitle {
-            font-size: 16px;
+            font-size: 14px;
             color: #666;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         .form-group {
             margin-bottom: 20px;
         }
         .form-control {
-            padding: 12px;
+            padding: 10px;
             border-radius: 4px;
             border: 1px solid #ddd;
+            font-size: 14px;
         }
         .form-select {
-            padding: 12px;
+            padding: 10px;
             border-radius: 4px;
             border: 1px solid #ddd;
-            background-position: right 12px center;
+            background-position: right 10px center;
+            font-size: 14px;
         }
         .form-label {
             font-weight: 500;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: #333;
+            font-size: 14px;
         }
         .form-text {
             color: #888;
-            font-size: 14px;
+            font-size: 12px;
         }
         .btn-register {
             padding: 12px 20px;
@@ -148,16 +151,16 @@
 <body>
     <div class="container register-container">
         <div class="row align-items-center">
-            <div class="col-auto">
+            <div class="col-6">
                 <div class="logo-container">
                     <a href="{{ url_for('main.index') }}">
-                        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="NubeClinic Logo">
+                        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="NubeClinic Logo" style="height: 50px;">
                     </a>
                 </div>
             </div>
-            <div class="col">
-                <div class="d-flex align-items-center">
-                    <span class="text-muted">¿Ya tienes una cuenta?</span>
+            <div class="col-6 text-end">
+                <div class="d-flex align-items-center justify-content-end">
+                    <span class="text-muted small">¿Ya tienes una cuenta?</span>
                     <a href="{{ url_for('auth.login') }}" class="login-link">Iniciar sesión</a>
                 </div>
             </div>
