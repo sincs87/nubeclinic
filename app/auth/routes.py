@@ -107,3 +107,9 @@ def stripe_webhook():
             db.session.commit()
 
     return "OK", 200
+from flask import session, redirect, url_for
+
+@auth_bp.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("index"))
