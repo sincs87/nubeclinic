@@ -1,0 +1,239 @@
+/* Panel CSS styles */
+
+:root {
+    --primary-color: #49c387; /* Your brand green color */
+    --primary-dark: #3da76f;
+    --secondary-color: #4a90e2;
+    --sidebar-width: 280px;
+    --sidebar-collapsed-width: 80px;
+    --topnav-height: 56px;
+}
+
+/* Sidebar styles */
+#wrapper {
+    overflow-x: hidden;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh;
+    width: var(--sidebar-width);
+    margin-left: 0;
+    transition: margin 0.25s ease-out;
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+}
+
+#sidebar-wrapper .list-group {
+    width: var(--sidebar-width);
+}
+
+#sidebar-wrapper .list-group-item {
+    border: none;
+    padding: 1rem 1.25rem;
+    font-weight: 500;
+}
+
+#sidebar-wrapper .list-group-item.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+#sidebar-wrapper .list-group-item:hover:not(.active) {
+    background-color: rgba(73, 195, 135, 0.1);
+    color: var(--primary-color);
+}
+
+#page-content-wrapper {
+    min-width: 100vw;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: calc(-1 * var(--sidebar-width));
+}
+
+/* Card styles */
+.card {
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.75rem;
+}
+
+/* Circle icons for profile completion */
+.circle-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 1.25rem;
+}
+
+.circle-icon.bg-success {
+    background-color: var(--primary-color) !important;
+}
+
+/* Progress bar */
+.progress {
+    height: 10px;
+    border-radius: 5px;
+}
+
+.progress-bar {
+    background-color: var(--primary-color);
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #page-content-wrapper {
+        min-width: 0;
+        width: 100%;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: calc(-1 * var(--sidebar-width));
+    }
+    
+    .topnav-toggled {
+        margin-left: var(--sidebar-collapsed-width);
+        width: calc(100% - var(--sidebar-collapsed-width));
+    }
+}
+
+/* Sidebar toggle animation */
+@media (max-width: 767.98px) {
+    #sidebar-wrapper {
+        margin-left: calc(-1 * var(--sidebar-width));
+    }
+    
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+}
+
+/* Custom background for dropdown user menu */
+.dropdown-item:active {
+    background-color: var(--primary-color);
+}
+
+/* Custom styling for alerts */
+.alert-warning {
+    border-left: 4px solid #ffc107;
+}
+
+.alert-info {
+    border-left: 4px solid #17a2b8;
+}
+
+.alert-success {
+    border-left: 4px solid var(--primary-color);
+}
+
+.alert-danger {
+    border-left: 4px solid #dc3545;
+}
+
+/* Custom table styles */
+.table-responsive {
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+/* Custom button styles */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:focus {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+/* Panel icon styling */
+.list-group-item i {
+    width: 20px;
+    text-align: center;
+    margin-right: 10px;
+}
+
+/* Sidebar user profile section */
+.user-info {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.user-info .user-role {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+/* Custom switch for settings page */
+.custom-switch .custom-control-label::before {
+    width: 2.5rem;
+    height: 1.25rem;
+    border-radius: 0.625rem;
+}
+
+.custom-switch .custom-control-label::after {
+    width: calc(1.25rem - 4px);
+    height: calc(1.25rem - 4px);
+    border-radius: calc(0.625rem - 2px);
+}
+
+.custom-switch .custom-control-input:checked ~ .custom-control-label::after {
+    transform: translateX(1.25rem);
+}
+
+/* Loading spinner */
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+    color: var(--primary-color);
+}
