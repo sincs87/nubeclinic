@@ -312,19 +312,32 @@ body {
 }
 
 /* Rejilla del calendario - Solución radical con posición absoluta */
+/* Asegurar que el contenedor principal tenga altura suficiente */
 .calendar-grid {
-    flex-grow: 1;
+    height: calc(100vh - 56px); /* Ajustar según la altura del encabezado */
     overflow-y: auto;
-    padding: 0;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
     position: relative;
-    background-color: white;
 }
 
-/* Contenedor de franjas horarias */
+/* Eliminar cualquier espacio superior en las franjas horarias */
 .time-slots {
-    position: relative;
-    min-height: 100%;
-    padding-bottom: 100px;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+    border-top: none !important;
+}
+
+/* Asegurar que la primera franja horaria sea visible */
+.time-slot:first-child {
+    margin-top: 0 !important;
+    border-top: none !important;
+}
+
+/* Ajustar la etiqueta de la primera hora para que sea visible */
+.time-slot:first-child .time-label {
+    top: 0 !important;
+    background-color: white;
 }
 
 /* Franja horaria individual */

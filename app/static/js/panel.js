@@ -1,8 +1,11 @@
 // Inicializar variables de configuración
 let config = {
-    currentMonth: new Date(2025, 3, 1), // Abril 2025
-    selectedDate: new Date(2025, 3, 6), // 6 de abril de 2025
-    today: new Date(2025, 3, 1), // Simulación del día actual (1 de abril de 2025)
+    // Obtener el mes actual para mostrar el mes correcto
+    currentDate: new Date(), 
+    // Seleccionar hoy por defecto
+    selectedDate: new Date(),
+    // Usar la fecha actual real
+    today: new Date(),
     viewType: 'day',
     timeSlotHeight: 60,
     zoomLevel: 1,
@@ -22,13 +25,15 @@ const weekdays = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 
 // Inicializar la aplicación cuando el DOM esté cargado
 document.addEventListener('DOMContentLoaded', function() {
+    forceScrollToTop();
     console.log("Inicializando calendario...");
     initializeCalendar();
     setupEventListeners();
     
     // Forzar el scroll a la parte superior para mostrar 01:00
     setTimeout(forceScrollToTop, 100);
-});
+    setTimeout(forceScrollToTop, 300);
+    setTimeout(forceScrollToTop, 500);});
 
 // Forzar el scroll a la parte superior
 function forceScrollToTop() {
