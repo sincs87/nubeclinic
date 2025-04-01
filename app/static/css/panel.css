@@ -166,7 +166,17 @@ body {
     color: white;
 }
 
-.mini-calendar-day:hover:not(.today) {
+.mini-calendar-day.selected {
+    background-color: var(--primary-light);
+    color: white;
+}
+
+.mini-calendar-day.other-month {
+    color: var(--gray-500);
+    opacity: 0.6;
+}
+
+.mini-calendar-day:hover:not(.today):not(.selected) {
     background-color: var(--gray-200);
 }
 
@@ -440,12 +450,43 @@ input:checked + .slider:before {
 /* Menú desplegable */
 .dropdown-menu {
     font-size: 13px;
-    min-width: 120px;
+    min-width: 240px;
     padding: 5px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .dropdown-item {
-    padding: 5px 10px;
+    padding: 8px 15px;
+    color: var(--gray-700);
+}
+
+.dropdown-item:hover {
+    background-color: var(--gray-100);
+}
+
+.dropdown-divider {
+    margin: 5px 0;
+    border-top: 1px solid var(--gray-300);
+}
+
+.view-type-menu .form-check {
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.form-check-input {
+    margin-right: 8px;
+}
+
+.form-check-label {
+    font-weight: normal;
+    font-size: 13px;
+}
+
+.form-switch .form-check-input {
+    width: 36px;
+    height: 20px;
+    margin-top: 0;
 }
 
 /* Controles de formulario */
