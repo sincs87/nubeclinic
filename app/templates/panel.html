@@ -15,14 +15,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="panel.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/panel.css') }}">
 </head>
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-top">
             <a href="#">
-                <img src="ico.png" alt="NubeClinic" width="24" height="24">
+                <img src="{{ url_for('static', filename='img/ico.png') }}" alt="NubeClinic" width="24" height="24">
             </a>
         </div>
         <div class="sidebar-nav">
