@@ -1,16 +1,11 @@
-// Inicializar variables de configuración
-let config = {
-    // Obtener el mes actual para mostrar el mes correcto
-    currentDate: new Date(), 
-    // Seleccionar hoy por defecto
-    selectedDate: new Date(),
-    // Usar la fecha actual real
-    today: new Date(),
-    viewType: 'day',
-    timeSlotHeight: 60,
-    zoomLevel: 1,
-    hideAppointments: false,
-    divideViewByCalendars: false
+// Configuración inicial
+const config = {
+    today: new Date(), // Día actual
+    selectedDate: new Date(), // Día seleccionado (inicialmente hoy)
+    currentMonth: new Date(), // Mes actual para mostrar en el mini calendario
+    timeSlotHeight: 60, // Altura en px de cada franja horaria
+    zoomLevel: 1, // Nivel de zoom inicial
+    viewType: 'day' // Tipo de vista inicial: 'day', 'week', 'list', 'hours'
 };
 
 // Meses en español
@@ -23,28 +18,46 @@ const months = [
 // Días de la semana en español
 const weekdays = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 
-// Inicializar la aplicación cuando el DOM esté cargado
-document.addEventListener('DOMContentLoaded', function() {
-    forceScrollToTop();
-    console.log("Inicializando calendario...");
-    initializeCalendar();
-    setupEventListeners();
-    
-    // Forzar el scroll a la parte superior para mostrar 01:00
-    setTimeout(forceScrollToTop, 100);
-    setTimeout(forceScrollToTop, 300);
-    setTimeout(forceScrollToTop, 500);});
-
-// Forzar el scroll a la parte superior
-function forceScrollToTop() {
-    const calendarGrid = document.querySelector('.calendar-grid');
-    if (calendarGrid) {
-        console.log("Estableciendo scroll a 0");
-        calendarGrid.scrollTop = 0;
-    }
+// PARA PRUEBAS: Establecer fechas de simulación
+// DESCOMENTAR ESTO PARA PRUEBAS
+function simulateDate() {
+    const simulatedToday = new Date(2025, 3, 1); // 1 de abril de 2025
+    config.today = simulatedToday;
+    config.selectedDate = new Date(2025, 3, 6); // 6 de abril de 2025 (seleccionado)
+    config.currentMonth = new Date(2025, 3, 1); // Abril 2025
 }
 
-// Configurar todos los event listeners
+// Inicialización
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Inicializando calendario...');
+    
+    // DESCOMENTAR PARA PRUEBAS
+    simulateDate();
+    
+    // Inicializar calendario
+    initCalendar();
+    
+    // Configurar eventos
+    setupEventListeners();
+    
+    // Forzar scroll a 0
+    forceScrollToTop();
+});
+
+// Inicializar el calendario
+function initCalendar() {
+    // Actualizar visualización de la fecha
+    updateMonthDisplay();
+    updateDayDisplay();
+    
+    // Generar mini calendario
+    generateCalendarGrid();
+    
+    // Generar franjas horarias
+    generateTimeSlots();
+}
+
+// Configurar listeners de eventos
 function setupEventListeners() {
     // Navegación del mes
     document.getElementById('prevMonth').addEventListener('click', navigateToPreviousMonth);
@@ -55,65 +68,46 @@ function setupEventListeners() {
     document.getElementById('nextDay').addEventListener('click', navigateToNextDay);
     document.getElementById('goToToday').addEventListener('click', goToToday);
     
-    // Zoom de calendario
+    // Zoom
     document.getElementById('zoomIn').addEventListener('click', zoomIn);
     document.getElementById('zoomOut').addEventListener('click', zoomOut);
     
-    // Cambio de tipo de vista
+    // Cambio de vista
     document.querySelectorAll('.view-type-menu .dropdown-item[data-view]').forEach(item => {
         item.addEventListener('click', function(e) {
             e.preventDefault();
             changeViewType(this.getAttribute('data-view'));
         });
     });
-    
-    // Toggles de opciones
-    document.getElementById('hideAppointments').addEventListener('change', function() {
-        config.hideAppointments = this.checked;
-        updateCalendarView();
-    });
-    
-    document.getElementById('divideView').addEventListener('change', function() {
-        config.divideViewByCalendars = this.checked;
-        updateCalendarView();
-    });
 }
 
-// Inicializar el calendario
-function initializeCalendar() {
-    console.log("Actualizando visualización del mes");
-    updateMonthDisplay();
-    
-    console.log("Generando la cuadrícula del calendario");
-    generateCalendarGrid();
-    
-    console.log("Actualizando visualización del día");
-    updateDayDisplay();
-    
-    console.log("Generando franjas horarias");
-    generateTimeSlots();
-}
-
-// Generar la cuadrícula del mini calendario
+// Generar mini calendario
 function generateCalendarGrid() {
-    console.log("Generando cuadrícula del calendario para", config.currentMonth);
-    
     const calendarGrid = document.getElementById('calendarGrid');
+    if (!calendarGrid) {
+        console.error('No se encontró el elemento #calendarGrid');
+        return;
+    }
+    
     calendarGrid.innerHTML = '';
     
-    // Obtener el año y mes actual de visualización
     const year = config.currentMonth.getFullYear();
     const month = config.currentMonth.getMonth();
     
-    // Obtener el primer día del mes
+    // Primer día del mes
     const firstDayOfMonth = new Date(year, month, 1);
     
-    // Determinar el primer día que mostraremos (puede ser del mes anterior)
+    // Determinar el primer día a mostrar (puede ser del mes anterior)
+    // Si el 1 es lunes, empezamos por el 1. Si es otro día, retrocedemos hasta el lunes anterior
     const firstDayToShow = new Date(firstDayOfMonth);
-    // Si el primer día del mes es domingo (0), retroceder 6 días, sino retroceder los días hasta llegar a lunes
-    firstDayToShow.setDate(firstDayToShow.getDate() - (firstDayOfMonth.getDay() === 0 ? 6 : firstDayOfMonth.getDay() - 1));
+    const dayOfWeek = firstDayOfMonth.getDay(); // 0 = domingo, 1 = lunes, ...
     
-    // Mostrar 6 semanas (42 días) para asegurar que tengamos suficiente espacio
+    // Si es domingo, retrocedemos 6 días (para empezar por el lunes anterior)
+    // Si es otro día, retrocedemos hasta el lunes anterior
+    const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    firstDayToShow.setDate(firstDayOfMonth.getDate() - daysToSubtract);
+    
+    // Mostramos 6 semanas (42 días)
     for (let i = 0; i < 42; i++) {
         const currentDay = new Date(firstDayToShow);
         currentDay.setDate(firstDayToShow.getDate() + i);
@@ -122,41 +116,54 @@ function generateCalendarGrid() {
         dayElement.className = 'mini-calendar-day';
         dayElement.textContent = currentDay.getDate();
         
-        // Verificar si es del mes actual o de otros meses
+        // Si es de otro mes, añadir clase
         if (currentDay.getMonth() !== month) {
             dayElement.classList.add('other-month');
         }
         
-        // Verificar si es el día seleccionado
-        if (isSameDay(currentDay, config.selectedDate)) {
-            console.log("Día seleccionado:", currentDay);
-            dayElement.classList.add('selected');
-        }
-        
-        // Verificar si es el día actual
+        // Si es hoy, añadir clase
         if (isSameDay(currentDay, config.today)) {
-            console.log("Día actual:", currentDay);
             dayElement.classList.add('today');
+            console.log('Día actual marcado:', formatDate(currentDay));
         }
         
-        // Configurar el click en el día
+        // Si es el día seleccionado, añadir clase
+        if (isSameDay(currentDay, config.selectedDate)) {
+            dayElement.classList.add('selected');
+            console.log('Día seleccionado marcado:', formatDate(currentDay));
+        }
+        
+        // Agregar evento de clic
         dayElement.addEventListener('click', function() {
-            console.log("Día seleccionado:", currentDay);
             selectDay(currentDay);
         });
         
         calendarGrid.appendChild(dayElement);
     }
+    
+    console.log('Mini calendario generado para', months[month], year);
 }
 
-// Generar las franjas horarias
+// Generar franjas horarias
 function generateTimeSlots() {
-    console.log("Generando franjas horarias");
+    const timeSlots = document.getElementById('timeSlots');
+    if (!timeSlots) {
+        console.error('No se encontró el elemento #timeSlots');
+        return;
+    }
     
-    const timeSlotsContainer = document.getElementById('timeSlots');
-    timeSlotsContainer.innerHTML = '';
+    timeSlots.innerHTML = '';
     
-    // Crear slots desde la 1:00 hasta las 23:00
+    // Crear un espaciador invisible para asegurar que la primera hora sea visible
+    const spacer = document.createElement('div');
+    spacer.className = 'time-slot-spacer';
+    spacer.style.height = '0';
+    spacer.style.padding = '0';
+    spacer.style.margin = '0';
+    spacer.style.visibility = 'hidden';
+    timeSlots.appendChild(spacer);
+    
+    // Generar franjas hora por hora desde 01:00 hasta 23:00
     for (let hour = 1; hour <= 23; hour++) {
         const timeSlot = document.createElement('div');
         timeSlot.className = 'time-slot';
@@ -167,109 +174,123 @@ function generateTimeSlots() {
         timeLabel.textContent = `${hour.toString().padStart(2, '0')}:00`;
         
         timeSlot.appendChild(timeLabel);
-        timeSlotsContainer.appendChild(timeSlot);
+        timeSlots.appendChild(timeSlot);
     }
     
-    // Forzar el scroll a la parte superior nuevamente
-    setTimeout(forceScrollToTop, 50);
-}
-
-// Actualizar la visualización del mes actual
-function updateMonthDisplay() {
-    const monthYear = `${months[config.currentMonth.getMonth()]} ${config.currentMonth.getFullYear()}`;
-    document.getElementById('currentMonth').textContent = monthYear;
-}
-
-// Actualizar la visualización del día seleccionado
-function updateDayDisplay() {
-    const dayOfWeek = weekdays[config.selectedDate.getDay()];
-    const day = config.selectedDate.getDate();
-    const month = months[config.selectedDate.getMonth()].toLowerCase().substring(0, 3);
-    const year = config.selectedDate.getFullYear();
+    console.log('Franjas horarias generadas');
     
-    const formattedDate = `${dayOfWeek}., ${day} de ${month} de ${year}`;
-    document.getElementById('currentDay').textContent = formattedDate;
+    // Forzar scroll a 0 otra vez para asegurarnos
+    setTimeout(forceScrollToTop, 10);
 }
 
-// Actualizar toda la vista del calendario
+// Actualizar visualización del mes
+function updateMonthDisplay() {
+    const monthTitle = document.getElementById('currentMonth');
+    if (monthTitle) {
+        monthTitle.textContent = `${months[config.currentMonth.getMonth()]} ${config.currentMonth.getFullYear()}`;
+    }
+}
+
+// Actualizar visualización del día
+function updateDayDisplay() {
+    const currentDay = document.getElementById('currentDay');
+    if (currentDay) {
+        const day = config.selectedDate.getDate();
+        const month = config.selectedDate.getMonth();
+        const year = config.selectedDate.getFullYear();
+        const weekday = config.selectedDate.getDay();
+        
+        currentDay.textContent = `${weekdays[weekday]}., ${day} de ${months[month].substring(0, 3).toLowerCase()} de ${year}`;
+    }
+}
+
+// Actualizar toda la vista
 function updateCalendarView() {
-    console.log("Actualizando toda la vista del calendario");
+    // Actualizar mini calendario y fecha mostrada
     updateMonthDisplay();
-    generateCalendarGrid();
     updateDayDisplay();
-    generateTimeSlots();
+    generateCalendarGrid();
+    
+    // La vista de día podría necesitar regenerarse según la fecha seleccionada
+    // Por ahora, solo aseguramos el scroll
+    forceScrollToTop();
 }
 
-// Navegación del mes
+// Navegar al mes anterior
 function navigateToPreviousMonth() {
-    console.log("Navegando al mes anterior");
     const newMonth = new Date(config.currentMonth);
     newMonth.setMonth(newMonth.getMonth() - 1);
     config.currentMonth = newMonth;
+    
     updateMonthDisplay();
     generateCalendarGrid();
 }
 
+// Navegar al mes siguiente
 function navigateToNextMonth() {
-    console.log("Navegando al mes siguiente");
     const newMonth = new Date(config.currentMonth);
     newMonth.setMonth(newMonth.getMonth() + 1);
     config.currentMonth = newMonth;
+    
     updateMonthDisplay();
     generateCalendarGrid();
 }
 
-// Navegación del día
+// Navegar al día anterior
 function navigateToPreviousDay() {
-    console.log("Navegando al día anterior");
     const newDate = new Date(config.selectedDate);
     newDate.setDate(newDate.getDate() - 1);
     config.selectedDate = newDate;
     
-    // Verificar si necesitamos cambiar el mes visible
-    if (config.selectedDate.getMonth() !== config.currentMonth.getMonth()) {
-        config.currentMonth = new Date(config.selectedDate.getFullYear(), config.selectedDate.getMonth(), 1);
+    // Si cambiamos de mes, actualizar la vista del mes también
+    if (newDate.getMonth() !== config.currentMonth.getMonth() || 
+        newDate.getFullYear() !== config.currentMonth.getFullYear()) {
+        config.currentMonth = new Date(newDate.getFullYear(), newDate.getMonth(), 1);
     }
     
-    updateDayDisplay();
     updateCalendarView();
 }
 
+// Navegar al día siguiente
 function navigateToNextDay() {
-    console.log("Navegando al día siguiente");
     const newDate = new Date(config.selectedDate);
     newDate.setDate(newDate.getDate() + 1);
     config.selectedDate = newDate;
     
-    // Verificar si necesitamos cambiar el mes visible
-    if (config.selectedDate.getMonth() !== config.currentMonth.getMonth()) {
+    // Si cambiamos de mes, actualizar la vista del mes también
+    if (newDate.getMonth() !== config.currentMonth.getMonth() || 
+        newDate.getFullYear() !== config.currentMonth.getFullYear()) {
+        config.currentMonth = new Date(newDate.getFullYear(), newDate.getMonth(), 1);
+    }
+    
+    updateCalendarView();
+}
+
+// Ir a hoy
+function goToToday() {
+    config.selectedDate = new Date(config.today);
+    config.currentMonth = new Date(config.today.getFullYear(), config.today.getMonth(), 1);
+    
+    updateCalendarView();
+}
+
+// Seleccionar un día específico
+function selectDay(date) {
+    console.log('Seleccionando día:', formatDate(date));
+    
+    // Actualizar la fecha seleccionada
+    config.selectedDate = new Date(date);
+    
+    // Si el día seleccionado no está en el mes visible, cambiar al mes correspondiente
+    if (config.selectedDate.getMonth() !== config.currentMonth.getMonth() || 
+        config.selectedDate.getFullYear() !== config.currentMonth.getFullYear()) {
         config.currentMonth = new Date(config.selectedDate.getFullYear(), config.selectedDate.getMonth(), 1);
     }
     
-    updateDayDisplay();
     updateCalendarView();
 }
 
-function goToToday() {
-    console.log("Navegando al día actual");
-    config.selectedDate = new Date(config.today);
-    config.currentMonth = new Date(config.today.getFullYear(), config.today.getMonth(), 1);
-    updateCalendarView();
-}
-
-// Función para seleccionar un día específico
-function selectDay(date) {
-    console.log("Seleccionando día:", date);
-    
-    // Establecer la fecha seleccionada
-    config.selectedDate = new Date(date);
-    
-    // Actualizar la vista
-    updateDayDisplay();
-    updateCalendarView();
-}
-
-// Funciones de zoom
+// Aumentar zoom
 function zoomIn() {
     if (config.zoomLevel < 2) {
         config.zoomLevel += 0.25;
@@ -277,6 +298,7 @@ function zoomIn() {
     }
 }
 
+// Disminuir zoom
 function zoomOut() {
     if (config.zoomLevel > 0.5) {
         config.zoomLevel -= 0.25;
@@ -284,14 +306,21 @@ function zoomOut() {
     }
 }
 
-// Cambiar el tipo de vista
+// Cambiar tipo de vista
 function changeViewType(viewType) {
     config.viewType = viewType;
-    document.getElementById('viewTypeDropdown').textContent = getViewTypeText(viewType);
-    updateCalendarView();
+    
+    // Actualizar texto del botón
+    const button = document.getElementById('viewTypeDropdown');
+    if (button) {
+        button.textContent = getViewTypeText(viewType);
+    }
+    
+    // Aquí se implementaría la lógica para cambiar entre vistas
+    console.log('Cambiando a vista:', viewType);
 }
 
-// Obtener el texto para el tipo de vista
+// Obtener texto para el tipo de vista
 function getViewTypeText(viewType) {
     switch (viewType) {
         case 'list': return 'Lista de citas';
@@ -302,9 +331,30 @@ function getViewTypeText(viewType) {
     }
 }
 
-// Función auxiliar para comprobar si dos fechas son el mismo día
+// Forzar scroll a 0
+function forceScrollToTop() {
+    const calendarGrid = document.querySelector('.calendar-grid');
+    if (calendarGrid) {
+        calendarGrid.scrollTop = 0;
+        console.log('Scroll forzado a 0');
+    }
+}
+
+// Comprobar si dos fechas son el mismo día
 function isSameDay(date1, date2) {
-    return date1.getDate() === date2.getDate() && 
-           date1.getMonth() === date2.getMonth() && 
+    return date1.getDate() === date2.getDate() &&
+           date1.getMonth() === date2.getMonth() &&
            date1.getFullYear() === date2.getFullYear();
 }
+
+// Formatear fecha para debugging
+function formatDate(date) {
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+}
+
+// Llamada adicional para asegurar scrollTop=0
+window.addEventListener('load', function() {
+    forceScrollToTop();
+    setTimeout(forceScrollToTop, 100);
+    setTimeout(forceScrollToTop, 500);
+});
