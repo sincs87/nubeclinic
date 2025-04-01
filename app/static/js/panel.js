@@ -104,13 +104,19 @@ function generateCalendarGrid() {
             dayElement.classList.add('other-month');
         }
 
-        if (isSameDay(currentDay, config.today)) {
+        // Si el día es hoy y también está seleccionado, dale solo la clase .today
+        if (isSameDay(currentDay, config.today) && isSameDay(currentDay, config.selectedDate)) {
             dayElement.classList.add('today');
-        }
-
-        if (isSameDay(currentDay, config.selectedDate)) {
+        } 
+        // Si es el día actual pero no está seleccionado → no marcar
+        else if (isSameDay(currentDay, config.today)) {
+            // No añadir nada (no se resalta si no está seleccionado)
+        } 
+        // Si es el día seleccionado (pero no hoy)
+        else if (isSameDay(currentDay, config.selectedDate)) {
             dayElement.classList.add('selected');
         }
+
 
         dayElement.addEventListener('click', function () {
             selectDay(currentDay);
@@ -283,16 +289,40 @@ function zoomOut() {
 // Cambiar tipo de vista
 function changeViewType(viewType) {
     config.viewType = viewType;
-    
-    // Actualizar texto del botón
+
+    // Actualizar el texto del dropdown
     const button = document.getElementById('viewTypeDropdown');
     if (button) {
         button.textContent = getViewTypeText(viewType);
     }
-    
-    // Aquí se implementaría la lógica para cambiar entre vistas
-    console.log('Cambiando a vista:', viewType);
+
+    // Cambiar el botón principal de la izquierda
+    const goToTodayButton = document.getElementById('goToToday');
+    const currentDayLabel = document.getElementById('currentDay');
+
+    if (viewType === 'week') {
+        goToTodayButton.textContent = 'Semana';
+        currentDayLabel.textContent = getCurrentWeekLabel(config.selectedDate);
+    } else {
+        goToTodayButton.textContent = 'Hoy';
+        updateDayDisplay(); // vuelve al formato de día individual
+    }
+
+    console.log('Vista cambiada a:', viewType);
 }
+
+function getCurrentWeekLabel(date) {
+    const start = new Date(date);
+    const day = start.getDay();
+    const diff = day === 0 ? -6 : 1 - day; // lunes como inicio
+    start.setDate(start.getDate() + diff);
+
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+
+    return `Semana del ${start.getDate()}/${start.getMonth() + 1} al ${end.getDate()}/${end.getMonth() + 1}`;
+}
+
 
 // Obtener texto para el tipo de vista
 function getViewTypeText(viewType) {
