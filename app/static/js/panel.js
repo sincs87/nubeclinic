@@ -189,15 +189,24 @@ function updateDayDisplay() {
 
 // Actualizar toda la vista
 function updateCalendarView() {
-    // Actualizar mini calendario y fecha mostrada
     updateMonthDisplay();
     updateDayDisplay();
+
+    // Actualizar mini calendario lateral
     generateCalendarGrid();
+
+    // Si la vista es semana, generar la vista de semana
+    if(config.viewType === 'week'){
+        generateWeekView();
+    } else {
+        // En vista de día, generar las franjas horarias
+        generateTimeSlots();
+    }
     
-    // La vista de día podría necesitar regenerarse según la fecha seleccionada
-    // Por ahora, solo aseguramos el scroll
+    // Forzar scroll a 0 (si fuera necesario)
     forceScrollToTop();
 }
+
 
 // Navegar al mes anterior
 function navigateToPreviousMonth() {
@@ -222,32 +231,40 @@ function navigateToNextMonth() {
 // Navegar al día anterior
 function navigateToPreviousDay() {
     const newDate = new Date(config.selectedDate);
-    newDate.setDate(newDate.getDate() - 1);
+    if(config.viewType === 'week'){
+        newDate.setDate(newDate.getDate() - 7);
+    } else {
+        newDate.setDate(newDate.getDate() - 1);
+    }
     config.selectedDate = newDate;
-    
-    // Si cambiamos de mes, actualizar la vista del mes también
-    if (newDate.getMonth() !== config.currentMonth.getMonth() || 
-        newDate.getFullYear() !== config.currentMonth.getFullYear()) {
+
+    if(newDate.getMonth() !== config.currentMonth.getMonth() || 
+       newDate.getFullYear() !== config.currentMonth.getFullYear()){
         config.currentMonth = new Date(newDate.getFullYear(), newDate.getMonth(), 1);
     }
     
     updateCalendarView();
 }
 
+
 // Navegar al día siguiente
 function navigateToNextDay() {
     const newDate = new Date(config.selectedDate);
-    newDate.setDate(newDate.getDate() + 1);
+    if(config.viewType === 'week'){
+        newDate.setDate(newDate.getDate() + 7);
+    } else {
+        newDate.setDate(newDate.getDate() + 1);
+    }
     config.selectedDate = newDate;
-    
-    // Si cambiamos de mes, actualizar la vista del mes también
-    if (newDate.getMonth() !== config.currentMonth.getMonth() || 
-        newDate.getFullYear() !== config.currentMonth.getFullYear()) {
+
+    if(newDate.getMonth() !== config.currentMonth.getMonth() || 
+       newDate.getFullYear() !== config.currentMonth.getFullYear()){
         config.currentMonth = new Date(newDate.getFullYear(), newDate.getMonth(), 1);
     }
     
     updateCalendarView();
 }
+
 
 // Ir a hoy
 function goToToday() {
@@ -290,13 +307,13 @@ function zoomOut() {
 function changeViewType(viewType) {
     config.viewType = viewType;
 
-    // Actualizar el texto del dropdown
+    // Actualizar el texto del botón del dropdown
     const button = document.getElementById('viewTypeDropdown');
     if (button) {
         button.textContent = getViewTypeText(viewType);
     }
 
-    // Cambiar el botón principal de la izquierda
+    // Cambiar el botón azul y el encabezado de la parte superior
     const goToTodayButton = document.getElementById('goToToday');
     const currentDayLabel = document.getElementById('currentDay');
 
@@ -305,10 +322,11 @@ function changeViewType(viewType) {
         currentDayLabel.textContent = getCurrentWeekLabel(config.selectedDate);
     } else {
         goToTodayButton.textContent = 'Hoy';
-        updateDayDisplay(); // vuelve al formato de día individual
+        updateDayDisplay();
     }
 
     console.log('Vista cambiada a:', viewType);
+    updateCalendarView();
 }
 
 function getCurrentWeekLabel(date) {
@@ -322,6 +340,7 @@ function getCurrentWeekLabel(date) {
 
     return `Semana del ${start.getDate()}/${start.getMonth() + 1} al ${end.getDate()}/${end.getMonth() + 1}`;
 }
+
 
 
 // Obtener texto para el tipo de vista
@@ -362,3 +381,46 @@ window.addEventListener('load', function() {
     setTimeout(forceScrollToTop, 100);
     setTimeout(forceScrollToTop, 500);
 });
+
+function generateWeekView() {
+    const calendarContent = document.getElementById('calendarContent');
+    if (!calendarContent) {
+        console.error('No se encontró el elemento #calendarContent');
+        return;
+    }
+    calendarContent.innerHTML = ''; // Limpiar contenido anterior
+
+    // Contenedor para la vista de semana
+    const weekContainer = document.createElement('div');
+    weekContainer.className = 'week-view-container';
+
+    // Determinar el inicio de la semana (lunes)
+    const startOfWeek = new Date(config.selectedDate);
+    const day = startOfWeek.getDay();
+    // En JavaScript, getDay() devuelve 0 para domingo; si es domingo, retrocede 6, sino, retrocede hasta lunes
+    const diff = day === 0 ? -6 : 1 - day;
+    startOfWeek.setDate(startOfWeek.getDate() + diff);
+
+    // Generar 7 columnas para la semana
+    for (let i = 0; i < 7; i++) {
+        const dayDate = new Date(startOfWeek);
+        dayDate.setDate(startOfWeek.getDate() + i);
+
+        const dayColumn = document.createElement('div');
+        dayColumn.className = 'week-day-column';
+
+        // Encabezado con día, mes completo y año
+        const header = document.createElement('div');
+        header.className = 'week-day-header';
+        header.textContent = `${weekdays[dayDate.getDay()]}, ${dayDate.getDate()} ${months[dayDate.getMonth()]} ${dayDate.getFullYear()}`;
+        dayColumn.appendChild(header);
+
+        // Aquí podrías agregar las franjas horarias o citas para ese día
+        // Por ejemplo, si quisieras replicar el comportamiento de generateTimeSlots(),
+        // podrías crear un contenedor para las horas y llenarlo según la lógica que necesites.
+
+        weekContainer.appendChild(dayColumn);
+    }
+
+    calendarContent.appendChild(weekContainer);
+}
