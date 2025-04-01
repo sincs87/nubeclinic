@@ -469,40 +469,32 @@ input:checked + .slider:before {
 
 /* Menú desplegable - Solución radical */
 .dropdown-menu {
-    font-size: 13px !important;
-    min-width: 300px !important;
-    padding: 0 !important;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
-    border-radius: 8px !important;
-    overflow: hidden !important;
-    border: 1px solid var(--gray-300) !important;
-    z-index: 1050 !important;
+    font-size: 13px;
+    min-width: 240px;
+    padding: 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    border: 1px solid var(--gray-300);
 }
 
 /* Elementos del menú desplegable */
 .dropdown-item {
-    padding: 12px 16px !important;
-    color: var(--gray-700) !important;
-    white-space: nowrap !important;
-    display: block !important;
-    width: 100% !important;
-    border: none !important;
-    text-align: left !important;
-    background: transparent !important;
-    border-radius: 0 !important;
+    padding: 12px 16px;
+    color: var(--gray-700);
+    white-space: nowrap;
+    display: block;
+    width: 100%;
 }
 
 /* Estado hover para elementos del menú */
 .dropdown-item:hover, .dropdown-item:focus {
-    background-color: var(--gray-100) !important;
-    color: var(--gray-900) !important;
-    text-decoration: none !important;
+    background-color: var(--gray-100);
 }
 
-/* Separador en el menú */
 .dropdown-divider {
-    margin: 0 !important;
-    border-top: 1px solid var(--gray-300) !important;
+    margin: 0;
+    border-top: 1px solid var(--gray-300);
 }
 
 /* Contenedor de switch en el menú */
@@ -521,10 +513,9 @@ input:checked + .slider:before {
 }
 
 /* Input del switch */
-.form-check-input {
-    margin-right: 10px !important;
-    cursor: pointer !important;
-    min-width: 18px !important;
+.form-check-label {
+    font-size: 13px;
+    color: var(--gray-700);
 }
 
 /* Etiqueta del switch */
@@ -538,10 +529,9 @@ input:checked + .slider:before {
 
 /* Input específico del switch */
 .form-switch .form-check-input {
-    width: 36px !important;
-    height: 18px !important;
-    margin-top: 0 !important;
-    margin-right: 10px !important;
+    width: 36px;
+    height: 18px;
+    margin-top: 0;
 }
 
 /* Controles de formulario */
