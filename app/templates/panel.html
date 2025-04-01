@@ -14,443 +14,8 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <style>
-        :root {
-            --primary-color: #1a73e8;
-            --primary-light: #4a90e2;
-            --primary-dark: #0d65d9;
-            --gray-100: #f8f9fa;
-            --gray-200: #e9ecef;
-            --gray-300: #dee2e6;
-            --gray-400: #ced4da;
-            --gray-500: #adb5bd;
-            --gray-600: #6c757d;
-            --gray-700: #495057;
-            --gray-800: #343a40;
-            --gray-900: #212529;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            height: 100vh;
-            font-size: 14px;
-        }
-        
-        /* Sidebar */
-        .sidebar {
-            width: 60px;
-            height: 100vh;
-            background-color: #ffffff;
-            border-right: 1px solid var(--gray-300);
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .sidebar-top {
-            padding: 12px 0;
-            text-align: center;
-            border-bottom: 1px solid var(--gray-300);
-        }
-        
-        .sidebar-nav {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            padding: 10px 0;
-        }
-        
-        .sidebar-nav-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gray-700);
-            text-decoration: none;
-            padding: 12px 0;
-            transition: all 0.3s;
-        }
-        
-        .sidebar-nav-item:hover, .sidebar-nav-item.active {
-            color: var(--primary-color);
-            background-color: var(--gray-100);
-        }
-        
-        .sidebar-nav-item i {
-            font-size: 18px;
-        }
-        
-        .sidebar-bottom {
-            padding: 10px 0;
-            border-top: 1px solid var(--gray-300);
-        }
-        
-        /* Main content */
-        .main-content {
-            margin-left: 60px;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        /* Header */
-        .header {
-            padding: 8px 16px;
-            border-bottom: 1px solid var(--gray-300);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #ffffff;
-            height: 56px;
-        }
-        
-        .header-left, .header-right {
-            display: flex;
-            align-items: center;
-        }
-        
-        .header-nav {
-            display: flex;
-            align-items: center;
-            font-size: 13px;
-        }
-        
-        .header-btn {
-            background: none;
-            border: none;
-            color: var(--gray-700);
-            margin: 0 4px;
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 4px;
-            transition: all 0.3s;
-            font-size: 13px;
-        }
-        
-        .header-btn:hover {
-            background-color: var(--gray-100);
-        }
-        
-        .header-btn.primary {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 4px 12px;
-            font-size: 13px;
-        }
-        
-        .header-btn.primary:hover {
-            background-color: var(--primary-dark);
-        }
-        
-        .month-nav {
-            display: flex;
-            align-items: center;
-            margin-right: 15px;
-        }
-        
-        .month-title {
-            margin: 0 10px;
-            font-weight: 500;
-            font-size: 14px;
-        }
-        
-        .search-bar {
-            display: flex;
-            align-items: center;
-            background-color: var(--gray-100);
-            border-radius: 20px;
-            padding: 4px 12px;
-            margin: 0 15px;
-            max-width: 500px;
-            flex-grow: 1;
-        }
-        
-        .search-bar input {
-            background: none;
-            border: none;
-            padding: 6px 8px;
-            flex-grow: 1;
-            outline: none;
-            font-size: 13px;
-        }
-        
-        /* Calendar container */
-        .calendar-container {
-            display: flex;
-            flex-grow: 1;
-            overflow: hidden;
-        }
-        
-        /* Sidebar calendar */
-        .calendar-sidebar {
-            width: 260px;
-            border-right: 1px solid var(--gray-300);
-            background-color: var(--gray-100);
-            padding: 15px;
-            overflow-y: auto;
-        }
-        
-        .mini-calendar {
-            margin-bottom: 15px;
-        }
-        
-        .mini-calendar-header {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 3px;
-            margin-bottom: 5px;
-        }
-        
-        .mini-calendar-weekday {
-            text-align: center;
-            padding: 3px 0;
-            font-size: 11px;
-            color: var(--gray-600);
-            text-transform: uppercase;
-        }
-        
-        .mini-calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 3px;
-        }
-        
-        .mini-calendar-day {
-            text-align: center;
-            padding: 5px 0;
-            font-size: 11px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-        }
-        
-        .mini-calendar-day.today {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        
-        .mini-calendar-day:hover:not(.today) {
-            background-color: var(--gray-200);
-        }
-        
-        /* Calendar actions */
-        .calendar-actions {
-            margin-top: 15px;
-        }
-        
-        .action-btn {
-            display: flex;
-            align-items: center;
-            padding: 6px 8px;
-            margin-bottom: 8px;
-            color: var(--gray-700);
-            text-decoration: none;
-            border-radius: 4px;
-            transition: all 0.3s;
-            font-size: 13px;
-        }
-        
-        .action-btn:hover {
-            background-color: var(--gray-200);
-        }
-        
-        .action-btn i {
-            margin-right: 8px;
-            font-size: 14px;
-        }
-        
-        .status-badge {
-            font-size: 9px;
-            padding: 2px 5px;
-            border-radius: 10px;
-            background-color: var(--primary-color);
-            color: white;
-            margin-left: 5px;
-        }
-        
-        .section-title {
-            font-size: 13px;
-            font-weight: 600;
-            margin: 15px 0 8px;
-            color: var(--gray-700);
-        }
-        
-        /* Calendar grid */
-        .calendar-grid {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 0;
-        }
-        
-        .time-slots {
-            display: grid;
-            grid-template-rows: repeat(24, 60px);
-            grid-gap: 0;
-            min-height: 100%;
-        }
-        
-        .time-slot {
-            border-top: 1px solid var(--gray-300);
-            padding: 0;
-            position: relative;
-        }
-        
-        .time-label {
-            position: absolute;
-            top: -9px;
-            left: 10px;
-            font-size: 11px;
-            color: var(--gray-600);
-            background-color: white;
-            padding: 0 4px;
-        }
-        
-        /* Filter section */
-        .filter-section {
-            margin-bottom: 15px;
-        }
-        
-        .filter-title {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--gray-700);
-        }
-        
-        .filter-select {
-            width: 100%;
-            padding: 6px 8px;
-            border: 1px solid var(--gray-400);
-            border-radius: 4px;
-            margin-bottom: 8px;
-            font-size: 13px;
-            outline: none;
-        }
-        
-        .filter-search {
-            display: flex;
-            align-items: center;
-            background-color: white;
-            border: 1px solid var(--gray-400);
-            border-radius: 4px;
-            padding: 4px 8px;
-            margin-bottom: 8px;
-        }
-        
-        .filter-search input {
-            background: none;
-            border: none;
-            padding: 2px 4px;
-            flex-grow: 1;
-            outline: none;
-            font-size: 13px;
-        }
-        
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 36px;
-            height: 18px;
-        }
-        
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: var(--gray-400);
-            transition: .4s;
-            border-radius: 34px;
-        }
-        
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 14px;
-            width: 14px;
-            left: 2px;
-            bottom: 2px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        
-        input:checked + .slider {
-            background-color: var(--primary-color);
-        }
-        
-        input:checked + .slider:before {
-            transform: translateX(18px);
-        }
-        
-        .option-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-        
-        .option-label {
-            font-size: 13px;
-            color: var(--gray-700);
-        }
-        
-        .notification-badge {
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            width: 16px;
-            height: 16px;
-            background-color: #e53935;
-            color: white;
-            border-radius: 50%;
-            font-size: 9px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        /* Dropdown menu */
-        .dropdown-menu {
-            font-size: 13px;
-            min-width: 120px;
-            padding: 5px 0;
-        }
-        
-        .dropdown-item {
-            padding: 5px 10px;
-        }
-        
-        /* Form controls */
-        .form-check-input {
-            width: 14px;
-            height: 14px;
-        }
-        
-        .form-check-label {
-            font-size: 13px;
-            margin-left: 5px;
-        }
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="panel.css">
 </head>
 <body>
     <!-- Sidebar -->
@@ -493,74 +58,36 @@
     
     <!-- Main content -->
     <div class="main-content">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-left">
-                <div class="month-nav">
-                    <button class="header-btn">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <span class="month-title">Abril 2025</span>
-                    <button class="header-btn">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-                <button class="header-btn primary">Hoy</button>
-                <div class="header-nav ms-3">
-                    <button class="header-btn">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button class="header-btn">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                    <span class="ms-2">dom., 6 de abr de 2025</span>
-                </div>
-            </div>
-            <div class="search-bar">
-                <i class="fas fa-search text-muted"></i>
-                <input type="text" placeholder="Buscar paciente por nombre, teléfono o DNI">
-            </div>
-            <div class="header-right">
-                <button class="header-btn">
-                    <i class="fas fa-search"></i>
-                </button>
-                <button class="header-btn">
-                    <i class="fas fa-th-large"></i>
-                </button>
-                <div class="dropdown d-inline-block">
-                    <button class="header-btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        Día
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="#">Día</a></li>
-                        <li><a class="dropdown-item" href="#">Semana</a></li>
-                        <li><a class="dropdown-item" href="#">Mes</a></li>
-                    </ul>
-                </div>
-                <button class="header-btn">
-                    <i class="fas fa-cog"></i>
-                </button>
-                <button class="header-btn">
-                    <i class="fas fa-ellipsis-v"></i>
-                </button>
-            </div>
-        </header>
-        
         <!-- Calendar container -->
         <div class="calendar-container">
-            <!-- Calendar sidebar -->
+            <!-- Calendar sidebar / Middle column -->
             <div class="calendar-sidebar">
+                <!-- Month navigation -->
+                <div class="month-navigation">
+                    <div class="month-nav">
+                        <button class="header-btn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span class="month-title">Abril 2025</span>
+                        <button class="header-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Weekday headers -->
+                <div class="weekday-header">
+                    <div class="weekday">Lun</div>
+                    <div class="weekday">Mar</div>
+                    <div class="weekday">Mié</div>
+                    <div class="weekday">Jue</div>
+                    <div class="weekday">Vie</div>
+                    <div class="weekday">Sáb</div>
+                    <div class="weekday">Dom</div>
+                </div>
+                
                 <!-- Mini calendar -->
                 <div class="mini-calendar">
-                    <div class="mini-calendar-header">
-                        <div class="mini-calendar-weekday">Lun</div>
-                        <div class="mini-calendar-weekday">Mar</div>
-                        <div class="mini-calendar-weekday">Mié</div>
-                        <div class="mini-calendar-weekday">Jue</div>
-                        <div class="mini-calendar-weekday">Vie</div>
-                        <div class="mini-calendar-weekday">Sáb</div>
-                        <div class="mini-calendar-weekday">Dom</div>
-                    </div>
                     <div class="mini-calendar-grid">
                         <div class="mini-calendar-day">31</div>
                         <div class="mini-calendar-day">1</div>
@@ -664,38 +191,85 @@
                 </div>
             </div>
             
-            <!-- Calendar grid -->
-            <div class="calendar-grid">
-                <div class="time-slots">
-                    <div class="time-slot">
-                        <span class="time-label">14:00</span>
+            <!-- Calendar main area -->
+            <div class="calendar-main">
+                <!-- Main header -->
+                <div class="main-header">
+                    <div class="header-left">
+                        <button class="header-btn primary">Hoy</button>
+                        <div class="header-nav ms-3">
+                            <button class="header-btn">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="header-btn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            <span class="ms-2">dom., 6 de abr de 2025</span>
+                        </div>
                     </div>
-                    <div class="time-slot">
-                        <span class="time-label">15:00</span>
+                    <div class="search-bar">
+                        <i class="fas fa-search text-muted"></i>
+                        <input type="text" placeholder="Buscar paciente por nombre, teléfono o DNI">
                     </div>
-                    <div class="time-slot">
-                        <span class="time-label">16:00</span>
+                    <div class="header-right">
+                        <button class="header-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="header-btn">
+                            <i class="fas fa-th-large"></i>
+                        </button>
+                        <div class="dropdown d-inline-block">
+                            <button class="header-btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Día
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li><a class="dropdown-item" href="#">Día</a></li>
+                                <li><a class="dropdown-item" href="#">Semana</a></li>
+                                <li><a class="dropdown-item" href="#">Mes</a></li>
+                            </ul>
+                        </div>
+                        <button class="header-btn">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                        <button class="header-btn">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
                     </div>
-                    <div class="time-slot">
-                        <span class="time-label">17:00</span>
-                    </div>
-                    <div class="time-slot">
-                        <span class="time-label">18:00</span>
-                    </div>
-                    <div class="time-slot">
-                        <span class="time-label">19:00</span>
-                    </div>
-                    <div class="time-slot">
-                        <span class="time-label">20:00</span>
-                    </div>
-                    <div class="time-slot">
-                        <span class="time-label">21:00</span>
-                    </div>
-                    <div class="time-slot">
-                        <span class="time-label">22:00</span>
-                    </div>
-                    <div class="time-slot">
-                        <span class="time-label">23:00</span>
+                </div>
+                
+                <!-- Calendar grid -->
+                <div class="calendar-grid">
+                    <div class="time-slots">
+                        <div class="time-slot">
+                            <span class="time-label">14:00</span>
+                        </div>
+                        <div class="time-slot">
+                            <span class="time-label">15:00</span>
+                        </div>
+                        <div class="time-slot">
+                            <span class="time-label">16:00</span>
+                        </div>
+                        <div class="time-slot">
+                            <span class="time-label">17:00</span>
+                        </div>
+                        <div class="time-slot">
+                            <span class="time-label">18:00</span>
+                        </div>
+                        <div class="time-slot">
+                            <span class="time-label">19:00</span>
+                        </div>
+                        <div class="time-slot">
+                            <span class="time-label">20:00</span>
+                        </div>
+                        <div class="time-slot">
+                            <span class="time-label">21:00</span>
+                        </div>
+                        <div class="time-slot">
+                            <span class="time-label">22:00</span>
+                        </div>
+                        <div class="time-slot">
+                            <span class="time-label">23:00</span>
+                        </div>
                     </div>
                 </div>
             </div>
