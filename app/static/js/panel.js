@@ -18,14 +18,7 @@ const months = [
 // Días de la semana en español
 const weekdays = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 
-// PARA PRUEBAS: Establecer fechas de simulación
-// DESCOMENTAR ESTO PARA PRUEBAS
-function simulateDate() {
-    const simulatedToday = new Date(2025, 3, 1); // 1 de abril de 2025
-    config.today = simulatedToday;
-    config.selectedDate = new Date(2025, 3, 1); // 1 de abril seleccionado (no el 6)
-    config.currentMonth = new Date(2025, 3, 1); // Abril 2025
-}
+
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', function() {
@@ -88,61 +81,45 @@ function generateCalendarGrid() {
         console.error('No se encontró el elemento #calendarGrid');
         return;
     }
-    
+
     calendarGrid.innerHTML = '';
-    
+
     const year = config.currentMonth.getFullYear();
     const month = config.currentMonth.getMonth();
-    
-    // Primer día del mes
     const firstDayOfMonth = new Date(year, month, 1);
-    
-    // Determinar el primer día a mostrar (puede ser del mes anterior)
-    // Si el 1 es lunes, empezamos por el 1. Si es otro día, retrocedemos hasta el lunes anterior
     const firstDayToShow = new Date(firstDayOfMonth);
-    const dayOfWeek = firstDayOfMonth.getDay(); // 0 = domingo, 1 = lunes, ...
-    
-    // Si es domingo, retrocedemos 6 días (para empezar por el lunes anterior)
-    // Si es otro día, retrocedemos hasta el lunes anterior
+    const dayOfWeek = firstDayOfMonth.getDay();
     const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
     firstDayToShow.setDate(firstDayOfMonth.getDate() - daysToSubtract);
-    
-    // Mostramos 6 semanas (42 días)
+
     for (let i = 0; i < 42; i++) {
         const currentDay = new Date(firstDayToShow);
         currentDay.setDate(firstDayToShow.getDate() + i);
-        
+
         const dayElement = document.createElement('div');
         dayElement.className = 'mini-calendar-day';
         dayElement.textContent = currentDay.getDate();
-        
-        // Si es de otro mes, añadir clase
+
         if (currentDay.getMonth() !== month) {
             dayElement.classList.add('other-month');
         }
-        
-        // Si es hoy, añadir clase
+
         if (isSameDay(currentDay, config.today)) {
             dayElement.classList.add('today');
-            console.log('Día actual marcado:', formatDate(currentDay));
         }
-        
-        // Si es el día seleccionado, añadir clase
+
         if (isSameDay(currentDay, config.selectedDate)) {
             dayElement.classList.add('selected');
-            console.log('Día seleccionado marcado:', formatDate(currentDay));
         }
-        
-        // Agregar evento de clic
-        dayElement.addEventListener('click', function() {
+
+        dayElement.addEventListener('click', function () {
             selectDay(currentDay);
         });
-        
+
         calendarGrid.appendChild(dayElement);
     }
-    
-    console.log('Mini calendario generado para', months[month], year);
 }
+
 
 // Generar franjas horarias
 function generateTimeSlots() {
@@ -276,19 +253,16 @@ function goToToday() {
 
 // Seleccionar un día específico
 function selectDay(date) {
-    console.log('Seleccionando día:', formatDate(date));
-    
-    // Actualizar la fecha seleccionada
     config.selectedDate = new Date(date);
-    
-    // Si el día seleccionado no está en el mes visible, cambiar al mes correspondiente
-    if (config.selectedDate.getMonth() !== config.currentMonth.getMonth() || 
+
+    if (config.selectedDate.getMonth() !== config.currentMonth.getMonth() ||
         config.selectedDate.getFullYear() !== config.currentMonth.getFullYear()) {
         config.currentMonth = new Date(config.selectedDate.getFullYear(), config.selectedDate.getMonth(), 1);
     }
-    
+
     updateCalendarView();
 }
+
 
 // Aumentar zoom
 function zoomIn() {
