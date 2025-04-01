@@ -1,6 +1,7 @@
 // Inicializar variables de configuración
 let config = {
     currentDate: new Date(2025, 3, 6), // 6 de abril de 2025
+    selectedDate: new Date(2025, 3, 6), // Fecha seleccionada inicialmente
     viewType: 'day',
     timeSlotHeight: 60,
     zoomLevel: 1,
@@ -98,12 +99,12 @@ function generateCalendarGrid() {
             dayElement.classList.add('other-month');
         }
         
-        // Verificar si es el día actual
-        if (isSameDay(currentDate, config.currentDate)) {
+        // Verificar si es el día seleccionado actualmente
+        if (isSameDay(currentDate, config.selectedDate)) {
             dayElement.classList.add('selected');
         }
         
-        // Verificar si es hoy
+        // Verificar si es hoy (día actual real)
         const today = new Date();
         if (isSameDay(currentDate, today)) {
             dayElement.classList.add('today');
@@ -146,10 +147,10 @@ function updateMonthDisplay() {
 
 // Actualizar la visualización del día actual
 function updateDayDisplay() {
-    const dayOfWeek = weekdays[config.currentDate.getDay()];
-    const day = config.currentDate.getDate();
-    const month = months[config.currentDate.getMonth()].toLowerCase().substring(0, 3);
-    const year = config.currentDate.getFullYear();
+    const dayOfWeek = weekdays[config.selectedDate.getDay()];
+    const day = config.selectedDate.getDate();
+    const month = months[config.selectedDate.getMonth()].toLowerCase().substring(0, 3);
+    const year = config.selectedDate.getFullYear();
     
     const formattedDate = `${dayOfWeek}., ${day} de ${month} de ${year}`;
     document.getElementById('currentDay').textContent = formattedDate;
@@ -177,33 +178,31 @@ function navigateToNextMonth() {
 }
 
 function navigateToPreviousDay() {
-    config.currentDate.setDate(config.currentDate.getDate() - 1);
+    config.selectedDate.setDate(config.selectedDate.getDate() - 1);
     updateDayDisplay();
     updateCalendarView();
 }
 
 function navigateToNextDay() {
-    config.currentDate.setDate(config.currentDate.getDate() + 1);
+    config.selectedDate.setDate(config.selectedDate.getDate() + 1);
     updateDayDisplay();
     updateCalendarView();
 }
 
 function goToToday() {
-    config.currentDate = new Date();
+    const now = new Date();
+    config.selectedDate = new Date(now);
+    config.currentDate = new Date(now.getFullYear(), now.getMonth(), 1);
     updateCalendarView();
 }
 
 // Función para seleccionar un día específico
 function selectDay(date) {
-    // Eliminar la clase 'selected' de todos los días
-    document.querySelectorAll('.mini-calendar-day.selected').forEach(el => {
-        el.classList.remove('selected');
-    });
-    
-    // Establecer la fecha actual
-    config.currentDate = new Date(date);
+    // Establecer la fecha seleccionada
+    config.selectedDate = new Date(date);
     
     // Actualizar la vista
+    updateDayDisplay();
     updateCalendarView();
 }
 
