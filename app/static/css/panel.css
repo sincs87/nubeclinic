@@ -164,11 +164,13 @@ body {
 .mini-calendar-day.today {
     background-color: var(--primary-color);
     color: white;
+    font-weight: bold;
 }
 
 .mini-calendar-day.selected {
-    background-color: var(--primary-light);
-    color: white;
+    background-color: rgba(74, 144, 226, 0.3);
+    color: var(--gray-800);
+    border: 1px solid var(--primary-color);
 }
 
 .mini-calendar-day.other-month {
@@ -315,13 +317,14 @@ body {
     grid-template-rows: repeat(23, 60px);
     grid-gap: 0;
     min-height: 100%;
-    padding-bottom: 50px; /* Añadir espacio adicional al final para evitar cortes */
+    padding-bottom: 150px; /* Espacio adicional al final para asegurar scroll completo */
 }
 
 .time-slot {
     border-top: 1px solid var(--gray-300);
     padding: 0;
     position: relative;
+    min-height: 60px; /* Altura mínima fija para las franjas horarias */
 }
 
 .time-label {
@@ -332,6 +335,7 @@ body {
     color: var(--gray-600);
     background-color: white;
     padding: 0 4px;
+    z-index: 5; /* Asegurar que las etiquetas estén por encima */
 }
 
 /* Sección de filtros */
@@ -452,16 +456,23 @@ input:checked + .slider:before {
 /* Menú desplegable */
 .dropdown-menu {
     font-size: 13px;
-    min-width: 240px;
-    padding: 10px 0;
+    min-width: 280px;
+    padding: 10px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     border-radius: 8px;
+    overflow: visible;
 }
 
 .dropdown-item {
     padding: 10px 15px;
     color: var(--gray-700);
     white-space: nowrap;
+    display: block;
+    width: 100%;
+}
+
+.view-type-menu {
+    z-index: 1050; /* Mayor z-index para asegurar que aparezca por encima */
 }
 
 .dropdown-item:hover {
@@ -474,23 +485,36 @@ input:checked + .slider:before {
 }
 
 .view-type-menu .form-check {
-    padding-left: 5px;
-    margin-bottom: 0;
+    padding: 10px 15px;
+    margin: 0;
+    display: flex;
+    align-items: center;
 }
 
 .form-check-input {
-    margin-right: 8px;
+    margin-right: 10px;
+    cursor: pointer;
+    min-width: 18px;
 }
 
 .form-check-label {
     font-weight: normal;
     font-size: 13px;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+.form-switch {
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
 .form-switch .form-check-input {
     width: 36px;
-    height: 20px;
+    height: 18px;
     margin-top: 0;
+    margin-right: 10px;
 }
 
 /* Controles de formulario */

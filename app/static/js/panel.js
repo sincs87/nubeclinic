@@ -1,13 +1,18 @@
 // Inicializar variables de configuración
 let config = {
-    currentDate: new Date(2025, 3, 6), // 6 de abril de 2025
+    currentDate: new Date(2025, 3, 6), // 6 de abril de 2025 (para el calendario del mes)
     selectedDate: new Date(2025, 3, 6), // Fecha seleccionada inicialmente
+    today: new Date(), // Día actual real (para marcar hoy)
     viewType: 'day',
     timeSlotHeight: 60,
     zoomLevel: 1,
     hideAppointments: false,
     divideViewByCalendars: false
 };
+
+// Para pruebas, establecer el día actual como distinto de la fecha seleccionada
+// En producción, puedes comentar esta línea
+config.today = new Date(2025, 3, 1); // 1 de abril de 2025 como "hoy" para ver la diferencia
 
 // Meses en español
 const months = [
@@ -78,8 +83,6 @@ function generateCalendarGrid() {
     
     // Obtener el primer día del mes
     const firstDayOfMonth = new Date(year, month, 1);
-    // Obtener el último día del mes
-    const lastDayOfMonth = new Date(year, month + 1, 0);
     
     // Determinar el primer día que mostraremos (puede ser del mes anterior)
     const firstDayToShow = new Date(firstDayOfMonth);
@@ -94,7 +97,7 @@ function generateCalendarGrid() {
         dayElement.className = 'mini-calendar-day';
         dayElement.textContent = currentDate.getDate();
         
-        // Verificar si es el mes actual
+        // Verificar si es del mes actual o de otros meses
         if (currentDate.getMonth() !== month) {
             dayElement.classList.add('other-month');
         }
@@ -104,9 +107,8 @@ function generateCalendarGrid() {
             dayElement.classList.add('selected');
         }
         
-        // Verificar si es hoy (día actual real)
-        const today = new Date();
-        if (isSameDay(currentDate, today)) {
+        // Verificar si es el día actual real ("hoy")
+        if (isSameDay(currentDate, config.today)) {
             dayElement.classList.add('today');
         }
         
@@ -178,27 +180,42 @@ function navigateToNextMonth() {
 }
 
 function navigateToPreviousDay() {
-    config.selectedDate.setDate(config.selectedDate.getDate() - 1);
+    const newDate = new Date(config.selectedDate);
+    newDate.setDate(newDate.getDate() - 1);
+    config.selectedDate = newDate;
+    
+    // Si el día seleccionado ya no está en el mes actual, actualizamos el mes
+    if (config.selectedDate.getMonth() !== config.currentDate.getMonth()) {
+        config.currentDate = new Date(config.selectedDate.getFullYear(), config.selectedDate.getMonth(), 1);
+    }
+    
     updateDayDisplay();
     updateCalendarView();
 }
 
 function navigateToNextDay() {
-    config.selectedDate.setDate(config.selectedDate.getDate() + 1);
+    const newDate = new Date(config.selectedDate);
+    newDate.setDate(newDate.getDate() + 1);
+    config.selectedDate = newDate;
+    
+    // Si el día seleccionado ya no está en el mes actual, actualizamos el mes
+    if (config.selectedDate.getMonth() !== config.currentDate.getMonth()) {
+        config.currentDate = new Date(config.selectedDate.getFullYear(), config.selectedDate.getMonth(), 1);
+    }
+    
     updateDayDisplay();
     updateCalendarView();
 }
 
 function goToToday() {
-    const now = new Date();
-    config.selectedDate = new Date(now);
-    config.currentDate = new Date(now.getFullYear(), now.getMonth(), 1);
+    config.selectedDate = new Date(config.today);
+    config.currentDate = new Date(config.today.getFullYear(), config.today.getMonth(), 1);
     updateCalendarView();
 }
 
 // Función para seleccionar un día específico
 function selectDay(date) {
-    // Establecer la fecha seleccionada
+    // Establecer la fecha seleccionada (hacemos copia para evitar problemas de referencia)
     config.selectedDate = new Date(date);
     
     // Actualizar la vista
