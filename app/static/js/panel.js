@@ -23,7 +23,7 @@ const weekdays = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 function simulateDate() {
     const simulatedToday = new Date(2025, 3, 1); // 1 de abril de 2025
     config.today = simulatedToday;
-    config.selectedDate = new Date(2025, 3, 6); // 6 de abril de 2025 (seleccionado)
+    config.selectedDate = new Date(2025, 3, 1); // 1 de abril seleccionado (no el 6)
     config.currentMonth = new Date(2025, 3, 1); // Abril 2025
 }
 
@@ -32,8 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Inicializando calendario...');
     
     // DESCOMENTAR PARA PRUEBAS
-    simulateDate();
-    
+// COMENTAR ESTA LÍNEA EN PRODUCCIÓN
+// simulateDate();    
     // Inicializar calendario
     initCalendar();
     
