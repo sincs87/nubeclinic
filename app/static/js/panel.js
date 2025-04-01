@@ -2,17 +2,13 @@
 let config = {
     currentDate: new Date(2025, 3, 6), // 6 de abril de 2025 (para el calendario del mes)
     selectedDate: new Date(2025, 3, 6), // Fecha seleccionada inicialmente
-    today: new Date(), // Día actual real (para marcar hoy)
+    today: new Date(2025, 3, 1), // Día actual real (para marcar hoy) - Simulamos que "hoy" es el 1 de abril
     viewType: 'day',
     timeSlotHeight: 60,
     zoomLevel: 1,
     hideAppointments: false,
     divideViewByCalendars: false
 };
-
-// Para pruebas, establecer el día actual como distinto de la fecha seleccionada
-// En producción, puedes comentar esta línea
-config.today = new Date(2025, 3, 1); // 1 de abril de 2025 como "hoy" para ver la diferencia
 
 // Meses en español
 const months = [
@@ -28,6 +24,14 @@ const weekdays = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 document.addEventListener('DOMContentLoaded', function() {
     initializeCalendar();
     setupEventListeners();
+    
+    // Asegurar que el calendario principal comience mostrando las 01:00
+    setTimeout(() => {
+        const calendarGrid = document.querySelector('.calendar-grid');
+        if (calendarGrid) {
+            calendarGrid.scrollTop = 0;
+        }
+    }, 100);
 });
 
 // Configurar todos los event listeners
