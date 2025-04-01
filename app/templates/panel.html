@@ -36,11 +36,12 @@
             padding: 0;
             overflow: hidden;
             height: 100vh;
+            font-size: 14px;
         }
         
         /* Sidebar */
         .sidebar {
-            width: 64px;
+            width: 60px;
             height: 100vh;
             background-color: #ffffff;
             border-right: 1px solid var(--gray-300);
@@ -53,7 +54,7 @@
         }
         
         .sidebar-top {
-            padding: 15px 0;
+            padding: 12px 0;
             text-align: center;
             border-bottom: 1px solid var(--gray-300);
         }
@@ -62,7 +63,7 @@
             display: flex;
             flex-direction: column;
             flex-grow: 1;
-            padding: 15px 0;
+            padding: 10px 0;
         }
         
         .sidebar-nav-item {
@@ -71,7 +72,7 @@
             justify-content: center;
             color: var(--gray-700);
             text-decoration: none;
-            padding: 15px 0;
+            padding: 12px 0;
             transition: all 0.3s;
         }
         
@@ -81,12 +82,17 @@
         }
         
         .sidebar-nav-item i {
-            font-size: 20px;
+            font-size: 18px;
+        }
+        
+        .sidebar-bottom {
+            padding: 10px 0;
+            border-top: 1px solid var(--gray-300);
         }
         
         /* Main content */
         .main-content {
-            margin-left: 64px;
+            margin-left: 60px;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -94,12 +100,13 @@
         
         /* Header */
         .header {
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-bottom: 1px solid var(--gray-300);
             display: flex;
             align-items: center;
             justify-content: space-between;
             background-color: #ffffff;
+            height: 56px;
         }
         
         .header-left, .header-right {
@@ -110,17 +117,19 @@
         .header-nav {
             display: flex;
             align-items: center;
+            font-size: 13px;
         }
         
         .header-btn {
             background: none;
             border: none;
             color: var(--gray-700);
-            margin: 0 5px;
+            margin: 0 4px;
             cursor: pointer;
-            padding: 5px 10px;
+            padding: 4px 8px;
             border-radius: 4px;
             transition: all 0.3s;
+            font-size: 13px;
         }
         
         .header-btn:hover {
@@ -130,6 +139,8 @@
         .header-btn.primary {
             background-color: var(--primary-color);
             color: white;
+            padding: 4px 12px;
+            font-size: 13px;
         }
         
         .header-btn.primary:hover {
@@ -139,72 +150,89 @@
         .month-nav {
             display: flex;
             align-items: center;
-            margin-right: 20px;
+            margin-right: 15px;
         }
         
         .month-title {
-            margin: 0 15px;
+            margin: 0 10px;
             font-weight: 500;
+            font-size: 14px;
         }
         
         .search-bar {
-            flex-grow: 1;
             display: flex;
             align-items: center;
             background-color: var(--gray-100);
-            border-radius: 24px;
-            padding: 5px 15px;
-            margin: 0 20px;
-            max-width: 600px;
+            border-radius: 20px;
+            padding: 4px 12px;
+            margin: 0 15px;
+            max-width: 500px;
+            flex-grow: 1;
         }
         
         .search-bar input {
             background: none;
             border: none;
-            padding: 8px 10px;
+            padding: 6px 8px;
             flex-grow: 1;
             outline: none;
+            font-size: 13px;
         }
         
-        /* Calendar */
+        /* Calendar container */
         .calendar-container {
             display: flex;
             flex-grow: 1;
             overflow: hidden;
         }
         
+        /* Sidebar calendar */
         .calendar-sidebar {
-            width: 300px;
+            width: 260px;
             border-right: 1px solid var(--gray-300);
             background-color: var(--gray-100);
-            padding: 20px;
+            padding: 15px;
             overflow-y: auto;
         }
         
         .mini-calendar {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .mini-calendar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+            margin-bottom: 5px;
+        }
+        
+        .mini-calendar-weekday {
+            text-align: center;
+            padding: 3px 0;
+            font-size: 11px;
+            color: var(--gray-600);
+            text-transform: uppercase;
         }
         
         .mini-calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
+            gap: 3px;
         }
         
         .mini-calendar-day {
             text-align: center;
-            padding: 5px;
-            font-size: 12px;
+            padding: 5px 0;
+            font-size: 11px;
             border-radius: 50%;
             cursor: pointer;
             transition: all 0.3s;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
         }
         
         .mini-calendar-day.today {
@@ -216,27 +244,21 @@
             background-color: var(--gray-200);
         }
         
-        .mini-calendar-weekday {
-            text-align: center;
-            padding: 5px;
-            font-size: 12px;
-            color: var(--gray-600);
-            text-transform: uppercase;
-        }
-        
+        /* Calendar actions */
         .calendar-actions {
-            margin-top: 20px;
+            margin-top: 15px;
         }
         
         .action-btn {
             display: flex;
             align-items: center;
-            padding: 8px 10px;
-            margin-bottom: 10px;
+            padding: 6px 8px;
+            margin-bottom: 8px;
             color: var(--gray-700);
             text-decoration: none;
             border-radius: 4px;
             transition: all 0.3s;
+            font-size: 13px;
         }
         
         .action-btn:hover {
@@ -244,12 +266,13 @@
         }
         
         .action-btn i {
-            margin-right: 10px;
+            margin-right: 8px;
+            font-size: 14px;
         }
         
         .status-badge {
-            font-size: 10px;
-            padding: 2px 6px;
+            font-size: 9px;
+            padding: 2px 5px;
             border-radius: 10px;
             background-color: var(--primary-color);
             color: white;
@@ -257,9 +280,9 @@
         }
         
         .section-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            margin: 20px 0 10px;
+            margin: 15px 0 8px;
             color: var(--gray-700);
         }
         
@@ -267,58 +290,51 @@
         .calendar-grid {
             flex-grow: 1;
             overflow-y: auto;
-            padding: 20px;
-        }
-        
-        .day-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
+            padding: 0;
         }
         
         .time-slots {
             display: grid;
-            grid-template-rows: repeat(12, 1fr);
+            grid-template-rows: repeat(24, 60px);
             grid-gap: 0;
-            height: calc(100vh - 150px);
+            min-height: 100%;
         }
         
         .time-slot {
             border-top: 1px solid var(--gray-300);
-            padding: 10px;
+            padding: 0;
             position: relative;
         }
         
         .time-label {
             position: absolute;
-            top: -10px;
-            left: 0;
-            font-size: 12px;
+            top: -9px;
+            left: 10px;
+            font-size: 11px;
             color: var(--gray-600);
             background-color: white;
-            padding: 0 5px;
+            padding: 0 4px;
         }
         
         /* Filter section */
         .filter-section {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .filter-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: var(--gray-700);
         }
         
         .filter-select {
             width: 100%;
-            padding: 8px 10px;
+            padding: 6px 8px;
             border: 1px solid var(--gray-400);
             border-radius: 4px;
-            margin-bottom: 10px;
-            font-size: 14px;
+            margin-bottom: 8px;
+            font-size: 13px;
             outline: none;
         }
         
@@ -328,24 +344,24 @@
             background-color: white;
             border: 1px solid var(--gray-400);
             border-radius: 4px;
-            padding: 5px 10px;
-            margin-bottom: 10px;
+            padding: 4px 8px;
+            margin-bottom: 8px;
         }
         
         .filter-search input {
             background: none;
             border: none;
-            padding: 3px 5px;
+            padding: 2px 4px;
             flex-grow: 1;
             outline: none;
-            font-size: 14px;
+            font-size: 13px;
         }
         
         .switch {
             position: relative;
             display: inline-block;
-            width: 40px;
-            height: 20px;
+            width: 36px;
+            height: 18px;
         }
         
         .switch input {
@@ -369,8 +385,8 @@
         .slider:before {
             position: absolute;
             content: "";
-            height: 16px;
-            width: 16px;
+            height: 14px;
+            width: 14px;
             left: 2px;
             bottom: 2px;
             background-color: white;
@@ -383,34 +399,56 @@
         }
         
         input:checked + .slider:before {
-            transform: translateX(20px);
+            transform: translateX(18px);
         }
         
         .option-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .option-label {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--gray-700);
         }
         
         .notification-badge {
             position: absolute;
-            top: 10px;
+            top: 5px;
             right: 10px;
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             background-color: #e53935;
             color: white;
             border-radius: 50%;
-            font-size: 10px;
+            font-size: 9px;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        
+        /* Dropdown menu */
+        .dropdown-menu {
+            font-size: 13px;
+            min-width: 120px;
+            padding: 5px 0;
+        }
+        
+        .dropdown-item {
+            padding: 5px 10px;
+        }
+        
+        /* Form controls */
+        .form-check-input {
+            width: 14px;
+            height: 14px;
+        }
+        
+        .form-check-label {
+            font-size: 13px;
+            margin-left: 5px;
         }
     </style>
 </head>
@@ -418,8 +456,8 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-top">
-            <a href="{{ url_for('main.index') }}">
-                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="NubeClinic" width="30">
+            <a href="#">
+                <img src="ico.png" alt="NubeClinic" width="24" height="24">
             </a>
         </div>
         <div class="sidebar-nav">
@@ -445,7 +483,7 @@
         <div class="sidebar-bottom">
             <a href="#" class="sidebar-nav-item position-relative">
                 <i class="far fa-bell"></i>
-                <span class="notification-badge">5</span>
+                <span class="notification-badge">1</span>
             </a>
             <a href="#" class="sidebar-nav-item">
                 <i class="far fa-user-circle"></i>
@@ -462,7 +500,7 @@
                     <button class="header-btn">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                    <span class="month-title">Marzo 2025</span>
+                    <span class="month-title">Abril 2025</span>
                     <button class="header-btn">
                         <i class="fas fa-chevron-right"></i>
                     </button>
@@ -475,7 +513,7 @@
                     <button class="header-btn">
                         <i class="fas fa-chevron-right"></i>
                     </button>
-                    <span class="ms-2">dom., 30 de mar de 2025</span>
+                    <span class="ms-2">dom., 6 de abr de 2025</span>
                 </div>
             </div>
             <div class="search-bar">
@@ -515,62 +553,54 @@
                 <!-- Mini calendar -->
                 <div class="mini-calendar">
                     <div class="mini-calendar-header">
-                        <span>Lun</span>
-                        <span>Mar</span>
-                        <span>Mié</span>
-                        <span>Jue</span>
-                        <span>Vie</span>
-                        <span>Sáb</span>
-                        <span>Dom</span>
+                        <div class="mini-calendar-weekday">Lun</div>
+                        <div class="mini-calendar-weekday">Mar</div>
+                        <div class="mini-calendar-weekday">Mié</div>
+                        <div class="mini-calendar-weekday">Jue</div>
+                        <div class="mini-calendar-weekday">Vie</div>
+                        <div class="mini-calendar-weekday">Sáb</div>
+                        <div class="mini-calendar-weekday">Dom</div>
                     </div>
                     <div class="mini-calendar-grid">
-                        <div class="mini-calendar-day">24</div>
-                        <div class="mini-calendar-day">25</div>
-                        <div class="mini-calendar-day">26</div>
-                        <div class="mini-calendar-day">27</div>
-                        <div class="mini-calendar-day">28</div>
-                        <div class="mini-calendar-day">1</div>
-                        <div class="mini-calendar-day">2</div>
-                        
-                        <div class="mini-calendar-day">3</div>
-                        <div class="mini-calendar-day">4</div>
-                        <div class="mini-calendar-day">5</div>
-                        <div class="mini-calendar-day">6</div>
-                        <div class="mini-calendar-day">7</div>
-                        <div class="mini-calendar-day">8</div>
-                        <div class="mini-calendar-day">9</div>
-                        
-                        <div class="mini-calendar-day">10</div>
-                        <div class="mini-calendar-day">11</div>
-                        <div class="mini-calendar-day">12</div>
-                        <div class="mini-calendar-day">13</div>
-                        <div class="mini-calendar-day">14</div>
-                        <div class="mini-calendar-day">15</div>
-                        <div class="mini-calendar-day">16</div>
-                        
-                        <div class="mini-calendar-day">17</div>
-                        <div class="mini-calendar-day">18</div>
-                        <div class="mini-calendar-day">19</div>
-                        <div class="mini-calendar-day">20</div>
-                        <div class="mini-calendar-day">21</div>
-                        <div class="mini-calendar-day">22</div>
-                        <div class="mini-calendar-day">23</div>
-                        
-                        <div class="mini-calendar-day">24</div>
-                        <div class="mini-calendar-day">25</div>
-                        <div class="mini-calendar-day">26</div>
-                        <div class="mini-calendar-day">27</div>
-                        <div class="mini-calendar-day">28</div>
-                        <div class="mini-calendar-day">29</div>
-                        <div class="mini-calendar-day today">30</div>
-                        
                         <div class="mini-calendar-day">31</div>
                         <div class="mini-calendar-day">1</div>
                         <div class="mini-calendar-day">2</div>
                         <div class="mini-calendar-day">3</div>
                         <div class="mini-calendar-day">4</div>
                         <div class="mini-calendar-day">5</div>
-                        <div class="mini-calendar-day">6</div>
+                        <div class="mini-calendar-day today">6</div>
+                        
+                        <div class="mini-calendar-day">7</div>
+                        <div class="mini-calendar-day">8</div>
+                        <div class="mini-calendar-day">9</div>
+                        <div class="mini-calendar-day">10</div>
+                        <div class="mini-calendar-day">11</div>
+                        <div class="mini-calendar-day">12</div>
+                        <div class="mini-calendar-day">13</div>
+                        
+                        <div class="mini-calendar-day">14</div>
+                        <div class="mini-calendar-day">15</div>
+                        <div class="mini-calendar-day">16</div>
+                        <div class="mini-calendar-day">17</div>
+                        <div class="mini-calendar-day">18</div>
+                        <div class="mini-calendar-day">19</div>
+                        <div class="mini-calendar-day">20</div>
+                        
+                        <div class="mini-calendar-day">21</div>
+                        <div class="mini-calendar-day">22</div>
+                        <div class="mini-calendar-day">23</div>
+                        <div class="mini-calendar-day">24</div>
+                        <div class="mini-calendar-day">25</div>
+                        <div class="mini-calendar-day">26</div>
+                        <div class="mini-calendar-day">27</div>
+                        
+                        <div class="mini-calendar-day">28</div>
+                        <div class="mini-calendar-day">29</div>
+                        <div class="mini-calendar-day">30</div>
+                        <div class="mini-calendar-day">1</div>
+                        <div class="mini-calendar-day">2</div>
+                        <div class="mini-calendar-day">3</div>
+                        <div class="mini-calendar-day">4</div>
                     </div>
                 </div>
                 
@@ -609,13 +639,13 @@
                         <input type="text" placeholder="Buscar por agenda">
                     </div>
                     <div class="option-item">
-                        <span class="option-label">Trabajan hoy</span>
+                        <span class="option-label">Trabajan este día</span>
                         <label class="switch">
                             <input type="checkbox" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
-                    <div class="option-item ps-4">
+                    <div class="option-item ps-3">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="especialistasCheck">
                             <label class="form-check-label" for="especialistasCheck">
@@ -638,40 +668,34 @@
             <div class="calendar-grid">
                 <div class="time-slots">
                     <div class="time-slot">
-                        <span class="time-label">01:00</span>
+                        <span class="time-label">14:00</span>
                     </div>
                     <div class="time-slot">
-                        <span class="time-label">02:00</span>
+                        <span class="time-label">15:00</span>
                     </div>
                     <div class="time-slot">
-                        <span class="time-label">03:00</span>
+                        <span class="time-label">16:00</span>
                     </div>
                     <div class="time-slot">
-                        <span class="time-label">04:00</span>
+                        <span class="time-label">17:00</span>
                     </div>
                     <div class="time-slot">
-                        <span class="time-label">05:00</span>
+                        <span class="time-label">18:00</span>
                     </div>
                     <div class="time-slot">
-                        <span class="time-label">06:00</span>
+                        <span class="time-label">19:00</span>
                     </div>
                     <div class="time-slot">
-                        <span class="time-label">07:00</span>
+                        <span class="time-label">20:00</span>
                     </div>
                     <div class="time-slot">
-                        <span class="time-label">08:00</span>
+                        <span class="time-label">21:00</span>
                     </div>
                     <div class="time-slot">
-                        <span class="time-label">09:00</span>
+                        <span class="time-label">22:00</span>
                     </div>
                     <div class="time-slot">
-                        <span class="time-label">10:00</span>
-                    </div>
-                    <div class="time-slot">
-                        <span class="time-label">11:00</span>
-                    </div>
-                    <div class="time-slot">
-                        <span class="time-label">12:00</span>
+                        <span class="time-label">23:00</span>
                     </div>
                 </div>
             </div>
