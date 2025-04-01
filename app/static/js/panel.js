@@ -1,8 +1,8 @@
 // Inicializar variables de configuración
 let config = {
-    currentDate: new Date(2025, 3, 6), // 6 de abril de 2025 (para el calendario del mes)
-    selectedDate: new Date(2025, 3, 6), // Fecha seleccionada inicialmente
-    today: new Date(2025, 3, 1), // Día actual real (para marcar hoy) - Simulamos que "hoy" es el 1 de abril
+    currentMonth: new Date(2025, 3, 1), // Abril 2025
+    selectedDate: new Date(2025, 3, 6), // 6 de abril de 2025
+    today: new Date(2025, 3, 1), // Simulación del día actual (1 de abril de 2025)
     viewType: 'day',
     timeSlotHeight: 60,
     zoomLevel: 1,
@@ -22,17 +22,22 @@ const weekdays = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 
 // Inicializar la aplicación cuando el DOM esté cargado
 document.addEventListener('DOMContentLoaded', function() {
+    console.log("Inicializando calendario...");
     initializeCalendar();
     setupEventListeners();
     
-    // Asegurar que el calendario principal comience mostrando las 01:00
-    setTimeout(() => {
-        const calendarGrid = document.querySelector('.calendar-grid');
-        if (calendarGrid) {
-            calendarGrid.scrollTop = 0;
-        }
-    }, 100);
+    // Forzar el scroll a la parte superior para mostrar 01:00
+    setTimeout(forceScrollToTop, 100);
 });
+
+// Forzar el scroll a la parte superior
+function forceScrollToTop() {
+    const calendarGrid = document.querySelector('.calendar-grid');
+    if (calendarGrid) {
+        console.log("Estableciendo scroll a 0");
+        calendarGrid.scrollTop = 0;
+    }
+}
 
 // Configurar todos los event listeners
 function setupEventListeners() {
@@ -71,54 +76,68 @@ function setupEventListeners() {
 
 // Inicializar el calendario
 function initializeCalendar() {
+    console.log("Actualizando visualización del mes");
     updateMonthDisplay();
+    
+    console.log("Generando la cuadrícula del calendario");
     generateCalendarGrid();
-    generateTimeSlots();
+    
+    console.log("Actualizando visualización del día");
     updateDayDisplay();
+    
+    console.log("Generando franjas horarias");
+    generateTimeSlots();
 }
 
 // Generar la cuadrícula del mini calendario
 function generateCalendarGrid() {
+    console.log("Generando cuadrícula del calendario para", config.currentMonth);
+    
     const calendarGrid = document.getElementById('calendarGrid');
     calendarGrid.innerHTML = '';
     
-    const year = config.currentDate.getFullYear();
-    const month = config.currentDate.getMonth();
+    // Obtener el año y mes actual de visualización
+    const year = config.currentMonth.getFullYear();
+    const month = config.currentMonth.getMonth();
     
     // Obtener el primer día del mes
     const firstDayOfMonth = new Date(year, month, 1);
     
     // Determinar el primer día que mostraremos (puede ser del mes anterior)
     const firstDayToShow = new Date(firstDayOfMonth);
+    // Si el primer día del mes es domingo (0), retroceder 6 días, sino retroceder los días hasta llegar a lunes
     firstDayToShow.setDate(firstDayToShow.getDate() - (firstDayOfMonth.getDay() === 0 ? 6 : firstDayOfMonth.getDay() - 1));
     
     // Mostrar 6 semanas (42 días) para asegurar que tengamos suficiente espacio
     for (let i = 0; i < 42; i++) {
-        const currentDate = new Date(firstDayToShow);
-        currentDate.setDate(firstDayToShow.getDate() + i);
+        const currentDay = new Date(firstDayToShow);
+        currentDay.setDate(firstDayToShow.getDate() + i);
         
         const dayElement = document.createElement('div');
         dayElement.className = 'mini-calendar-day';
-        dayElement.textContent = currentDate.getDate();
+        dayElement.textContent = currentDay.getDate();
         
         // Verificar si es del mes actual o de otros meses
-        if (currentDate.getMonth() !== month) {
+        if (currentDay.getMonth() !== month) {
             dayElement.classList.add('other-month');
         }
         
-        // Verificar si es el día seleccionado actualmente
-        if (isSameDay(currentDate, config.selectedDate)) {
+        // Verificar si es el día seleccionado
+        if (isSameDay(currentDay, config.selectedDate)) {
+            console.log("Día seleccionado:", currentDay);
             dayElement.classList.add('selected');
         }
         
-        // Verificar si es el día actual real ("hoy")
-        if (isSameDay(currentDate, config.today)) {
+        // Verificar si es el día actual
+        if (isSameDay(currentDay, config.today)) {
+            console.log("Día actual:", currentDay);
             dayElement.classList.add('today');
         }
         
         // Configurar el click en el día
         dayElement.addEventListener('click', function() {
-            selectDay(currentDate);
+            console.log("Día seleccionado:", currentDay);
+            selectDay(currentDay);
         });
         
         calendarGrid.appendChild(dayElement);
@@ -127,10 +146,12 @@ function generateCalendarGrid() {
 
 // Generar las franjas horarias
 function generateTimeSlots() {
+    console.log("Generando franjas horarias");
+    
     const timeSlotsContainer = document.getElementById('timeSlots');
     timeSlotsContainer.innerHTML = '';
     
-    // Generar slots desde la 1:00 hasta las 23:00
+    // Crear slots desde la 1:00 hasta las 23:00
     for (let hour = 1; hour <= 23; hour++) {
         const timeSlot = document.createElement('div');
         timeSlot.className = 'time-slot';
@@ -143,15 +164,18 @@ function generateTimeSlots() {
         timeSlot.appendChild(timeLabel);
         timeSlotsContainer.appendChild(timeSlot);
     }
+    
+    // Forzar el scroll a la parte superior nuevamente
+    setTimeout(forceScrollToTop, 50);
 }
 
 // Actualizar la visualización del mes actual
 function updateMonthDisplay() {
-    const monthYear = `${months[config.currentDate.getMonth()]} ${config.currentDate.getFullYear()}`;
+    const monthYear = `${months[config.currentMonth.getMonth()]} ${config.currentMonth.getFullYear()}`;
     document.getElementById('currentMonth').textContent = monthYear;
 }
 
-// Actualizar la visualización del día actual
+// Actualizar la visualización del día seleccionado
 function updateDayDisplay() {
     const dayOfWeek = weekdays[config.selectedDate.getDay()];
     const day = config.selectedDate.getDate();
@@ -164,33 +188,42 @@ function updateDayDisplay() {
 
 // Actualizar toda la vista del calendario
 function updateCalendarView() {
+    console.log("Actualizando toda la vista del calendario");
     updateMonthDisplay();
     generateCalendarGrid();
     updateDayDisplay();
     generateTimeSlots();
 }
 
-// Funciones de navegación
+// Navegación del mes
 function navigateToPreviousMonth() {
-    config.currentDate = new Date(config.currentDate.getFullYear(), config.currentDate.getMonth() - 1, 1);
+    console.log("Navegando al mes anterior");
+    const newMonth = new Date(config.currentMonth);
+    newMonth.setMonth(newMonth.getMonth() - 1);
+    config.currentMonth = newMonth;
     updateMonthDisplay();
     generateCalendarGrid();
 }
 
 function navigateToNextMonth() {
-    config.currentDate = new Date(config.currentDate.getFullYear(), config.currentDate.getMonth() + 1, 1);
+    console.log("Navegando al mes siguiente");
+    const newMonth = new Date(config.currentMonth);
+    newMonth.setMonth(newMonth.getMonth() + 1);
+    config.currentMonth = newMonth;
     updateMonthDisplay();
     generateCalendarGrid();
 }
 
+// Navegación del día
 function navigateToPreviousDay() {
+    console.log("Navegando al día anterior");
     const newDate = new Date(config.selectedDate);
     newDate.setDate(newDate.getDate() - 1);
     config.selectedDate = newDate;
     
-    // Si el día seleccionado ya no está en el mes actual, actualizamos el mes
-    if (config.selectedDate.getMonth() !== config.currentDate.getMonth()) {
-        config.currentDate = new Date(config.selectedDate.getFullYear(), config.selectedDate.getMonth(), 1);
+    // Verificar si necesitamos cambiar el mes visible
+    if (config.selectedDate.getMonth() !== config.currentMonth.getMonth()) {
+        config.currentMonth = new Date(config.selectedDate.getFullYear(), config.selectedDate.getMonth(), 1);
     }
     
     updateDayDisplay();
@@ -198,13 +231,14 @@ function navigateToPreviousDay() {
 }
 
 function navigateToNextDay() {
+    console.log("Navegando al día siguiente");
     const newDate = new Date(config.selectedDate);
     newDate.setDate(newDate.getDate() + 1);
     config.selectedDate = newDate;
     
-    // Si el día seleccionado ya no está en el mes actual, actualizamos el mes
-    if (config.selectedDate.getMonth() !== config.currentDate.getMonth()) {
-        config.currentDate = new Date(config.selectedDate.getFullYear(), config.selectedDate.getMonth(), 1);
+    // Verificar si necesitamos cambiar el mes visible
+    if (config.selectedDate.getMonth() !== config.currentMonth.getMonth()) {
+        config.currentMonth = new Date(config.selectedDate.getFullYear(), config.selectedDate.getMonth(), 1);
     }
     
     updateDayDisplay();
@@ -212,14 +246,17 @@ function navigateToNextDay() {
 }
 
 function goToToday() {
+    console.log("Navegando al día actual");
     config.selectedDate = new Date(config.today);
-    config.currentDate = new Date(config.today.getFullYear(), config.today.getMonth(), 1);
+    config.currentMonth = new Date(config.today.getFullYear(), config.today.getMonth(), 1);
     updateCalendarView();
 }
 
 // Función para seleccionar un día específico
 function selectDay(date) {
-    // Establecer la fecha seleccionada (hacemos copia para evitar problemas de referencia)
+    console.log("Seleccionando día:", date);
+    
+    // Establecer la fecha seleccionada
     config.selectedDate = new Date(date);
     
     // Actualizar la vista
@@ -242,7 +279,7 @@ function zoomOut() {
     }
 }
 
-// Cambiar el tipo de vista (día, semana, mes, etc.)
+// Cambiar el tipo de vista
 function changeViewType(viewType) {
     config.viewType = viewType;
     document.getElementById('viewTypeDropdown').textContent = getViewTypeText(viewType);

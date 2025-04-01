@@ -161,17 +161,20 @@ body {
     margin: 0 auto;
 }
 
+/* Día actual (marcado en azul fuerte) */
 .mini-calendar-day.today {
-    background-color: var(--primary-color);
-    color: white;
-    font-weight: bold;
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    font-weight: bold !important;
+    border: none !important;
 }
 
-.mini-calendar-day.selected {
-    background-color: rgba(74, 144, 226, 0.15);
-    color: var(--gray-800);
-    border: 1px solid var(--primary-color);
-    font-weight: normal;
+/* Día seleccionado (marcado en azul claro) */
+.mini-calendar-day.selected:not(.today) {
+    background-color: rgba(74, 144, 226, 0.15) !important;
+    color: var(--gray-800) !important;
+    border: 1px solid var(--primary-color) !important;
+    font-weight: normal !important;
 }
 
 .mini-calendar-day.other-month {
@@ -262,6 +265,7 @@ body {
     overflow: hidden;
 }
 
+/* Cabecera de la columna principal */
 .main-header {
     padding: 8px 16px;
     border-bottom: 1px solid var(--gray-300);
@@ -272,7 +276,7 @@ body {
     height: 56px;
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 100;
 }
 
 .header-left, .header-right {
@@ -307,37 +311,30 @@ body {
     font-size: 13px;
 }
 
-/* Rejilla del calendario */
+/* Rejilla del calendario - Solución radical con posición absoluta */
 .calendar-grid {
     flex-grow: 1;
     overflow-y: auto;
     padding: 0;
-    height: calc(100vh - 56px);
-    background-color: white; /* Asegurar fondo blanco */
-}
-
-/* Contenedor de las franjas horarias */
-.time-slots {
-    display: grid;
-    grid-template-rows: repeat(23, 60px);
-    grid-gap: 0;
-    min-height: 100%;
-    padding-top: 0; /* Eliminar espacio superior */
-    padding-bottom: 200px; /* Mayor espacio al final para asegurar scroll completo */
-}
-
-/* Primera franja horaria (01:00) */
-.time-slots .time-slot:first-child {
-    margin-top: 0; /* Eliminar margen superior */
-}
-
-.time-slot {
-    border-top: 1px solid var(--gray-300);
-    padding: 0;
     position: relative;
-    min-height: 60px; /* Altura mínima fija para las franjas horarias */
+    background-color: white;
 }
 
+/* Contenedor de franjas horarias */
+.time-slots {
+    position: relative;
+    min-height: 100%;
+    padding-bottom: 100px;
+}
+
+/* Franja horaria individual */
+.time-slot {
+    position: relative;
+    height: 60px;
+    border-top: 1px solid var(--gray-300);
+}
+
+/* Etiqueta de hora */
 .time-label {
     position: absolute;
     top: -9px;
@@ -346,7 +343,7 @@ body {
     color: var(--gray-600);
     background-color: white;
     padding: 0 4px;
-    z-index: 5; /* Asegurar que las etiquetas estén por encima */
+    z-index: 5;
 }
 
 /* Sección de filtros */
@@ -464,75 +461,81 @@ input:checked + .slider:before {
     justify-content: center;
 }
 
-/* Menú desplegable */
+/* Menú desplegable - Solución radical */
 .dropdown-menu {
-    font-size: 13px;
-    min-width: 280px;
-    padding: 0;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid var(--gray-300);
+    font-size: 13px !important;
+    min-width: 300px !important;
+    padding: 0 !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    border: 1px solid var(--gray-300) !important;
+    z-index: 1050 !important;
 }
 
+/* Elementos del menú desplegable */
 .dropdown-item {
-    padding: 12px 16px;
-    color: var(--gray-700);
-    white-space: nowrap;
-    display: block;
-    width: 100%;
-    border: none;
-    text-align: left;
-    background: transparent;
+    padding: 12px 16px !important;
+    color: var(--gray-700) !important;
+    white-space: nowrap !important;
+    display: block !important;
+    width: 100% !important;
+    border: none !important;
+    text-align: left !important;
+    background: transparent !important;
+    border-radius: 0 !important;
 }
 
-.view-type-menu {
-    z-index: 1050; /* Mayor z-index para asegurar que aparezca por encima */
-}
-
+/* Estado hover para elementos del menú */
 .dropdown-item:hover, .dropdown-item:focus {
-    background-color: var(--gray-100);
-    color: var(--gray-900);
-    text-decoration: none;
+    background-color: var(--gray-100) !important;
+    color: var(--gray-900) !important;
+    text-decoration: none !important;
 }
 
+/* Separador en el menú */
 .dropdown-divider {
-    margin: 0;
-    border-top: 1px solid var(--gray-300);
+    margin: 0 !important;
+    border-top: 1px solid var(--gray-300) !important;
 }
 
+/* Contenedor de switch en el menú */
 .form-check.form-switch {
-    padding: 12px 16px;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    background-color: white;
+    padding: 12px 16px !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    background-color: white !important;
 }
 
+/* Estado hover para el switch */
 .form-check.form-switch:hover {
-    background-color: var(--gray-100);
+    background-color: var(--gray-100) !important;
 }
 
+/* Input del switch */
 .form-check-input {
-    margin-right: 10px;
-    cursor: pointer;
-    min-width: 18px;
+    margin-right: 10px !important;
+    cursor: pointer !important;
+    min-width: 18px !important;
 }
 
+/* Etiqueta del switch */
 .form-check-label {
-    font-weight: normal;
-    font-size: 13px;
-    margin-bottom: 0;
-    cursor: pointer;
-    color: var(--gray-700);
+    font-weight: normal !important;
+    font-size: 13px !important;
+    margin-bottom: 0 !important;
+    cursor: pointer !important;
+    color: var(--gray-700) !important;
 }
 
+/* Input específico del switch */
 .form-switch .form-check-input {
-    width: 36px;
-    height: 18px;
-    margin-top: 0;
-    margin-right: 10px;
+    width: 36px !important;
+    height: 18px !important;
+    margin-top: 0 !important;
+    margin-right: 10px !important;
 }
 
 /* Controles de formulario */
