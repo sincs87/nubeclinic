@@ -6,6 +6,8 @@ import uuid
 import stripe
 import os
 from datetime import datetime
+from flask import current_app
+
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -228,20 +230,19 @@ def suscripcion_page():
         return redirect(url_for("auth.login"))
         
     return render_template("suscripcion.html", user=user)
-from flask import request, render_template, flash, redirect, url_for
+
 from itsdangerous import URLSafeTimedSerializer
 from datetime import datetime, timedelta
 import secrets
 
-# Serializador para token seguro
-s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+
 
 from flask_mail import Message
 from app import mail  
 
 @auth_bp.route('/forgot-password', methods=['GET', 'POST'])
 def forgot_password():
-    s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])  
+    s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])  # ✅ Perfecto
     if request.method == 'POST':
         email = request.form['email']
         user = User.query.filter_by(email=email).first()
