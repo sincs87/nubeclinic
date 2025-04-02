@@ -17,16 +17,31 @@ def register():
         if existing_user:
             flash("Este email ya está registrado. Por favor, utiliza otro o inicia sesión.", "danger")
             return render_template("register.html")
-            
+        
+        # Process specialties
+        specialties = request.form.getlist("specialties")
+        if not specialties:
+            flash("Debes seleccionar al menos una especialidad", "danger")
+            return render_template("register.html")
+        
+        # Generate tenant_id from clinic name or user name
+        clinic_name = request.form.get("clinic_name", "").strip()
+        tenant_base = clinic_name if clinic_name else f"{request.form['name']} {request.form['surname']}".strip()
+        tenant_id = str(uuid.uuid5(uuid.NAMESPACE_DNS, tenant_base.lower()))
+        
         user = User(
             id=str(uuid.uuid4()),
             name=request.form["name"],
             surname=request.form["surname"],
-            specialty=request.form["specialty"],
+            clinic_name=clinic_name if clinic_name else None,
+            specialties=specialties,
             location=request.form["location"],
+            province=request.form["province"],
+            country_code=request.form["country_code"],
             phone=request.form["phone"],
             email=request.form["email"],
             password_hash=generate_password_hash(request.form["password"], method='pbkdf2:sha256'),
+            tenant_id=tenant_id,
             created_at=datetime.utcnow(),
             updated_at=datetime.utcnow()
         )

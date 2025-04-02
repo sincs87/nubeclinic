@@ -1,5 +1,6 @@
 from app import db
 from datetime import datetime
+from sqlalchemy.dialects.postgresql import ARRAY
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -7,15 +8,19 @@ class User(db.Model):
     id = db.Column(db.String(36), primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     surname = db.Column(db.String(100), nullable=False)
-    specialty = db.Column(db.String(100), nullable=False)
-    location = db.Column(db.String(100), nullable=False)
+    clinic_name = db.Column(db.String(200), nullable=True)
+    specialties = db.Column(ARRAY(db.String(100)), nullable=False)
+    location = db.Column(db.String(150), nullable=False)
+    province = db.Column(db.String(100), nullable=False)
+    country_code = db.Column(db.String(5), nullable=False, default="+34")
     phone = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
     password_hash = db.Column(db.String(255), nullable=False)
     stripe_customer_id = db.Column(db.String(100), nullable=True)
-    created_at = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
     tiene_suscripcion = db.Column(db.Boolean, default=False)
-    updated_at = db.Column(db.DateTime)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    tenant_id = db.Column(db.String(36), nullable=False)
     
     def __repr__(self):
         return f'<User {self.email}>'
@@ -23,6 +28,14 @@ class User(db.Model):
     @property
     def full_name(self):
         return f"{self.name} {self.surname}"
+    
+    @property
+    def display_name(self):
+        return self.clinic_name if self.clinic_name else self.full_name
+    
+    @property
+    def primary_specialty(self):
+        return self.specialties[0] if self.specialties else ""
     
     @property
     def is_active(self):
