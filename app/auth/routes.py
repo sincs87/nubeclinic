@@ -18,38 +18,40 @@ def register():
             flash("Este email ya está registrado. Por favor, utiliza otro o inicia sesión.", "danger")
             return render_template("register.html")
         
-        # Process specialties (ahora con Tagify)
+        # Procesar especialidades (pueden venir como JSON de Tagify o como lista)
         try:
-            # Si viene en formato JSON (Tagify)
+            # Intentar procesar como JSON (Tagify)
             import json
             specialties_json = request.form.get("specialties", "[]")
             specialties_data = json.loads(specialties_json)
-            specialties = [item["value"] for item in specialties_data]
-        except (json.JSONDecodeError, KeyError):
-            # Si viene como string normal
-            specialties = request.form.get("specialties", "").split(",")
+            specialties = [item.get("value") for item in specialties_data if item.get("value")]
+        except (json.JSONDecodeError, AttributeError, KeyError):
+            # Si falla JSON, intentar procesar como lista separada por comas
+            specialties = [s.strip() for s in request.form.get("specialties", "").split(',') if s.strip()]
         
-        # Limpiar y validar
-        specialties = [s.strip() for s in specialties if s.strip()]
+        # Validar especialidades
         if not specialties:
             flash("Debes seleccionar al menos una especialidad", "danger")
             return render_template("register.html")
         
-        # Separar ciudad y provincia
-        location_full = request.form.get("location", "").strip()
-        if "," in location_full:
-            location, province = location_full.split(",", 1)
-            location = location.strip()
-            province = province.strip()
-        else:
-            location = location_full
-            province = request.form.get("province", "").strip()
+        # Procesar ubicación y provincia
+        location = request.form.get("location", "").split(',')[0].strip()
+        province = request.form.get("province", "").strip()
         
-        # Generate tenant_id from clinic name or user name
+        # Si no se proporcionó provincia, intentar extraerla de la ubicación
+        if not province and "," in request.form.get("location", ""):
+            location_parts = request.form.get("location").split(',')
+            if len(location_parts) > 1:
+                province = location_parts[1].strip()
+        
+        # Generar tenant_id basado en el nombre de la clínica o el nombre del usuario
         clinic_name = request.form.get("clinic_name", "").strip()
         tenant_base = clinic_name if clinic_name else f"{request.form['name']} {request.form['surname']}".strip()
+        import uuid
         tenant_id = str(uuid.uuid5(uuid.NAMESPACE_DNS, tenant_base.lower()))
         
+        # Crear usuario
+        from datetime import datetime
         user = User(
             id=str(uuid.uuid4()),
             name=request.form["name"],
@@ -70,10 +72,15 @@ def register():
         try:
             db.session.add(user)
             db.session.commit()
+            
+            # Log exitoso para depuración
+            print(f"Usuario registrado correctamente: {user.email}, Especialidades: {user.specialties}")
+            
             flash("Registro exitoso. Ya puedes iniciar sesión.", "success")
             return redirect(url_for("auth.login"))
         except Exception as e:
             db.session.rollback()
+            print(f"Error al registrar usuario: {str(e)}")
             flash(f"Error al registrar: {str(e)}", "danger")
             
     return render_template("register.html")
