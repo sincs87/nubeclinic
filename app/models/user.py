@@ -51,3 +51,5 @@ class User(db.Model):
     
     def get_id(self):
         return str(self.id)
+reset_token = db.Column(db.String(120), nullable=True)
+reset_token_expiration = db.Column(db.DateTime, nullable=True)

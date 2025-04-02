@@ -26,3 +26,17 @@ def create_app(config_class=Config):
     app.register_blueprint(main_bp)
     
     return app
+
+from flask_mail import Mail
+from config import Config
+
+mail = Mail()
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+
+    mail.init_app(app)
+
+    # Resto de inicializaciones: db, blueprints, etc.
+    return app

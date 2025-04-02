@@ -228,3 +228,78 @@ def suscripcion_page():
         return redirect(url_for("auth.login"))
         
     return render_template("suscripcion.html", user=user)
+from flask import request, render_template, flash, redirect, url_for
+from itsdangerous import URLSafeTimedSerializer
+from datetime import datetime, timedelta
+import secrets
+
+# Serializador para token seguro
+s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+
+from flask_mail import Message
+from app import mail  # o ajusta según la ruta real
+
+@auth_bp.route('/forgot-password', methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'POST':
+        email = request.form['email']
+        user = User.query.filter_by(email=email).first()
+        if user:
+            token = secrets.token_urlsafe(32)
+            user.reset_token = token
+            user.reset_token_expiration = datetime.utcnow() + timedelta(minutes=15)
+            db.session.commit()
+
+            reset_url = url_for('auth_bp.reset_password', token=token, _external=True)
+
+            msg = Message('Recuperación de contraseña - NubeClinic',
+                          recipients=[user.email])
+            msg.body = f"""Hola {user.name},
+
+Has solicitado restablecer tu contraseña. Haz clic en el siguiente enlace:
+
+{reset_url}
+
+Este enlace caduca en 15 minutos. Si no solicitaste esto, ignora este mensaje.
+
+Un saludo,
+El equipo de NubeClinic
+"""
+            mail.send(msg)
+
+            flash('Te hemos enviado un correo con instrucciones para restablecer tu contraseña.', 'success')
+        else:
+            flash('No hay ninguna cuenta con ese correo.', 'danger')
+
+        return redirect(url_for('auth_bp.forgot_password'))
+
+    return render_template('auth/forgot_password.html')
+
+
+@auth_bp.route('/reset-password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    user = User.query.filter_by(reset_token=token).first()
+
+    if not user or user.reset_token_expiration < datetime.utcnow():
+        flash('El enlace ha caducado o no es válido.', 'danger')
+        return redirect(url_for('auth.login'))
+
+    if request.method == 'POST':
+        new_password = request.form['password']
+        confirm = request.form['confirm_password']
+
+        if new_password != confirm:
+            flash('Las contraseñas no coinciden.', 'danger')
+            return redirect(request.url)
+
+        user.set_password(new_password)
+        user.reset_token = None
+        user.reset_token_expiration = None
+        db.session.commit()
+
+        flash('Contraseña actualizada. Ya puedes iniciar sesión.', 'success')
+        return redirect(url_for('auth.login'))
+
+    return render_template('auth/reset_password.html', token=token)
+
+
