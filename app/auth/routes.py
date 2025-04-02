@@ -237,10 +237,11 @@ import secrets
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 from flask_mail import Message
-from app import mail  # o ajusta según la ruta real
+from app import mail  
 
 @auth_bp.route('/forgot-password', methods=['GET', 'POST'])
 def forgot_password():
+    s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])  
     if request.method == 'POST':
         email = request.form['email']
         user = User.query.filter_by(email=email).first()
@@ -256,14 +257,14 @@ def forgot_password():
                           recipients=[user.email])
             msg.body = f"""Hola {user.name},
 
-Has solicitado restablecer tu contraseña. Haz clic en el siguiente enlace:
+                Has solicitado restablecer tu contraseña. Haz clic en el siguiente enlace:
 
-{reset_url}
+                {reset_url}
 
-Este enlace caduca en 15 minutos. Si no solicitaste esto, ignora este mensaje.
+                Este enlace caduca en 15 minutos. Si no solicitaste esto, ignora este mensaje.
 
-Un saludo,
-El equipo de NubeClinic
+                Un saludo,
+                El equipo de NubeClinic
 """
             mail.send(msg)
 
