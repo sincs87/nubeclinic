@@ -18,11 +18,32 @@ def register():
             flash("Este email ya está registrado. Por favor, utiliza otro o inicia sesión.", "danger")
             return render_template("register.html")
         
-        # Process specialties
-        specialties = request.form.getlist("specialties")
+        # Process specialties (ahora con Tagify)
+        try:
+            # Si viene en formato JSON (Tagify)
+            import json
+            specialties_json = request.form.get("specialties", "[]")
+            specialties_data = json.loads(specialties_json)
+            specialties = [item["value"] for item in specialties_data]
+        except (json.JSONDecodeError, KeyError):
+            # Si viene como string normal
+            specialties = request.form.get("specialties", "").split(",")
+        
+        # Limpiar y validar
+        specialties = [s.strip() for s in specialties if s.strip()]
         if not specialties:
             flash("Debes seleccionar al menos una especialidad", "danger")
             return render_template("register.html")
+        
+        # Separar ciudad y provincia
+        location_full = request.form.get("location", "").strip()
+        if "," in location_full:
+            location, province = location_full.split(",", 1)
+            location = location.strip()
+            province = province.strip()
+        else:
+            location = location_full
+            province = request.form.get("province", "").strip()
         
         # Generate tenant_id from clinic name or user name
         clinic_name = request.form.get("clinic_name", "").strip()
@@ -35,8 +56,8 @@ def register():
             surname=request.form["surname"],
             clinic_name=clinic_name if clinic_name else None,
             specialties=specialties,
-            location=request.form["location"],
-            province=request.form["province"],
+            location=location,
+            province=province,
             country_code=request.form["country_code"],
             phone=request.form["phone"],
             email=request.form["email"],

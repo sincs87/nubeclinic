@@ -18,6 +18,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Justo antes del cierre de </head> -->
+<!-- Tagify para manejo de etiquetas -->
+<link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+<script src="https://unpkg.com/@yaireo/tagify"></script>
+
+<!-- En la parte inferior antes de cerrar </body> -->
 
     <!-- Justo antes del cierre de </body> -->
     <!-- Google Places API -->
@@ -545,12 +551,12 @@
                                         <i class="fas fa-eye"></i>
                                     </button>
                                     <button type="button" class="btn btn-outline-primary" id="generate_password">
-                                        Generar contraseña
+                                        Generar
                                     </button>
                                 </div>
                                 <div class="password-strength mt-2">
                                     <div class="progress" style="height: 5px;">
-                                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     <small class="password-strength-text text-muted mt-1">Seguridad de la contraseña</small>
                                 </div>
