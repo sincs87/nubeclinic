@@ -27,7 +27,7 @@
 
     <!-- Justo antes del cierre de </body> -->
     <!-- Google Places API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDc9prxy3hQOrgkK-ro2hUCpaiE_gwYjj0&libraries=places&callback=initializeCityAutocomplete" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDc9prxy3hQOrgkK-ro2hUCpaiE_gwYjj0&libraries=places"></script>
     <!-- Select2 -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Custom JS -->
@@ -227,8 +227,101 @@
                             
                             <div class="form-group">
                                 <label for="specialties" class="form-label">Especialidades</label>
-          
-
+                                <div class="input-group">
+                                    <div class="specialty-container w-100">
+                                        <select class="specialty-select form-control" id="specialties" name="specialties" multiple required>
+                                            <option value="Acupuntor">Acupuntor</option>
+                                            <option value="Alergólogo">Alergólogo</option>
+                                            <option value="Analista clínico">Analista clínico</option>
+                                            <option value="Patólogo">Patólogo</option>
+                                            <option value="Andrólogo">Andrólogo</option>
+                                            <option value="Anestesista">Anestesista</option>
+                                            <option value="Angiólogo y cirujano vascular">Angiólogo y cirujano vascular</option>
+                                            <option value="Digestólogo">Digestólogo</option>
+                                            <option value="Bioquímico">Bioquímico</option>
+                                            <option value="Cardiólogo">Cardiólogo</option>
+                                            <option value="Cirujano cardiovascular">Cirujano cardiovascular</option>
+                                            <option value="Cirujano general">Cirujano general</option>
+                                            <option value="Cirujano oral y maxilofacial">Cirujano oral y maxilofacial</option>
+                                            <option value="Cirujano pediátrico">Cirujano pediátrico</option>
+                                            <option value="Cirujano plástico">Cirujano plástico</option>
+                                            <option value="Cirujano torácico">Cirujano torácico</option>
+                                            <option value="Dermatólogo">Dermatólogo</option>
+                                            <option value="Dermatólogo infantil">Dermatólogo infantil</option>
+                                            <option value="Endocrino">Endocrino</option>
+                                            <option value="Endocrinólogo pediátrico">Endocrinólogo pediátrico</option>
+                                            <option value="Enfermero">Enfermero</option>
+                                            <option value="Farmacólogo">Farmacólogo</option>
+                                            <option value="Fisioterapeuta">Fisioterapeuta</option>
+                                            <option value="Geriatra">Geriatra</option>
+                                            <option value="Ginecólogo">Ginecólogo</option>
+                                            <option value="Hematólogo">Hematólogo</option>
+                                            <option value="Homeópata">Homeópata</option>
+                                            <option value="Inmunólogo">Inmunólogo</option>
+                                            <option value="Logopeda">Logopeda</option>
+                                            <option value="Urgenciólogo">Urgenciólogo</option>
+                                            <option value="Especialista en Medicina del Deporte">Especialista en Medicina del Deporte</option>
+                                            <option value="Especialista en Medicina del Trabajo">Especialista en Medicina del Trabajo</option>
+                                            <option value="Médico estético">Médico estético</option>
+                                            <option value="Médico de familia">Médico de familia</option>
+                                            <option value="Médico rehabilitador">Médico rehabilitador</option>
+                                            <option value="Médico general">Médico general</option>
+                                            <option value="Intensivista">Intensivista</option>
+                                            <option value="Internista">Internista</option>
+                                            <option value="Forense">Forense</option>
+                                            <option value="Especialista en Medicina Nuclear">Especialista en Medicina Nuclear</option>
+                                            <option value="Especialista en Medicina Preventiva">Especialista en Medicina Preventiva</option>
+                                            <option value="Microbiólogo">Microbiólogo</option>
+                                            <option value="Nefrólogo">Nefrólogo</option>
+                                            <option value="Neumólogo">Neumólogo</option>
+                                            <option value="Neurocirujano">Neurocirujano</option>
+                                            <option value="Neurofisiólogo clínico">Neurofisiólogo clínico</option>
+                                            <option value="Neurólogo">Neurólogo</option>
+                                            <option value="Neurólogo pediátrico">Neurólogo pediátrico</option>
+                                            <option value="Dietista Nutricionista">Dietista Nutricionista</option>
+                                            <option value="Dentista">Dentista</option>
+                                            <option value="Dentista infantil">Dentista infantil</option>
+                                            <option value="Oftalmólogo">Oftalmólogo</option>
+                                            <option value="Oncólogo médico">Oncólogo médico</option>
+                                            <option value="Oncólogo radioterapéutico">Oncólogo radioterapéutico</option>
+                                            <option value="Óptico">Óptico</option>
+                                            <option value="Osteópata">Osteópata</option>
+                                            <option value="Otorrino">Otorrino</option>
+                                            <option value="Pediatra">Pediatra</option>
+                                            <option value="Podólogo">Podólogo</option>
+                                            <option value="Psicólogo">Psicólogo</option>
+                                            <option value="Psicólogo infantil">Psicólogo infantil</option>
+                                            <option value="Psicopedagogo">Psicopedagogo</option>
+                                            <option value="Psiquiatra">Psiquiatra</option>
+                                            <option value="Psiquiatra infantil">Psiquiatra infantil</option>
+                                            <option value="Radiólogo">Radiólogo</option>
+                                            <option value="Reumatólogo">Reumatólogo</option>
+                                            <option value="Terapeuta ocupacional">Terapeuta ocupacional</option>
+                                            <option value="Terapeuta complementario">Terapeuta complementario</option>
+                                            <option value="Traumatólogo">Traumatólogo</option>
+                                            <option value="Urólogo">Urólogo</option>
+                                            <option value="Covid Test">Covid Test</option>
+                                            <option value="Cardiólogo pediátrico">Cardiólogo pediátrico</option>
+                                            <option value="Neumólogo pediátrico">Neumólogo pediátrico</option>
+                                            <option value="Alergólogo pediátrico">Alergólogo pediátrico</option>
+                                            <option value="Neonatólogo">Neonatólogo</option>
+                                            <option value="Gastroenterólogo pediátrico">Gastroenterólogo pediátrico</option>
+                                            <option value="Quiropráctico">Quiropráctico</option>
+                                            <option value="Sexólogo">Sexólogo</option>
+                                            <option value="Podólogo Infantil">Podólogo Infantil</option>
+                                            <option value="Otorrino Infantil">Otorrino Infantil</option>
+                                            <option value="Proctólogo">Proctólogo</option>
+                                            <option value="Oftalmólogo Infantil">Oftalmólogo Infantil</option>
+                                            <option value="Cirujano Bariátrico">Cirujano Bariátrico</option>
+                                            <option value="Técnico imagen para el diagnóstico">Técnico imagen para el diagnóstico</option>
+                                            <option value="Matrona">Matrona</option>
+                                            <option value="Higienista dental">Higienista dental</option>
+                                            <option value="Especialista en Medicina Regenerativa">Especialista en Medicina Regenerativa</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <small class="form-text">Puede seleccionar múltiples especialidades.</small>
+                            </div>
                             
                             <div class="form-group">
                                 <label for="location" class="form-label">Ciudad</label>
