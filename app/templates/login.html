@@ -158,7 +158,10 @@
         {% endwith %}
         
         <div class="card border-0 shadow-sm">
-
+            <div class="card-body p-4">
+    
+                
+     
                 
                 <form method="POST" action="{{ url_for('auth.login') }}">
                     <div class="mb-3">
@@ -169,7 +172,7 @@
                         <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required>
                     </div>
                     
-
+           
                     
                     <button type="submit" class="btn btn-login">Iniciar sesión</button>
                 </form>
