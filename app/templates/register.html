@@ -23,11 +23,7 @@
 <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 <script src="https://unpkg.com/@yaireo/tagify"></script>
 
-<!-- En la parte inferior antes de cerrar </body> -->
 
-    <!-- Justo antes del cierre de </body> -->
-    <!-- Google Places API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-1FzfEWPcf2tN7zrsr7UDwW0xxz0du-4&libraries=places&callback=initializeCityAutocomplete" async defer></script>
     <!-- Select2 -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Custom JS -->
@@ -232,10 +228,11 @@
                             </div>
                             
                             <div class="form-group">
-                                <label for="location" class="form-label">Ciudad</label>
-                                <div class="input-group">
+                                <div class="form-group">
+                                    <label for="location" class="form-label">Ciudad</label>
                                     <input type="text" class="form-control" id="location" name="location" placeholder="Introduzca la ciudad" required>
-                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                    <input type="hidden" id="province" name="province">
+                                    <small class="form-text">Escriba el nombre de la ciudad donde está su consulta</small>
                                 </div>
                             </div>
                             
