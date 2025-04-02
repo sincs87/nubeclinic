@@ -252,7 +252,7 @@ def forgot_password():
             user.reset_token_expiration = datetime.utcnow() + timedelta(minutes=15)
             db.session.commit()
 
-            reset_url = url_for('auth_bp.reset_password', token=token, _external=True)
+            reset_url = url_for('auth.reset_password', token=token, _external=True)
 
             msg = Message('Recuperación de contraseña - NubeClinic',
                           recipients=[user.email])
