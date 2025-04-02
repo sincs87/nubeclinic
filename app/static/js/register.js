@@ -10,134 +10,73 @@ document.addEventListener('DOMContentLoaded', function() {
     const previewName = document.querySelector('.profile-preview h5');
     const previewDetails = document.querySelector('.profile-preview p');
 
-    // Referencias directas para la vista previa con IDs específicos (si existen)
-    const previewNameById = document.getElementById('preview-name');
-    const previewDetailsById = document.getElementById('preview-details');
-
     // Inicializar los campos del formulario con TagManager para las especialidades
     if (specialtiesInput) {
-        try {
-            const tagify = new Tagify(specialtiesInput, {
-                whitelist: getAllSpecialties(),
-                dropdown: {
-                    maxItems: 20,
-                    enabled: 0,
-                    closeOnSelect: false
-                }
-            });
-            
-            // Actualizar preview cuando cambian las etiquetas
-            tagify.on('change', updateProfilePreview);
-            tagify.on('add', updateProfilePreview);
-            tagify.on('remove', updateProfilePreview);
-        } catch (e) {
-            console.error("Error al inicializar Tagify:", e);
-        }
+        const tagify = new Tagify(specialtiesInput, {
+            whitelist: getAllSpecialties(),
+            dropdown: {
+                maxItems: 20,
+                enabled: 0,
+                closeOnSelect: false
+            }
+        });
+        
+        // Actualizar preview cuando cambian las etiquetas
+        tagify.on('change', updateProfilePreview);
+        tagify.on('add', updateProfilePreview);
+        tagify.on('remove', updateProfilePreview);
     }
 
     // Agregar eventos de escucha para actualización en tiempo real
     if (nameInput) {
-        nameInput.addEventListener('input', function() {
-            updateProfilePreview();
-            // Actualización directa si tenemos el elemento con ID
-            if (previewNameById) {
-                const firstName = nameInput.value || 'Tu nombre';
-                const lastName = surnameInput ? surnameInput.value : '';
-                previewNameById.textContent = `${firstName} ${lastName}`.trim();
-            }
-        });
+        nameInput.addEventListener('input', updateProfilePreview);
+        nameInput.addEventListener('keyup', updateProfilePreview);
+        nameInput.addEventListener('change', updateProfilePreview);
     }
     
     if (surnameInput) {
-        surnameInput.addEventListener('input', function() {
-            updateProfilePreview();
-            // Actualización directa si tenemos el elemento con ID
-            if (previewNameById) {
-                const firstName = nameInput ? nameInput.value : 'Tu nombre';
-                const lastName = surnameInput.value || '';
-                previewNameById.textContent = `${firstName} ${lastName}`.trim();
-            }
-        });
+        surnameInput.addEventListener('input', updateProfilePreview);
+        surnameInput.addEventListener('keyup', updateProfilePreview);
+        surnameInput.addEventListener('change', updateProfilePreview);
     }
     
     if (clinicNameInput) {
-        clinicNameInput.addEventListener('input', function() {
-            updateProfilePreview();
-            // Actualización directa si tenemos el elemento con ID
-            if (previewNameById && clinicNameInput.value.trim()) {
-                previewNameById.textContent = clinicNameInput.value.trim();
-            }
-        });
+        clinicNameInput.addEventListener('input', updateProfilePreview);
+        clinicNameInput.addEventListener('keyup', updateProfilePreview);
+        clinicNameInput.addEventListener('change', updateProfilePreview);
     }
     
     if (locationInput) {
-        locationInput.addEventListener('input', function() {
-            updateProfilePreview();
-            // Actualización directa si tenemos el elemento con ID
-            if (previewDetailsById) {
-                const city = locationInput.value ? locationInput.value.split(',')[0].trim() : 'Tu ciudad';
-                const specialty = getCurrentSpecialty();
-                previewDetailsById.textContent = `${specialty} · ${city}`;
-            }
-        });
+        locationInput.addEventListener('input', updateProfilePreview);
+        locationInput.addEventListener('keyup', updateProfilePreview);
+        locationInput.addEventListener('change', updateProfilePreview);
     }
 
     // Inicializar Google Places Autocomplete para ciudades
-    if (locationInput) {
-        // Verificar si Google Maps API está cargada
-        if (typeof google !== 'undefined' && google.maps && google.maps.places) {
-            try {
-                // Forzar z-index alto para que las sugerencias sean visibles
-                document.head.insertAdjacentHTML('beforeend', `
-                    <style>
-                    .pac-container {
-                        z-index: 10000 !important;
-                    }
-                    </style>
-                `);
-                
-                console.log("Inicializando Google Places Autocomplete");
-                
-                const autocomplete = new google.maps.places.Autocomplete(locationInput, {
-                    types: ['(cities)'],
-                    componentRestrictions: { country: 'es' }
-                });
-                
-                autocomplete.addListener('place_changed', function() {
-                    console.log("Lugar seleccionado en autocompletado");
-                    const place = autocomplete.getPlace();
-                    if (!place.address_components) {
-                        console.warn("No se recibieron componentes de dirección");
-                        return;
-                    }
-                    
-                    console.log("Lugar seleccionado:", place);
-                    
-                    // Extraer provincia
-                    let province = '';
-                    for (const component of place.address_components) {
-                        if (component.types.includes('administrative_area_level_2') ||
-                            component.types.includes('administrative_area_level_1')) {
-                            province = component.long_name;
-                            break;
-                        }
-                    }
-                    
-                    const provinceInput = document.getElementById('province');
-                    if (provinceInput) {
-                        provinceInput.value = province;
-                        console.log("Provincia establecida:", province);
-                    }
-                    
-                    // Actualizar vista previa
-                    updateProfilePreview();
-                });
-            } catch (error) {
-                console.error("Error al inicializar Google Places Autocomplete:", error);
+    if (locationInput && window.google && window.google.maps && window.google.maps.places) {
+        const autocomplete = new google.maps.places.Autocomplete(locationInput, {
+            types: ['(cities)'],
+            componentRestrictions: { country: 'es' }
+        });
+
+        autocomplete.addListener('place_changed', function() {
+            const place = autocomplete.getPlace();
+            if (!place.address_components) return;
+
+            // Extraer provincia
+            let province = '';
+            for (const component of place.address_components) {
+                if (component.types.includes('administrative_area_level_2') ||
+                    component.types.includes('administrative_area_level_1')) {
+                    province = component.long_name;
+                    break;
+                }
             }
-        } else {
-            console.warn("Google Maps API no está disponible. Verifica que el script está cargado correctamente.");
-        }
+            document.getElementById('province').value = province;
+            
+            // Actualizar vista previa
+            updateProfilePreview();
+        });
     }
 
     // Ajustar el tamaño del prefijo de país
@@ -169,16 +108,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const useFullNameBtn = document.getElementById('use_full_name');
     if (useFullNameBtn) {
         useFullNameBtn.addEventListener('click', function() {
+            const nameInput = document.getElementById('name');
+            const surnameInput = document.getElementById('surname');
+            const clinicNameInput = document.getElementById('clinic_name');
+
             if (nameInput && surnameInput && clinicNameInput) {
                 clinicNameInput.value = `${nameInput.value} ${surnameInput.value}`.trim();
                 
                 // Actualizar vista previa
                 updateProfilePreview();
-                
-                // Actualización directa si tenemos el elemento con ID
-                if (previewNameById) {
-                    previewNameById.textContent = clinicNameInput.value.trim();
-                }
             }
         });
     }
@@ -214,7 +152,6 @@ document.addEventListener('DOMContentLoaded', function() {
         generatePasswordBtn.addEventListener('click', function() {
             const password = generateStrongPassword();
             passwordInput.value = password;
-            
             // Disparar el evento input para actualizar la barra de fortaleza
             const inputEvent = new Event('input', { bubbles: true });
             passwordInput.dispatchEvent(inputEvent);
@@ -251,51 +188,41 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateProfilePreview() {
         console.log("Actualizando vista previa del perfil"); // Para depuración
         
-        // Actualizar nombre en la vista previa
-        if (previewName || previewNameById) {
-            const elementToUpdate = previewNameById || previewName;
-            
+        if (previewName) {
             if (clinicNameInput && clinicNameInput.value.trim()) {
-                elementToUpdate.textContent = clinicNameInput.value.trim();
+                previewName.textContent = clinicNameInput.value.trim();
             } else if (nameInput && surnameInput) {
                 const firstName = nameInput.value || 'Tu nombre';
                 const lastName = surnameInput.value || '';
-                elementToUpdate.textContent = `${firstName} ${lastName}`.trim() || 'Tu nombre';
+                previewName.textContent = `${firstName} ${lastName}`.trim() || 'Tu nombre';
             }
         }
         
-        // Actualizar especialidad y ciudad en la vista previa
-        if (previewDetails || previewDetailsById) {
-            const elementToUpdate = previewDetailsById || previewDetails;
-            const specialty = getCurrentSpecialty();
-            const city = locationInput && locationInput.value ? locationInput.value.split(',')[0].trim() : 'Tu ciudad';
-            elementToUpdate.textContent = `${specialty} · ${city}`;
-        }
-    }
-
-    // Obtener la especialidad actual
-    function getCurrentSpecialty() {
-        let specialty = 'Tu especialidad';
+        if (previewDetails) {
+            let specialty = 'Tu especialidad';
             
-        if (specialtiesInput) {
-            try {
-                // Si estamos usando Tagify
-                const tagifyValue = JSON.parse(specialtiesInput.value);
-                if (tagifyValue && tagifyValue.length > 0) {
-                    specialty = tagifyValue[0].value;
-                }
-            } catch (e) {
-                // Si estamos usando un select normal o el valor no es JSON válido
-                if (specialtiesInput.tagName === 'SELECT' && specialtiesInput.options.length > 0) {
-                    specialty = specialtiesInput.options[specialtiesInput.selectedIndex].text;
-                } else if (specialtiesInput.value) {
-                    // Si es un input normal
-                    specialty = specialtiesInput.value.split(',')[0].trim();
+            // Obtener la primera especialidad (dependiendo de si usamos Tagify o no)
+            if (specialtiesInput) {
+                try {
+                    // Si estamos usando Tagify
+                    const tagifyValue = JSON.parse(specialtiesInput.value);
+                    if (tagifyValue && tagifyValue.length > 0) {
+                        specialty = tagifyValue[0].value;
+                    }
+                } catch (e) {
+                    // Si estamos usando un select normal
+                    if (specialtiesInput.tagName === 'SELECT' && specialtiesInput.options.length > 0) {
+                        specialty = specialtiesInput.options[specialtiesInput.selectedIndex].text;
+                    } else if (specialtiesInput.value) {
+                        // Si es un input normal
+                        specialty = specialtiesInput.value.split(',')[0].trim();
+                    }
                 }
             }
+            
+            const city = locationInput && locationInput.value ? locationInput.value.split(',')[0].trim() : 'Tu ciudad';
+            previewDetails.textContent = `${specialty} · ${city}`;
         }
-        
-        return specialty;
     }
 
     // Función para calcular la fortaleza de la contraseña (0-100)
@@ -390,7 +317,19 @@ document.addEventListener('DOMContentLoaded', function() {
             "Especialista en Medicina Regenerativa"
         ];
     }
-
-    // Log para confirmar que el script se ejecutó
-    console.log("Script de registro inicializado correctamente");
 });
+if (nameInput) {
+    nameInput.addEventListener('input', function() {
+        const firstName = nameInput.value || 'Tu nombre';
+        const lastName = surnameInput ? surnameInput.value : '';
+        document.getElementById('preview-name').textContent = `${firstName} ${lastName}`.trim();
+    });
+}
+
+if (surnameInput) {
+    surnameInput.addEventListener('input', function() {
+        const firstName = nameInput ? nameInput.value : 'Tu nombre';
+        const lastName = surnameInput.value || '';
+        document.getElementById('preview-name').textContent = `${firstName} ${lastName}`.trim();
+    });
+}
