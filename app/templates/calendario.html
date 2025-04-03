@@ -19,42 +19,8 @@
 </head>
 <body>
     <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-top">
-            <a href="{{ url_for('main.index') }}">
-                <img src="{{ url_for('static', filename='img/ico.png') }}" alt="NubeClinic" width="24" height="24">
-            </a>
-        </div>
-        <div class="sidebar-nav">
-            <a href="#" class="sidebar-nav-item active">
-                <i class="far fa-calendar-alt"></i>
-            </a>
-            <a href="{{ url_for('pacientes.lista_pacientes') }}" class="sidebar-nav-item {% if request.path.startswith('/pacientes') %}active{% endif %}">
-                <i class="far fa-user"></i>
-            </a>            
-            <a href="#" class="sidebar-nav-item">
-                <i class="far fa-comment-alt"></i>
-            </a>
-            <a href="#" class="sidebar-nav-item">
-                <i class="far fa-chart-bar"></i>
-            </a>
-            <a href="#" class="sidebar-nav-item">
-                <i class="far fa-file-alt"></i>
-            </a>
-            <a href="#" class="sidebar-nav-item">
-                <i class="fas fa-cog"></i>
-            </a>
-        </div>
-        <div class="sidebar-bottom">
-            <a href="#" class="sidebar-nav-item position-relative">
-                <i class="far fa-bell"></i>
-                <span class="notification-badge">1</span>
-            </a>
-            <a href="#" class="sidebar-nav-item">
-                <i class="far fa-user-circle"></i>
-            </a>
-        </div>
-    </div>
+    {% include 'components/sidebar.html' %}
+
 
     <!-- Main content -->
     <div class="main-content">

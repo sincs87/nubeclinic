@@ -44,7 +44,7 @@ def panel_inicio():
         session.clear()
         return redirect(url_for("auth.login"))
         
-    return render_template("panel.html", user=user)
+    return render_template("calendario.html", user=user)
 
 @panel_bp.route("/perfil", methods=["GET", "POST"])
 @login_required
