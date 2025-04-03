@@ -1,122 +1,109 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "calendario/base.html" %}
 
-<!-- Sidebar y Header -->
-{% include 'components/sidebar.html' %}
-{% include 'components/header.html' %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pacientes.css') }}">
+{% endblock %}
 
-<div class="main-content p-4">
+{% block panel_content %}
+<div class="container-fluid p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="h4 mb-0">Pacientes</h2>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPaciente">
-            <i class="fas fa-user-plus me-2"></i> Añadir paciente
+        <h2 class="mb-0">Pacientes</h2>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevoPaciente">
+            + Añadir paciente
         </button>
     </div>
 
-    <!-- Filtros y buscador -->
-    <div class="row mb-3">
-        <div class="col-md-4">
-            <input type="text" class="form-control" placeholder="Buscar por nombre, email o teléfono">
-        </div>
-        <div class="col-md-3">
-            <select class="form-select">
-                <option value="">Tipo de paciente</option>
-                <option>Primera visita</option>
-                <option>Recurrente</option>
-            </select>
-        </div>
-        <div class="col-md-3">
-            <select class="form-select">
-                <option value="">Ordenar por</option>
-                <option>Nombre</option>
-                <option>Última visita</option>
-            </select>
-        </div>
-    </div>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Buscar paciente por nombre, teléfono o email">
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select">
+                        <option value="">Filtrar por tipo</option>
+                        <option value="nuevo">Nuevo</option>
+                        <option value="habitual">Habitual</option>
+                    </select>
+                </div>
+            </div>
 
-    <!-- Tabla de pacientes -->
-    <div class="table-responsive">
-        <table class="table table-hover align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th>Nombre</th>
-                    <th>Teléfono</th>
-                    <th>Email</th>
-                    <th>Tipo</th>
-                    <th>Última visita</th>
-                    <th class="text-end">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for paciente in pacientes %}
-                <tr>
-                    <td>{{ paciente.nombre }} {{ paciente.apellidos }}</td>
-                    <td>{{ paciente.telefono }}</td>
-                    <td>{{ paciente.email }}</td>
-                    <td>{{ paciente.tipo }}</td>
-                    <td>{{ paciente.ultima_visita.strftime('%d/%m/%Y') if paciente.ultima_visita else '—' }}</td>
-                    <td class="text-end">
-                        <button class="btn btn-sm btn-outline-secondary">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Teléfono</th>
+                            <th>Email</th>
+                            <th>Tipo</th>
+                            <th>Última visita</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for paciente in pacientes %}
+                        <tr>
+                            <td>{{ paciente.nombre }} {{ paciente.apellidos }}</td>
+                            <td>{{ paciente.telefono }}</td>
+                            <td>{{ paciente.email }}</td>
+                            <td>{{ paciente.tipo }}</td>
+                            <td>{{ paciente.ultima_visita or '—' }}</td>
+                            <td class="text-end">
+                                <a href="#" class="btn btn-sm btn-outline-primary">Ver ficha</a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">No hay pacientes registrados.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- Modal añadir paciente -->
-<div class="modal fade" id="modalPaciente" tabindex="-1" aria-labelledby="modalPacienteLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content p-3">
-            <div class="modal-header border-0">
-                <h5 class="modal-title" id="modalPacienteLabel">Añadir nuevo paciente</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
+<!-- Modal para nuevo paciente -->
+<div class="modal fade" id="modalNuevoPaciente" tabindex="-1" aria-labelledby="modalNuevoPacienteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow">
             <form method="POST" action="{{ url_for('pacientes.crear_paciente') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalNuevoPacienteLabel">Nuevo paciente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
                 <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Nombre</label>
-                            <input type="text" class="form-control" name="nombre" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Apellidos</label>
-                            <input type="text" class="form-control" name="apellidos" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Teléfono</label>
-                            <input type="text" class="form-control" name="telefono">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" name="email">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Tipo de paciente</label>
-                            <select class="form-select" name="tipo">
-                                <option>Primera visita</option>
-                                <option>Recurrente</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Observaciones</label>
-                            <input type="text" class="form-control" name="observaciones">
-                        </div>
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellidos" class="form-label">Apellidos</label>
+                        <input type="text" class="form-control" name="apellidos" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <input type="text" class="form-control" name="telefono">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo electrónico</label>
+                        <input type="email" class="form-control" name="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="tipo" class="form-label">Tipo</label>
+                        <select class="form-select" name="tipo">
+                            <option value="nuevo">Nuevo</option>
+                            <option value="habitual">Habitual</option>
+                        </select>
                     </div>
                 </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar paciente</button>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
 {% endblock %}

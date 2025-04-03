@@ -1,0 +1,12 @@
+/* Para mantener estilos consistentes con Doctoralia Pro */
+.table thead th {
+    font-weight: 600;
+}
+
+.modal .form-label {
+    font-weight: 500;
+}
+
+.modal .btn-close {
+    outline: none;
+}

@@ -1,0 +1,121 @@
+{% extends "calendario/base.html" %}
+
+{% block panel_content %}
+<div class="calendar-container">
+    <!-- Sidebar lateral del calendario -->
+    <div class="calendar-sidebar">
+        <!-- Month navigation -->
+        <div class="month-navigation">
+            <div class="month-nav">
+                <button class="header-btn" id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                <span class="month-title" id="currentMonth">Abril 2025</span>
+                <button class="header-btn" id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Weekday headers -->
+        <div class="weekday-header">
+            <div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mié</div>
+            <div class="weekday">Jue</div><div class="weekday">Vie</div><div class="weekday">Sáb</div><div class="weekday">Dom</div>
+        </div>
+
+        <!-- Mini calendar -->
+        <div class="mini-calendar">
+            <div class="mini-calendar-grid" id="calendarGrid"></div>
+        </div>
+
+        <!-- Calendar actions -->
+        <div class="calendar-actions">
+            <a href="#" class="action-btn"><i class="far fa-calendar-plus text-primary"></i> Lista de espera</a>
+            <a href="#" class="action-btn"><i class="fas fa-lock text-primary"></i> Bloquear fechas</a>
+        </div>
+
+        <!-- Filtros -->
+        <div class="section-title">Direcciones</div>
+        <div class="filter-section"><select class="filter-select"><option>Elige una dirección</option></select></div>
+
+        <div class="section-title">Especialidad</div>
+        <div class="filter-section"><select class="filter-select"><option>Elige una especialidad</option></select></div>
+
+        <div class="section-title">Agendas</div>
+        <div class="filter-section">
+            <div class="filter-search"><i class="fas fa-search text-muted"></i><input type="text" placeholder="Buscar por agenda"></div>
+            <div class="option-item">
+                <span class="option-label">Trabajan este día</span>
+                <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+            </div>
+            <div class="option-item ps-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="especialistasCheck">
+                    <label class="form-check-label" for="especialistasCheck">Especialistas</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">Servicios</div>
+        <div class="filter-section">
+            <div class="option-item"><span class="option-label">Servicios</span><i class="fas fa-chevron-right"></i></div>
+        </div>
+    </div>
+
+    <!-- Parte principal del calendario -->
+    <div class="calendar-main">
+        <!-- Main header -->
+        <div class="main-header">
+            <div class="header-left">
+                <button class="header-btn primary" id="goToToday">Hoy</button>
+                <div class="header-nav ms-3">
+                    <button class="header-btn" id="prevDay"><i class="fas fa-chevron-left"></i></button>
+                    <button class="header-btn" id="nextDay"><i class="fas fa-chevron-right"></i></button>
+                    <span class="ms-2" id="currentDay">dom., 6 de abr de 2025</span>
+                </div>
+            </div>
+            <div class="search-bar">
+                <i class="fas fa-search text-muted"></i>
+                <input type="text" placeholder="Buscar paciente por nombre, teléfono o DNI">
+            </div>
+            <div class="header-right">
+                <button class="header-btn" id="zoomIn"><i class="fas fa-search-plus"></i></button>
+                <button class="header-btn" id="zoomOut"><i class="fas fa-search-minus"></i></button>
+                <div class="dropdown d-inline-block">
+                    <button class="header-btn dropdown-toggle" type="button" id="viewTypeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Día
+                    </button>
+                    <ul class="dropdown-menu view-type-menu" aria-labelledby="viewTypeDropdown">
+                        <li><a class="dropdown-item" href="#" data-view="list">Lista de citas</a></li>
+                        <li><a class="dropdown-item" href="#" data-view="day">Día</a></li>
+                        <li><a class="dropdown-item" href="#" data-view="week">Semana</a></li>
+                        <li><a class="dropdown-item" href="#" data-view="hours">Horas disponibles</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li>
+                            <div class="dropdown-item">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="hideAppointments">
+                                    <label class="form-check-label" for="hideAppointments">Ocultar citas programadas y bloqueos</label>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="dropdown-item">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="divideView">
+                                    <label class="form-check-label" for="divideView">Dividir la vista por calendarios</label>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <button class="header-btn"><i class="fas fa-cog"></i></button>
+                <button class="header-btn"><i class="fas fa-ellipsis-v"></i></button>
+            </div>
+        </div>
+
+        <!-- Calendar grid -->
+        <div class="calendar-grid" id="calendarContent">
+            <div class="time-slots" id="timeSlots">
+                <!-- Time slots will be generated by JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
