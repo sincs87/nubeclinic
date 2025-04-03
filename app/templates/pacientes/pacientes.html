@@ -5,80 +5,169 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pacientes - NubeClinic</title>
 
-    <!-- Bootstrap y estilos -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/panel.css') }}">
 </head>
 <body>
-    <!-- Sidebar -->
+
     {% include 'components/sidebar.html' %}
 
-    <div class="main-content p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="mb-0 fw-semibold">Pacientes</h4>
-            <div>
-                <button class="btn btn-outline-secondary dropdown-toggle me-2">Importar pacientes</button>
-                <button class="btn btn-primary"><i class="fas fa-plus"></i> Añadir paciente</button>
+    <div class="main-content">
+        <div class="container-fluid py-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="mb-0">Pacientes</h2>
+                <div>
+                    <button class="btn btn-outline-secondary dropdown-toggle me-2" data-bs-toggle="dropdown">Importar pacientes</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevoPaciente">
+                        <i class="fas fa-plus me-1"></i> Añadir paciente
+                    </button>
+                </div>
             </div>
-        </div>
 
-        <div class="mb-3 d-flex flex-wrap gap-2">
-            <div class="flex-grow-1">
-                <input type="text" class="form-control" placeholder="Escribe nombre, teléfono, ID o número de paciente">
+            <div class="row mb-3">
+                <div class="col-md-4 mb-2">
+                    <input type="text" class="form-control" placeholder="Escribe nombre, teléfono, ID o número de paciente">
+                </div>
+                <div class="col-md-2 mb-2">
+                    <select class="form-select">
+                        <option>Autorización para enviar comunicaciones comerciales</option>
+                    </select>
+                </div>
+                <div class="col-md-2 mb-2">
+                    <select class="form-select">
+                        <option>Datos de contacto</option>
+                    </select>
+                </div>
+                <div class="col-md-2 mb-2">
+                    <select class="form-select">
+                        <option>Estado del paciente</option>
+                    </select>
+                </div>
+                <div class="col-md-2 mb-2">
+                    <div class="d-flex justify-content-between">
+                        <select class="form-select me-2">
+                            <option>Ordenar por</option>
+                        </select>
+                        <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                            Editar lista de pacientes
+                        </button>
+                    </div>
+                </div>
             </div>
-            <select class="form-select w-auto">
-                <option>Autorización para enviar comunicaciones comerciales</option>
-            </select>
-            <select class="form-select w-auto">
-                <option>Datos de contacto</option>
-            </select>
-            <select class="form-select w-auto">
-                <option>Estado del paciente</option>
-            </select>
-            <select class="form-select w-auto">
-                <option>Ordenar por</option>
-            </select>
-            <button class="btn btn-outline-secondary dropdown-toggle">Editar lista de pacientes</button>
-        </div>
 
-        <p>Se han encontrado <strong>741</strong> resultados</p>
+            <div class="text-muted mb-2">Se han encontrado <strong>741</strong> resultados</div>
 
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>NOMBRE Y APELLIDOS</th>
-                        <th>NÚMERO DE PACIENTE</th>
-                        <th>EMAIL</th>
-                        <th>TELÉFONO</th>
-                        <th>ÚLTIMA VISITA</th>
-                        <th>SIGUIENTE VISITA</th>
-                        <th>DOCUMENTO DE IDENTIDAD</th>
-                        <th>AUTORIZACIÓN PARA ENVIAR COMUNICACIONES COMERCIALES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Datos de ejemplo vacíos -->
-                    {% for i in range(12) %}
-                    <tr>
-                        <td>Nombre Apellido</td>
-                        <td>000</td>
-                        <td><a href="#" class="text-success">Añadir email</a></td>
-                        <td>+34 600 00 00 00</td>
-                        <td>-</td>
-                        <td><a href="#">Crear cita</a></td>
-                        <td>-</td>
-                        <td>Aceptado</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>NOMBRE Y APELLIDOS</th>
+                            <th>NÚMERO DE PACIENTE</th>
+                            <th>EMAIL</th>
+                            <th>TELÉFONO</th>
+                            <th>ÚLTIMA VISITA</th>
+                            <th>SIGUIENTE VISITA</th>
+                            <th>DOCUMENTO DE IDENTIDAD</th>
+                            <th>AUTORIZACIÓN PARA ENVIAR COMUNICACIONES COMERCIALES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for paciente in pacientes %}
+                        <tr>
+                            <td>{{ paciente.nombre }} {{ paciente.apellidos }}</td>
+                            <td>{{ paciente.numero }}</td>
+                            <td>
+                                {% if paciente.email %}
+                                    {{ paciente.email }}
+                                {% else %}
+                                    <a href="#" class="text-success">Añadir email</a>
+                                {% endif %}
+                            </td>
+                            <td>{{ paciente.telefono }}</td>
+                            <td>{{ paciente.ultima_visita or "-" }}</td>
+                            <td><a href="#" class="text-primary">Crear cita</a></td>
+                            <td>{{ paciente.dni or "-" }}</td>
+                            <td>{{ paciente.autorizacion_comercial or "Aceptado" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- Modal Añadir Paciente -->
+    <div class="modal fade" id="modalNuevoPaciente" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content p-4">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title">Añadir paciente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label">Nombre del paciente*</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="col">
+                                <label class="form-label">Apellidos*</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label">Teléfono</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="col">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control">
+                            </div>
+                        </div>
+                        <p class="text-muted small">
+                            Usaremos estos datos de contacto para enviar notificaciones, mensajes de chat y documentos.
+                            Asegúrate de que pertenecen al paciente o a una persona autorizada.
+                        </p>
+
+                        <div class="mb-3">
+                            <button class="btn btn-link px-0"><i class="fas fa-plus me-1"></i> Añadir otro teléfono</button>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label d-block">Tipo de paciente</label>
+                            <div class="btn-group" role="group">
+                                <input type="radio" class="btn-check" name="tipo_paciente" id="privado" checked>
+                                <label class="btn btn-outline-secondary" for="privado">Privado</label>
+
+                                <input type="radio" class="btn-check" name="tipo_paciente" id="aseguradora">
+                                <label class="btn btn-outline-secondary" for="aseguradora">De aseguradora</label>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Guardar sin datos de contacto</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
