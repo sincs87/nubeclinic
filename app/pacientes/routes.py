@@ -7,7 +7,7 @@ pacientes_bp = Blueprint("pacientes", __name__, url_prefix="/pacientes")
 @pacientes_bp.route("/", methods=["GET"])
 def lista_pacientes():
     pacientes = Paciente.query.order_by(Paciente.creado_en.desc()).all()
-    return render_template("pacientes.html", pacientes=pacientes)
+    return render_template("pacientes/pacientes.html", pacientes=pacientes)
 
 @pacientes_bp.route("/crear", methods=["POST"])
 def crear_paciente():

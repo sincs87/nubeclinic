@@ -68,7 +68,7 @@
                     </ul>
                     <div class="d-flex">
                         {% if session.get('user_id') %}
-                            <a href="{{ url_for('panel.panel_inicio') }}" class="btn btn-outline-primary me-2">Mi panel</a>
+                            <a href="{{ url_for('calendario.panel_inicio') }}" class="btn btn-outline-primary me-2">Mi panel</a>
                             <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-secondary">Cerrar sesión</a>
                         {% else %}
                             <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary me-2">Iniciar sesión</a>

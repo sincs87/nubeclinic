@@ -22,8 +22,8 @@ def create_app(config_class=Config):
     from app.auth.routes import auth_bp
     app.register_blueprint(auth_bp)
 
-    from app.panel.routes import panel_bp
-    app.register_blueprint(panel_bp)
+    from app.calendario.routes import calendario_bp
+    app.register_blueprint(calendario_bp)
 
     from app.main.routes import main_bp
     app.register_blueprint(main_bp)
