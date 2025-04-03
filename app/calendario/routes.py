@@ -4,7 +4,7 @@ from app.models.user import User
 from functools import wraps
 from datetime import datetime
 
-panel_bp = Blueprint("panel", __name__, url_prefix="/panel")
+panel_bp = Blueprint("calendario", __name__, url_prefix="/panel")
 
 # Login required decorator
 def login_required(f):
@@ -34,7 +34,7 @@ def subscription_required(f):
 
 @panel_bp.route("/")
 @login_required
-def panel_inicio():
+def calendario_inicio():
     user_id = session.get("user_id")
     if not user_id:
         return redirect(url_for("auth.login"))
