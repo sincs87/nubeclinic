@@ -274,7 +274,7 @@ def forgot_password():
         else:
             flash('No hay ninguna cuenta con ese correo.', 'danger')
 
-        return redirect(url_for('auth_bp.forgot_password'))
+        return redirect(url_for('auth.forgot_password'))
 
     return render_template('auth/forgot_password.html')
 
