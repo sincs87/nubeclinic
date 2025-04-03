@@ -4,65 +4,71 @@
     <meta charset="UTF-8">
     <title>Pacientes - NubeClinic</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/panel.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+<div class="panel-container">
     {% include 'components/sidebar.html' %}
 
-    <div class="main-content">
-        <div class="main-header pacientes">
-            <h2>Pacientes</h2>
-            <div class="pacientes-actions">
-                <input type="text" class="search-input" placeholder="Escribe nombre, teléfono, ID o número de paciente">
-                <select class="filter-select">
+    <div class="panel-content">
+        <div class="panel-header">
+            <h1 class="panel-title">Pacientes</h1>
+            <div class="panel-actions">
+                <select class="panel-select">
                     <option>Autorización para enviar comunicaciones comerciales</option>
                 </select>
-                <select class="filter-select">
+                <select class="panel-select">
                     <option>Datos de contacto</option>
                 </select>
-                <select class="filter-select">
+                <select class="panel-select">
                     <option>Estado del paciente</option>
                 </select>
-                <div class="sort-buttons">
-                    <button class="btn-secondary">Ordenar por</button>
-                    <button class="btn-secondary">Editar lista de pacientes</button>
-                    <button class="btn-primary">+ Añadir paciente</button>
-                </div>
+                <button class="panel-button-outline">Ordenar por</button>
+                <button class="panel-button-outline">Editar lista de pacientes</button>
+                <button class="panel-button-primary">+ Añadir paciente</button>
             </div>
         </div>
 
-        <div class="pacientes-table">
-            <div class="table-header">
-                <div>Nombre y Apellidos</div>
-                <div>Número de Paciente</div>
-                <div>Email</div>
-                <div>Teléfono</div>
-                <div>Última visita</div>
-                <div>Siguiente visita</div>
-                <div>Documento de identidad</div>
-                <div>Autorización para enviar comunicaciones comerciales</div>
-            </div>
+        <div class="panel-subtitle">Se han encontrado <strong>{{ pacientes|length }}</strong> resultados</div>
 
-            {% for paciente in pacientes %}
-            <div class="table-row">
-                <div>{{ paciente.nombre }} {{ paciente.apellidos }}</div>
-                <div>{{ paciente.numero }}</div>
-                <div>
-                    {% if paciente.email %}
-                        {{ paciente.email }}
-                    {% else %}
-                        <a href="#" class="add-email">Añadir email</a>
-                    {% endif %}
-                </div>
-                <div>{{ paciente.telefono }}</div>
-                <div>{{ paciente.ultima_visita or '-' }}</div>
-                <div>{{ paciente.siguiente_visita or 'Crear cita' }}</div>
-                <div>{{ paciente.documento or '-' }}</div>
-                <div>{{ paciente.autorizacion }}</div>
-            </div>
-            {% endfor %}
+        <div class="panel-table-container">
+            <table class="panel-table">
+                <thead>
+                    <tr>
+                        <th>Nombre y Apellidos</th>
+                        <th>Número de Paciente</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Última visita</th>
+                        <th>Siguiente visita</th>
+                        <th>Documento de identidad</th>
+                        <th>Autorización para enviar comunicaciones comerciales</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for paciente in pacientes %}
+                    <tr>
+                        <td>{{ paciente.nombre }} {{ paciente.apellidos }}</td>
+                        <td>{{ paciente.numero_paciente }}</td>
+                        <td>
+                            {% if paciente.email %}
+                                {{ paciente.email }}
+                            {% else %}
+                                <a href="#" class="link-add">Añadir email</a>
+                            {% endif %}
+                        </td>
+                        <td>{{ paciente.telefono }}</td>
+                        <td>{{ paciente.ultima_visita or '-' }}</td>
+                        <td>{{ paciente.siguiente_visita or 'Crear cita' }}</td>
+                        <td>{{ paciente.dni or '-' }}</td>
+                        <td>{{ paciente.autorizacion }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
-
-    <script src="{{ url_for('static', filename='js/panel.js') }}"></script>
+</div>
 </body>
 </html>
