@@ -44,7 +44,7 @@ def calendario_inicio():
         session.clear()
         return redirect(url_for("auth.login"))
         
-    return render_template("calendario.html", user=user)
+    return render_template("calendario/calendario.html", user=user)
 
 @calendario_bp.route("/perfil", methods=["GET", "POST"])
 @login_required
