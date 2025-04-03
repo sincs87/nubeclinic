@@ -255,6 +255,7 @@ def forgot_password():
             reset_url = url_for('auth.reset_password', token=token, _external=True)
 
             msg = Message('Recuperación de contraseña - NubeClinic',
+                          sender='sincs87@gmail.com',
                           recipients=[user.email])
             msg.body = f"""Hola {user.name},
 
