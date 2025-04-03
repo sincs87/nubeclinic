@@ -6,7 +6,7 @@
         </a>
     </div>
     <div class="sidebar-nav">
-        <a href="{{ url_for('panel.panel_inicio') }}" class="sidebar-nav-item {% if request.path.startswith('/panel') %}active{% endif %}">
+        <a href="{{ url_for('calendario.calendario_inicio') }}" class="sidebar-nav-item {% if request.path.startswith('/calendario') %}active{% endif %}">
             <i class="far fa-calendar-alt"></i>
         </a>
         <a href="{{ url_for('pacientes.lista_pacientes') }}" class="sidebar-nav-item {% if request.path.startswith('/pacientes') %}active{% endif %}">
