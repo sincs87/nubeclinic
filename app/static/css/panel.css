@@ -648,3 +648,27 @@ input:checked + .slider:before {
 .dropdown-menu .option-item .form-check {
     margin-right: 8px;
 }
+/* Estilos específicos para módulo pacientes */
+
+.pacientes-tabla th {
+    font-weight: 500;
+    color: #4a4a4a;
+}
+
+.pacientes-tabla td {
+    color: #333;
+}
+
+.pacientes-tabla tr:hover {
+    background-color: #f9f9f9;
+}
+
+.popup-card input,
+.popup-card select {
+    font-size: 14px;
+}
+
+.popup-card h5 {
+    font-weight: 600;
+    color: #00b39f;
+}

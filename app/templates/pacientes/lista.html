@@ -1,0 +1,54 @@
+{% extends "panel/panel.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <input type="text" class="form-control w-50" id="buscarPaciente" placeholder="Buscar por nombre, teléfono o email">
+        <button class="btn btn-primary ms-3" onclick="abrirPopup()">+ Añadir paciente</button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Tipo</th>
+                </tr>
+            </thead>
+            <tbody id="tablaPacientes">
+                {% for p in pacientes %}
+                <tr>
+                    <td>{{ p.nombre }} {{ p.apellidos }}</td>
+                    <td>{{ p.email or "-" }}</td>
+                    <td>{{ p.telefono or "-" }}</td>
+                    <td>{{ p.tipo_paciente }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Popup modal -->
+<div id="popup" class="popup-backdrop d-none">
+    <div class="popup-card">
+        <h5 class="mb-3">Nuevo paciente</h5>
+        <input class="form-control mb-2" type="text" id="nombre" placeholder="Nombre*">
+        <input class="form-control mb-2" type="text" id="apellidos" placeholder="Apellidos*">
+        <input class="form-control mb-2" type="text" id="telefono" placeholder="Teléfono">
+        <input class="form-control mb-2" type="email" id="email" placeholder="Email">
+        <select class="form-select mb-3" id="tipo_paciente">
+            <option value="Privado">Privado</option>
+            <option value="De aseguradora">De aseguradora</option>
+        </select>
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-secondary" onclick="cerrarPopup()">Cancelar</button>
+            <button class="btn btn-primary" onclick="guardarPaciente()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/pacientes.js') }}"></script>
+
+{% endblock %}

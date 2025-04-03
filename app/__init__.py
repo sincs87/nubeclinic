@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_mail import Mail
 from config import Config
 
+
 db = SQLAlchemy()
 migrate = Migrate()
 mail = Mail()
@@ -26,5 +27,10 @@ def create_app(config_class=Config):
 
     from app.main.routes import main_bp
     app.register_blueprint(main_bp)
+
+    from app.pacientes.routes import pacientes_bp
+    app.register_blueprint(pacientes_bp)
+
+
 
     return app

@@ -29,9 +29,9 @@
             <a href="#" class="sidebar-nav-item active">
                 <i class="far fa-calendar-alt"></i>
             </a>
-            <a href="#" class="sidebar-nav-item">
+            <a href="{{ url_for('pacientes.lista') }}" class="sidebar-nav-item {% if request.path.startswith('/pacientes') %}active{% endif %}">
                 <i class="far fa-user"></i>
-            </a>
+            </a>            
             <a href="#" class="sidebar-nav-item">
                 <i class="far fa-comment-alt"></i>
             </a>
