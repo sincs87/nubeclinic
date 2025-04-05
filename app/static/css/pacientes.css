@@ -1,8 +1,70 @@
 /* Estilos específicos para la página de pacientes - Ajustados para coincidir exactamente con la imagen */
 
+/* Estilos de la barra lateral fija (tomando en cuenta el HTML del sidebar) */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 100vh;
+    background-color: #fff;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 999;
+}
+
+.sidebar-top,
+.sidebar-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+    justify-content: center;
+}
+
+.sidebar-nav-item {
+    display: block;
+    color: #333;
+    font-size: 18px;
+    padding: 8px;
+    text-decoration: none;
+    position: relative;
+}
+
+.sidebar-nav-item.active {
+    background-color: #e9ecef;
+    border-radius: 4px;
+}
+
+.sidebar-nav-item:hover {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    background-color: #dc3545;
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 5px;
+    border-radius: 10px;
+}
+
 /* Layout básico */
 .main-content {
-    margin-left: 60px;
+    margin-left: 60px; /* Ajuste para que no se superponga con la barra lateral */
     background-color: #fff;
     min-height: 100vh;
 }
@@ -27,10 +89,11 @@
     display: flex;
     justify-content: flex-end;
     margin-bottom: 20px;
+    gap: 10px; /* Para espaciar los botones uniformemente */
 }
 
 .action-buttons .btn {
-    margin-left: 10px;
+    margin-left: 0; /* Ya no hace falta margin-left si usamos gap */
 }
 
 /* Estilo de botones */
@@ -74,6 +137,7 @@
 }
 
 /* Filtros y desplegables */
+/* Si no usas row.g-3, sustituye según tu grid/clases */
 .row.g-3 {
     align-items: flex-start;
     margin-bottom: 20px;
@@ -84,7 +148,7 @@
     padding-left: 10px;
 }
 
-/* Tamaños específicos para los filtros */
+/* Filtros específicos */
 #filterAutorizacion {
     width: 320px !important;
     max-width: 320px !important;
@@ -182,7 +246,7 @@
     vertical-align: middle;
 }
 
-/* Enlaces */
+/* Enlaces de la tabla */
 .add-email-link, 
 .create-appointment-link {
     color: #1a73e8;
@@ -236,7 +300,6 @@
     .row.g-3 [class*="col-"] {
         margin-bottom: 10px;
     }
-    
     #filterAutorizacion,
     #filterContacto,
     #filterEstado,
@@ -245,15 +308,14 @@
     }
 }
 
-/* Alineación con el sidebar y espaciado visual idéntico a Doctoralia Pro */
+/* Ajustes finales para el título y contenedor principal */
 .main-content {
     background-color: #fff;
     min-height: 100vh;
     padding: 0 24px;
-    margin-left: 60px;
+    margin-left: 60px; /* Combina con el .sidebar */
 }
 
-/* Título alineado y con borde inferior */
 .pacientes-titulo {
     font-size: 24px;
     font-weight: 500;
@@ -263,7 +325,6 @@
     border-bottom: 1px solid #e9ecef;
 }
 
-/* Filtros con estructura flex para separación perfecta */
 .filtros-pacientes {
     gap: 10px;
 }
@@ -294,12 +355,4 @@
     border-left: none;
     height: 36px;
     font-size: 14px;
-}
-
-/* Botones separados correctamente */
-.action-buttons {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
-    gap: 10px;
 }
