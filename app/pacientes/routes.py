@@ -6,7 +6,7 @@ from app.models.user import User
 from functools import wraps
 import uuid
 from datetime import datetime, timedelta
-from sqlalchemy import or_, and_, not_
+from sqlalchemy import or_, and_, not_, desc
 
 pacientes_bp = Blueprint("pacientes", __name__, url_prefix="/pacientes")
 
@@ -54,8 +54,13 @@ def lista_pacientes():
     tipo_filtro = request.args.get('filtro')
     valor_filtro = request.args.get('valor')
     
+    # Variable para almacenar el tipo de filtro aplicado para mostrarlo en la plantilla
+    filtro_aplicado = None
+    
     # Filtrar por tipo específico
     if tipo_filtro and valor_filtro:
+        filtro_aplicado = {'tipo': tipo_filtro, 'valor': valor_filtro}
+        
         if tipo_filtro == 'autorizacion':
             base_query = base_query.filter(Paciente.autorizacion == valor_filtro)
         elif tipo_filtro == 'email':
@@ -82,14 +87,35 @@ def lista_pacientes():
     elif orden == 'apellido':
         base_query = base_query.order_by(Paciente.apellidos)
     elif orden == 'ultima_visita':
-        base_query = base_query.order_by(Paciente.ultima_visita.desc())
+        # Poner primero los que tienen visita, ordenados por fecha descendente (más reciente primero)
+        base_query = base_query.order_by(
+            Paciente.ultima_visita.is_(None), 
+            desc(Paciente.ultima_visita)
+        )
     elif orden == 'siguiente_visita':
-        base_query = base_query.order_by(Paciente.siguiente_visita)
+        # Poner primero los que tienen próxima visita, ordenados por fecha ascendente (más cercana primero)
+        base_query = base_query.order_by(
+            Paciente.siguiente_visita.is_(None),
+            Paciente.siguiente_visita
+        )
+    elif orden == 'numero_paciente':
+        # Como número de paciente es calculado, ordenamos por ID
+        base_query = base_query.order_by(Paciente.id)
+    
+    # Variable para almacenar el criterio de ordenación
+    ordenacion_aplicada = orden
     
     # Ejecutar la consulta
     pacientes = base_query.all()
     
-    return render_template("pacientes/pacientes.html", pacientes=pacientes, user=user, total_pacientes=len(pacientes))
+    return render_template(
+        "pacientes/pacientes.html", 
+        pacientes=pacientes, 
+        user=user, 
+        total_pacientes=len(pacientes),
+        filtro_aplicado=filtro_aplicado,
+        ordenacion_aplicada=ordenacion_aplicada
+    )
 
 @pacientes_bp.route("/crear", methods=["POST"])
 @login_required
