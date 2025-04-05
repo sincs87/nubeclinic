@@ -255,5 +255,25 @@
     padding-left: 24px;
     padding-right: 24px;
 }
+/* Padding interno limpio en todos los dropdowns de los filtros */
+.filtros-pacientes .dropdown-menu {
+    padding: 16px 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    min-width: 260px;
+}
 
+/* Botones internos del dropdown */
+.filtros-pacientes .dropdown-menu .btn {
+    height: 32px;
+    font-size: 14px;
+    padding: 0 16px;
+    border-radius: 6px;
+}
+
+/* Separación de los botones del contenido */
+.filtros-pacientes .dropdown-menu .d-flex {
+    margin-top: 16px;
+}
 
