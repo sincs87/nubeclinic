@@ -41,7 +41,6 @@ body {
 .sidebar-top {
     padding: 12px 0;
     text-align: center;
-    border-bottom: 1px solid var(--gray-300);
 }
 
 .sidebar-nav {

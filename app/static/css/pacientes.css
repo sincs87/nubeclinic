@@ -10,7 +10,7 @@
 
 /* Título de la página con línea inferior */
 .pacientes-titulo {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 500;
     margin: 0;
     padding: 28px 0 16px;
@@ -214,4 +214,18 @@
     .filtros-pacientes > div {
         width: 100% !important;
     }
+}
+.barra-superior {
+    border-bottom: 1px solid #e9ecef;
+    margin-left: -24px; /* igual al padding del .main-content para estirarlo */
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.pacientes-titulo {
+    font-size: 24px;
+    font-weight: 500;
+    margin: 0;
+    padding: 28px 0 16px;
+    color: #333;
 }
