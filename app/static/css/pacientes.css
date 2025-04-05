@@ -1,195 +1,216 @@
-/* Estilos específicos para el módulo de pacientes */
+/* Estilos para la página de pacientes - Ajustado para coincidir exactamente con la imagen */
 
-.pacientes-contenedor {
-    padding: 20px 30px;
+/* Estilos generales */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.main-content {
+    margin-left: 60px; /* Ancho del sidebar */
+    min-height: 100vh;
     background-color: #fff;
 }
 
+/* Título y contenedor principal */
 .pacientes-titulo {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 500;
+    margin: 20px 0 25px 20px;
     color: #333;
-    margin-bottom: 20px;
 }
 
-/* Uniformar altura de controles */
-.form-control-sm, 
-.form-select-sm,
-.input-group-sm > .form-control,
-.input-group-sm > .input-group-text {
-    height: 31px !important;
-    line-height: 1 !important;
-    font-size: 13px;
-}
-
-.input-group-sm > .input-group-text {
-    padding-top: 0.35rem;
-    padding-bottom: 0.35rem;
-}
-
-/* Ajustes específicos para cada dropdown */
-#filterAutorizacion {
-    max-width: 320px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-#filterContacto {
-    max-width: 150px;
-}
-
-#filterEstado {
-    max-width: 150px;
-}
-
-#ordenarDropdown {
-    max-width: 130px;
-}
-
-/* Ajustar márgenes entre elementos */
-.row.g-3 > [class*="col-"] {
-    padding-right: 8px;
-    padding-left: 8px;
-}
-
-/* Arreglo para texto truncado en los desplegables */
-.dropdown-toggle {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-}
-
-/* Para quitar la flecha adicional en los dropdown */
-.dropdown-toggle::after {
-    display: inline-block;
-    margin-left: .255em;
-    vertical-align: .255em;
-    content: "";
-    border-top: .3em solid;
-    border-right: .3em solid transparent;
-    border-bottom: 0;
-    border-left: .3em solid transparent;
-}
-
-/* Botones más pequeños */
-.btn-sm {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.765rem;
-    border-radius: 0.2rem;
-    height: 31px;
-}
-
-/* Tabla compacta */
-.table-sm th, 
-.table-sm td {
-    padding: 0.3rem 0.5rem;
-    font-size: 13px;
-}
-
-.table th {
-    font-weight: 500;
-    color: #495057;
-    background-color: #f8f9fa;
-    font-size: 11px;
-    text-transform: uppercase;
-}
-
-/* Enlaces dentro de la tabla */
-.add-email-link, .create-appointment-link {
-    color: #1a73e8;
-    text-decoration: none;
-    font-size: 12px;
-}
-
-.add-email-link:hover, .create-appointment-link:hover {
-    text-decoration: underline;
-}
-
-/* Dropdown menus */
-.dropdown-menu {
-    font-size: 13px;
+/* Controles y filtros */
+.form-control, 
+.form-select, 
+.btn {
+    height: 38px;
     border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    border: 1px solid #dee2e6;
+    font-size: 14px;
+    border-color: #dee2e6;
 }
 
-.compact-dropdown {
-    padding: 6px 8px;
-    width: auto;
-    min-width: 160px;
-    max-width: 220px;
+.input-group-text {
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+
+/* Ajustar ancho específico de cada desplegable */
+button[id="filterAutorizacion"] {
+    width: 310px !important;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+button[id="filterContacto"] {
+    width: 180px !important;
+}
+
+button[id="filterEstado"] {
+    width: 180px !important;
+}
+
+button[id="ordenarDropdown"] {
+    width: 130px !important;
+}
+
+.dropdown-toggle::after {
+    margin-left: 8px;
+}
+
+/* Espaciado de los controles */
+.row > [class*="col-"] {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+/* Estilos para la tabla */
+.table {
+    margin-top: 15px;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table thead th {
     font-size: 12px;
-}
-
-.dropdown-item {
-    padding: 6px 10px;
-    font-size: 12px;
-}
-
-.dropdown-header {
-    font-size: 11px;
     font-weight: 600;
-    color: #6c757d;
-    padding: 5px 10px;
+    text-transform: uppercase;
+    color: #555;
+    padding: 12px 8px;
+    border-bottom: 1px solid #e9ecef;
+    background-color: #f8f9fa;
 }
 
-/* Form checks */
-.form-check {
-    margin-bottom: 0.25rem;
+.table tbody td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    vertical-align: middle;
 }
 
-.form-check-input {
-    margin-top: 0.15rem;
-}
-
-.form-check-label {
-    font-size: 12px;
-}
-
-.form-text {
-    font-size: 11px;
-}
-
-/* Modal más compacto */
-.modal-header {
-    padding: 0.75rem 1rem;
-}
-
-.modal-body {
-    padding: 1rem;
-}
-
-.modal-footer {
-    padding: 0.75rem 1rem;
-}
-
-.modal-title {
-    font-size: 1.1rem;
-    font-weight: 500;
-}
-
-.form-label {
-    font-size: 13px;
-    font-weight: 500;
-    margin-bottom: 0.25rem;
-}
-
-/* Botones primarios */
+/* Botones y acciones */
 .btn-primary {
     background-color: #1a73e8;
     border-color: #1a73e8;
+    color: white;
 }
 
-.btn-primary:hover, .btn-primary:focus {
+.btn-primary:hover {
     background-color: #0d65d9;
     border-color: #0d65d9;
 }
 
-/* Media queries */
+.btn-outline-secondary {
+    color: #555;
+    border-color: #dee2e6;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #f1f3f5;
+    color: #333;
+}
+
+.add-email-link, 
+.create-appointment-link {
+    color: #1a73e8;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.add-email-link:hover, 
+.create-appointment-link:hover {
+    text-decoration: underline;
+}
+
+/* Contador de resultados */
+.small {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 0;
+}
+
+/* Dropdown menus */
+.dropdown-menu {
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    font-size: 14px;
+    padding: 8px 0;
+}
+
+.dropdown-item {
+    padding: 8px 16px;
+    color: #333;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f3f5;
+    color: #333;
+}
+
+/* Eliminar íconos adicionales */
+.dropdown-toggle i.fas.fa-caret-down {
+    display: none;
+}
+
+/* Espaciado entre elementos */
+.mb-3 {
+    margin-bottom: 16px !important;
+}
+
+.mb-4 {
+    margin-bottom: 24px !important;
+}
+
+/* Ajustes específicos para botones desplegables */
+.dropdown-toggle {
+    text-align: left;
+    padding-left: 12px;
+    padding-right: 12px;
+    background-color: #fff;
+}
+
+button.form-select.dropdown-toggle {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+}
+
+/* Modal */
+.modal-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #e9ecef;
+}
+
+.modal-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.form-label {
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+/* Responsive */
 @media (max-width: 992px) {
-    .pacientes-contenedor {
-        padding: 15px;
+    button[id="filterAutorizacion"],
+    button[id="filterContacto"],
+    button[id="filterEstado"],
+    button[id="ordenarDropdown"] {
+        width: 100% !important;
     }
 }
