@@ -3,16 +3,23 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Referencias a elementos del DOM
     const addPatientBtn = document.getElementById('addPatientBtn');
-    const addPatientModal = new bootstrap.Modal(document.getElementById('addPatientModal'));
     const savePatientBtn = document.getElementById('savePatientBtn');
     const newPatientForm = document.getElementById('newPatientForm');
     const searchPatientInput = document.getElementById('searchPatient');
     const addPhoneLink = document.getElementById('addPhoneLink');
+    
+    // Inicializar modal
+    let addPatientModal;
+    if (document.getElementById('addPatientModal')) {
+        addPatientModal = new bootstrap.Modal(document.getElementById('addPatientModal'));
+    }
 
     // Abrir modal al hacer clic en el botón de añadir paciente
     if (addPatientBtn) {
         addPatientBtn.addEventListener('click', function() {
-            addPatientModal.show();
+            if (addPatientModal) {
+                addPatientModal.show();
+            }
         });
     }
 
@@ -46,7 +53,9 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.success) {
                     // Cerrar el modal y recargar la página
-                    addPatientModal.hide();
+                    if (addPatientModal) {
+                        addPatientModal.hide();
+                    }
                     showNotification('Paciente añadido correctamente', 'success');
                     setTimeout(() => {
                         window.location.reload();
@@ -74,10 +83,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const nuevoTelefono = document.createElement('div');
             nuevoTelefono.className = 'mb-3';
             nuevoTelefono.innerHTML = `
-                <div class="input-group">
+                <div class="input-group input-group-sm">
                     <span class="input-group-text">+34</span>
-                    <input type="tel" class="form-control" name="telefono_adicional" placeholder="Teléfono adicional">
-                    <button type="button" class="btn btn-outline-secondary remove-phone">
+                    <input type="tel" class="form-control form-control-sm" name="telefono_adicional" placeholder="Teléfono adicional">
+                    <button type="button" class="btn btn-outline-secondary btn-sm remove-phone">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -93,42 +102,28 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-
-    // Función para validar el formulario
-    function validateForm() {
-        const nombre = document.getElementById('nombre').value.trim();
-        const apellidos = document.getElementById('apellidos').value.trim();
-        
-        if (!nombre) {
-            showNotification('El nombre del paciente es obligatorio', 'warning');
-            return false;
-        }
-        
-        if (!apellidos) {
-            showNotification('Los apellidos del paciente son obligatorios', 'warning');
-            return false;
-        }
-        
-        return true;
-    }
-
-    // Función para obtener el token CSRF
-    function getCsrfToken() {
-        const metaTag = document.querySelector('meta[name="csrf-token"]');
-        return metaTag ? metaTag.getAttribute('content') : '';
-    }
-
-    // Función para mostrar notificaciones
-    function showNotification(message, type) {
-        // Puedes implementar un sistema de notificaciones o usar alertas estándar
-        // Por ahora, usemos alertas para simplificar
-        if (type === 'error') {
-            alert('Error: ' + message);
-        } else if (type === 'warning') {
-            alert('Aviso: ' + message);
-        } else {
-            alert(message);
-        }
+    
+    // Manejadores para los filtros desplegables
+    setupFilterHandlers('Autorizacion', 'Autorización para enviar comunicaciones comerciales');
+    setupFilterHandlers('Contacto', 'Datos de contacto');
+    setupFilterHandlers('Estado', 'Estado del paciente');
+    
+    // Manejador para el ordenamiento
+    const aplicarOrdenarBtn = document.getElementById('aplicarOrdenar');
+    if (aplicarOrdenarBtn) {
+        aplicarOrdenarBtn.addEventListener('click', function() {
+            const selectedOption = document.querySelector('input[name="ordenarRadio"]:checked');
+            if (selectedOption) {
+                const ordenarDropdown = document.getElementById('ordenarDropdown');
+                ordenarDropdown.textContent = selectedOption.nextElementSibling.textContent;
+                
+                // Aquí iría la lógica para ordenar la tabla
+                ordenarTabla(selectedOption.id);
+                
+                // Cerrar el dropdown
+                document.querySelector('.dropdown-menu.show').classList.remove('show');
+            }
+        });
     }
 
     // Búsqueda de pacientes en tiempo real
@@ -154,29 +149,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-
-    // Manejadores para los filtros desplegables
-    setupFilterHandlers('Autorizacion', 'Autorización para enviar comunicaciones comerciales');
-    setupFilterHandlers('Contacto', 'Datos de contacto');
-    setupFilterHandlers('Estado', 'Estado del paciente');
-    
-    // Manejador para el ordenamiento
-    const aplicarOrdenarBtn = document.getElementById('aplicarOrdenar');
-    if (aplicarOrdenarBtn) {
-        aplicarOrdenarBtn.addEventListener('click', function() {
-            const selectedOption = document.querySelector('input[name="ordenarRadio"]:checked');
-            if (selectedOption) {
-                const ordenarDropdown = document.getElementById('ordenarDropdown');
-                ordenarDropdown.textContent = selectedOption.nextElementSibling.textContent;
-                
-                // Aquí iría la lógica para ordenar la tabla
-                ordenarTabla(selectedOption.id);
-                
-                // Cerrar el dropdown
-                document.querySelector('.dropdown-menu.show').classList.remove('show');
-            }
-        });
-    }
     
     // Inicializar tooltips y popovers de Bootstrap si existen
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -189,6 +161,42 @@ document.addEventListener('DOMContentLoaded', function() {
         return new bootstrap.Popover(popoverTriggerEl);
     });
 });
+
+// Función para validar el formulario
+function validateForm() {
+    const nombre = document.getElementById('nombre').value.trim();
+    const apellidos = document.getElementById('apellidos').value.trim();
+    
+    if (!nombre) {
+        showNotification('El nombre del paciente es obligatorio', 'warning');
+        return false;
+    }
+    
+    if (!apellidos) {
+        showNotification('Los apellidos del paciente son obligatorios', 'warning');
+        return false;
+    }
+    
+    return true;
+}
+
+// Función para obtener el token CSRF
+function getCsrfToken() {
+    const metaTag = document.querySelector('meta[name="csrf-token"]');
+    return metaTag ? metaTag.getAttribute('content') : '';
+}
+
+// Función para mostrar notificaciones
+function showNotification(message, type) {
+    // Aquí podrías implementar una notificación más elegante
+    if (type === 'error') {
+        alert('Error: ' + message);
+    } else if (type === 'warning') {
+        alert('Aviso: ' + message);
+    } else {
+        alert(message);
+    }
+}
 
 // Función para configurar los manejadores de los filtros desplegables
 function setupFilterHandlers(filterName, defaultText) {
