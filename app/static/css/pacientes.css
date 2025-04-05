@@ -2,9 +2,9 @@
 
 /* Layout básico */
 .main-content {
-    margin-left: 60px;
     background-color: #fff;
     min-height: 100vh;
+    padding: 0 24px;
 }
 
 /* Título de la página con línea inferior */
@@ -27,7 +27,9 @@
     display: flex;
     justify-content: flex-end;
     margin-bottom: 20px;
+    gap: 10px;
 }
+
 
 .action-buttons .btn {
     margin-left: 10px;
@@ -243,4 +245,14 @@
     #ordenarDropdown {
         width: 100% !important;
     }
+}
+.filtros-pacientes > div {
+    min-width: 180px;
+}
+
+.filtros-pacientes .form-select {
+    height: 36px;
+    font-size: 14px;
+    padding: 0 30px 0 12px;
+    background-position: right 10px center;
 }

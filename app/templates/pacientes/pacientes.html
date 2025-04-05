@@ -43,8 +43,8 @@
                 </button>
             </div>
             
-            <div class="row g-3 mb-4">
-                <div class="col-lg-5">
+            <div class="d-flex flex-wrap align-items-start gap-2 mb-4 filtros-pacientes">
+                <div class="flex-grow-1 me-2">
                     <div class="input-group">
                         <span class="input-group-text bg-white border-end-0">
                             <i class="fas fa-search text-muted"></i>
@@ -52,12 +52,11 @@
                         <input type="text" class="form-control border-start-0" placeholder="Escribe nombre, teléfono, ID o número de paciente" id="searchPatient">
                     </div>
                 </div>
-                <div class="col-lg-2">
-                    <div class="dropdown">
-                        <button class="form-select text-start dropdown-toggle" type="button" id="filterAutorizacion" data-bs-toggle="dropdown" aria-expanded="false">
-                            Autorización para enviar comunicaciones comerciales
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="filterAutorizacion">
+                <div>
+                    <button class="form-select text-start dropdown-toggle" id="filterAutorizacion" data-bs-toggle="dropdown" aria-expanded="false">
+                        Autorización para enviar comunicaciones comerciales
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="filterAutorizacion">
                             <div class="form-check mb-2">
                                 <input class="form-check-input" type="radio" name="autorizacionRadio" id="autorizacionAceptado">
                                 <label class="form-check-label" for="autorizacionAceptado">Aceptado</label>
@@ -75,7 +74,7 @@
                 </div>
                 <div class="col-lg-2">
                     <div class="dropdown">
-                        <button class="form-select text-start dropdown-toggle" type="button" id="filterContacto" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="form-select text-start dropdown-toggle" id="filterContacto" data-bs-toggle="dropdown" aria-expanded="false">
                             Datos de contacto
                         </button>
                         <div class="dropdown-menu" aria-labelledby="filterContacto">
@@ -108,7 +107,7 @@
                 </div>
                 <div class="col-lg-2">
                     <div class="dropdown">
-                        <button class="form-select text-start dropdown-toggle" type="button" id="filterEstado" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="form-select text-start dropdown-toggle" id="filterEstado" data-bs-toggle="dropdown" aria-expanded="false">
                             Estado del paciente
                         </button>
                         <div class="dropdown-menu" aria-labelledby="filterEstado">
@@ -134,7 +133,7 @@
                 </div>
                 <div class="col-lg-1">
                     <div class="dropdown">
-                        <button class="form-select text-start dropdown-toggle" type="button" id="ordenarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="form-select text-start dropdown-toggle" id="ordenarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             Ordenar por
                         </button>
                         <div class="dropdown-menu" aria-labelledby="ordenarDropdown">
