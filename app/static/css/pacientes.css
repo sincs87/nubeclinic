@@ -1,72 +1,11 @@
 /* Estilos específicos para la página de pacientes - Ajustados para coincidir exactamente con la imagen */
 
-/* Estilos de la barra lateral fija (tomando en cuenta el HTML del sidebar) */
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 60px;
-    height: 100vh;
-    background-color: #fff;
-    border-right: 1px solid #ddd;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    z-index: 999;
-}
-
-.sidebar-top,
-.sidebar-bottom {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px 0;
-}
-
-.sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    flex: 1;
-    justify-content: center;
-}
-
-.sidebar-nav-item {
-    display: block;
-    color: #333;
-    font-size: 18px;
-    padding: 8px;
-    text-decoration: none;
-    position: relative;
-}
-
-.sidebar-nav-item.active {
-    background-color: #e9ecef;
-    border-radius: 4px;
-}
-
-.sidebar-nav-item:hover {
-    background-color: #f8f9fa;
-    border-radius: 4px;
-}
-
-.notification-badge {
-    position: absolute;
-    top: -3px;
-    right: -3px;
-    background-color: #dc3545;
-    color: #fff;
-    font-size: 10px;
-    padding: 2px 5px;
-    border-radius: 10px;
-}
-
 /* Layout básico */
 .main-content {
-    margin-left: 60px; /* Ajuste para que no se superponga con la barra lateral */
     background-color: #fff;
     min-height: 100vh;
+    padding: 0 24px;
+    margin-left: 60px;
 }
 
 /* Título de la página con línea inferior */
@@ -74,14 +13,14 @@
     font-size: 24px;
     font-weight: 500;
     margin: 0;
-    padding: 20px 0 15px 20px;
+    padding: 28px 0 16px;
     color: #333;
     border-bottom: 1px solid #e9ecef;
 }
 
 /* Contenedor principal con padding adecuado */
 .patient-container {
-    padding: 20px;
+    padding: 20px 0;
 }
 
 /* Botones de acción */
@@ -89,11 +28,11 @@
     display: flex;
     justify-content: flex-end;
     margin-bottom: 20px;
-    gap: 10px; /* Para espaciar los botones uniformemente */
+    gap: 10px;
 }
 
 .action-buttons .btn {
-    margin-left: 0; /* Ya no hace falta margin-left si usamos gap */
+    margin-left: 10px;
 }
 
 /* Estilo de botones */
@@ -114,20 +53,37 @@
     border-color: #ddd;
 }
 
-/* Input de búsqueda */
-.input-group {
+/* Filtros y buscador con estructura flex */
+.filtros-pacientes {
+    gap: 10px;
+}
+
+.filtros-pacientes > div {
+    min-width: 180px;
+}
+
+.filtros-pacientes .form-select {
+    height: 36px;
+    font-size: 14px;
+    padding: 0 30px 0 12px;
+    background-position: right 10px center;
+    white-space: nowrap;
+}
+
+.filtros-pacientes .input-group {
     height: 36px;
 }
 
-.input-group-text {
+.filtros-pacientes .input-group-text {
     background-color: #fff;
     border-color: #ddd;
     border-right: none;
 }
 
-.input-group .form-control {
+.filtros-pacientes .form-control {
     border-left: none;
     height: 36px;
+    font-size: 14px;
 }
 
 .form-control:focus, 
@@ -136,53 +92,7 @@
     border-color: #1a73e8;
 }
 
-/* Filtros y desplegables */
-/* Si no usas row.g-3, sustituye según tu grid/clases */
-.row.g-3 {
-    align-items: flex-start;
-    margin-bottom: 20px;
-}
-
-.row.g-3 > [class*="col-"] {
-    padding-right: 10px;
-    padding-left: 10px;
-}
-
-/* Filtros específicos */
-#filterAutorizacion {
-    width: 320px !important;
-    max-width: 320px !important;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding-right: 30px;
-}
-
-#filterContacto {
-    width: 180px !important;
-}
-
-#filterEstado {
-    width: 180px !important;
-}
-
-#ordenarDropdown {
-    width: 120px !important;
-}
-
-.form-select {
-    height: 36px;
-    font-size: 14px;
-    padding: 0 30px 0 12px;
-    background-position: right 8px center;
-}
-
-/* Para evitar que los botones dentro de dropdowns tengan tamaño fijo */
-.dropdown-menu .btn {
-    height: auto;
-}
-
-/* Dropdown menus */
+/* Dropdowns */
 .dropdown-menu {
     padding: 8px;
     border: 1px solid #ddd;
@@ -246,7 +156,7 @@
     vertical-align: middle;
 }
 
-/* Enlaces de la tabla */
+/* Enlaces de acciones */
 .add-email-link, 
 .create-appointment-link {
     color: #1a73e8;
@@ -297,62 +207,11 @@
 
 /* Responsive */
 @media (max-width: 1200px) {
-    .row.g-3 [class*="col-"] {
-        margin-bottom: 10px;
+    .filtros-pacientes {
+        flex-direction: column;
     }
-    #filterAutorizacion,
-    #filterContacto,
-    #filterEstado,
-    #ordenarDropdown {
+
+    .filtros-pacientes > div {
         width: 100% !important;
     }
-}
-
-/* Ajustes finales para el título y contenedor principal */
-.main-content {
-    background-color: #fff;
-    min-height: 100vh;
-    padding: 0 24px;
-    margin-left: 60px; /* Combina con el .sidebar */
-}
-
-.pacientes-titulo {
-    font-size: 24px;
-    font-weight: 500;
-    margin: 0;
-    padding: 28px 0 16px;
-    color: #333;
-    border-bottom: 1px solid #e9ecef;
-}
-
-.filtros-pacientes {
-    gap: 10px;
-}
-
-.filtros-pacientes > div {
-    min-width: 180px;
-}
-
-.filtros-pacientes .form-select {
-    height: 36px;
-    font-size: 14px;
-    padding: 0 30px 0 12px;
-    background-position: right 10px center;
-    white-space: nowrap;
-}
-
-.filtros-pacientes .input-group {
-    height: 36px;
-}
-
-.filtros-pacientes .input-group-text {
-    background-color: #fff;
-    border-color: #ddd;
-    border-right: none;
-}
-
-.filtros-pacientes .form-control {
-    border-left: none;
-    height: 36px;
-    font-size: 14px;
 }
