@@ -1,122 +1,169 @@
-/* Estilos para la página de pacientes - Ajustado para coincidir exactamente con la imagen */
-
-/* Estilos generales */
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f8f9fa;
-    color: #333;
-}
-
+/* Estilos base para la página de pacientes */
 .main-content {
-    margin-left: 60px; /* Ancho del sidebar */
-    min-height: 100vh;
+    margin-left: 60px;
     background-color: #fff;
+    min-height: 100vh;
 }
 
-/* Título y contenedor principal */
-.pacientes-titulo {
+/* Título de la página */
+.pacientes-title {
     font-size: 24px;
     font-weight: 500;
-    margin: 20px 0 25px 20px;
+    margin: 20px 0 20px 20px;
     color: #333;
 }
 
-/* Controles y filtros */
-.form-control, 
-.form-select, 
-.btn {
-    height: 38px;
+/* Contenedor de botones de acción */
+.actions-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.actions-container .btn {
+    margin-left: 10px;
+    height: 36px;
+    font-size: 14px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+}
+
+.btn-primary {
+    background-color: #1a73e8;
+    border-color: #1a73e8;
+}
+
+.btn-outline-secondary {
+    color: #333;
+    border-color: #ddd;
+}
+
+/* Fila de filtros */
+.filter-row {
+    display: flex;
+    padding: 0 20px;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+/* Buscador */
+.search-input {
+    position: relative;
+    width: 380px;
+}
+
+.search-input input {
+    width: 100%;
+    height: 36px;
+    padding: 0 12px 0 36px;
+    border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 14px;
-    border-color: #dee2e6;
 }
 
-.input-group-text {
+.search-input i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+/* Dropdown de filtros */
+.filter-dropdown {
+    position: relative;
+}
+
+.btn-filter {
+    height: 36px;
+    padding: 0 12px;
     background-color: #fff;
-    border-color: #dee2e6;
-}
-
-/* Ajustar ancho específico de cada desplegable */
-button[id="filterAutorizacion"] {
-    width: 310px !important;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: left;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    padding-right: 28px;
+    cursor: pointer;
 }
 
-button[id="filterContacto"] {
-    width: 180px !important;
+.filter-dropdown:nth-child(2) .btn-filter {
+    width: 310px;
 }
 
-button[id="filterEstado"] {
-    width: 180px !important;
+.filter-dropdown:nth-child(3) .btn-filter {
+    width: 180px;
 }
 
-button[id="ordenarDropdown"] {
-    width: 130px !important;
+.filter-dropdown:nth-child(4) .btn-filter {
+    width: 180px;
+}
+
+.filter-dropdown:nth-child(5) .btn-filter {
+    width: 120px;
 }
 
 .dropdown-toggle::after {
-    margin-left: 8px;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
-/* Espaciado de los controles */
-.row > [class*="col-"] {
-    padding-right: 10px;
-    padding-left: 10px;
+/* Encabezado de resultados */
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    margin-bottom: 15px;
 }
 
-/* Estilos para la tabla */
-.table {
-    margin-top: 15px;
+.results-count {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Tabla de pacientes */
+.table-container {
+    padding: 0 20px;
+}
+
+.patients-table {
+    width: 100%;
     border-collapse: separate;
     border-spacing: 0;
 }
 
-.table thead th {
+.patients-table th {
+    text-align: left;
+    padding: 12px 8px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
     color: #555;
-    padding: 12px 8px;
-    border-bottom: 1px solid #e9ecef;
-    background-color: #f8f9fa;
 }
 
-.table tbody td {
+.patients-table td {
     padding: 12px 8px;
     border-bottom: 1px solid #f0f0f0;
     font-size: 14px;
     vertical-align: middle;
 }
 
-/* Botones y acciones */
-.btn-primary {
-    background-color: #1a73e8;
-    border-color: #1a73e8;
-    color: white;
-}
-
-.btn-primary:hover {
-    background-color: #0d65d9;
-    border-color: #0d65d9;
-}
-
-.btn-outline-secondary {
-    color: #555;
-    border-color: #dee2e6;
-}
-
-.btn-outline-secondary:hover {
-    background-color: #f1f3f5;
-    color: #333;
-}
-
+/* Enlaces en la tabla */
 .add-email-link, 
 .create-appointment-link {
     color: #1a73e8;
-    font-size: 14px;
     text-decoration: none;
+    font-size: 14px;
 }
 
 .add-email-link:hover, 
@@ -124,62 +171,62 @@ button[id="ordenarDropdown"] {
     text-decoration: underline;
 }
 
-/* Contador de resultados */
-.small {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 0;
-}
-
 /* Dropdown menus */
 .dropdown-menu {
-    border: 1px solid #dee2e6;
+    border: 1px solid #ddd;
     border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 8px;
     font-size: 14px;
-    padding: 8px 0;
+    min-width: 180px;
 }
 
 .dropdown-item {
-    padding: 8px 16px;
+    padding: 8px 12px;
     color: #333;
 }
 
 .dropdown-item:hover {
-    background-color: #f1f3f5;
+    background-color: #f8f9fa;
+}
+
+.form-check {
+    margin-bottom: 10px;
+}
+
+.form-check-label {
+    font-size: 14px;
+}
+
+.dropdown-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.btn-dropdown-action {
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.btn-dropdown-action.btn-primary {
+    background-color: #1a73e8;
+    color: white;
+    border-color: #1a73e8;
+}
+
+.btn-dropdown-action.btn-secondary {
+    background-color: #fff;
     color: #333;
 }
 
-/* Eliminar íconos adicionales */
-.dropdown-toggle i.fas.fa-caret-down {
-    display: none;
-}
-
-/* Espaciado entre elementos */
-.mb-3 {
-    margin-bottom: 16px !important;
-}
-
-.mb-4 {
-    margin-bottom: 24px !important;
-}
-
-/* Ajustes específicos para botones desplegables */
-.dropdown-toggle {
-    text-align: left;
-    padding-left: 12px;
-    padding-right: 12px;
-    background-color: #fff;
-}
-
-button.form-select.dropdown-toggle {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    background-size: 16px 12px;
-}
-
 /* Modal */
+.modal-dialog {
+    max-width: 500px;
+}
+
 .modal-header {
     padding: 15px 20px;
     border-bottom: 1px solid #e9ecef;
@@ -205,12 +252,42 @@ button.form-select.dropdown-toggle {
     margin-bottom: 6px;
 }
 
+.form-control {
+    height: 36px;
+    font-size: 14px;
+    border-color: #ddd;
+}
+
+.form-text {
+    font-size: 13px;
+    color: #888;
+    margin-top: 5px;
+}
+
+.add-phone-link {
+    color: #1a73e8;
+    text-decoration: none;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.patient-type-options {
+    display: flex;
+    gap: 20px;
+}
+
 /* Responsive */
-@media (max-width: 992px) {
-    button[id="filterAutorizacion"],
-    button[id="filterContacto"],
-    button[id="filterEstado"],
-    button[id="ordenarDropdown"] {
+@media (max-width: 1200px) {
+    .filter-row {
+        flex-wrap: wrap;
+    }
+    
+    .search-input {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .filter-dropdown .btn-filter {
         width: 100% !important;
     }
 }
