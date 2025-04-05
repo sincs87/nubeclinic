@@ -24,145 +24,142 @@
 
     <!-- Main content -->
     <div class="main-content">
-        <div class="panel-content">
-            <div class="panel-header">
-                <h1 class="panel-title">Pacientes</h1>
-                <div class="panel-actions">
-                    <div class="dropdown me-2">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="importarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            Importar pacientes <i class="fas fa-caret-down"></i>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="importarDropdown">
-                            <li><a class="dropdown-item" href="#">Desde el ordenador</a></li>
-                            <li><a class="dropdown-item" href="#">Desde el teléfono</a></li>
-                        </ul>
-                    </div>
-                    <button class="btn btn-primary" id="addPatientBtn">
-                        <i class="fas fa-plus"></i> Añadir paciente
+        <div class="pacientes-contenedor">
+            <h1 class="pacientes-titulo mb-4">Pacientes</h1>
+            
+            <div class="d-flex justify-content-end mb-3">
+                <div class="dropdown me-2">
+                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="importarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Importar pacientes <i class="fas fa-caret-down"></i>
                     </button>
+                    <ul class="dropdown-menu" aria-labelledby="importarDropdown">
+                        <li><a class="dropdown-item" href="#">Desde el ordenador</a></li>
+                        <li><a class="dropdown-item" href="#">Desde el teléfono</a></li>
+                    </ul>
                 </div>
+                <button class="btn btn-primary btn-sm" id="addPatientBtn">
+                    <i class="fas fa-plus"></i> Añadir paciente
+                </button>
             </div>
 
-            <div class="panel-filters mb-4">
-                <div class="row g-3">
-                    <div class="col-lg-5">
-                        <div class="input-group">
-                            <span class="input-group-text bg-white border-end-0">
-                                <i class="fas fa-search text-muted"></i>
-                            </span>
-                            <input type="text" class="form-control border-start-0" placeholder="Escribe nombre, teléfono, ID o número de paciente" id="searchPatient">
-                        </div>
+            <div class="row g-3 mb-4">
+                <div class="col-lg-5">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input type="text" class="form-control form-control-sm border-start-0" placeholder="Escribe nombre, teléfono, ID o número de paciente" id="searchPatient">
                     </div>
-                    <div class="col-lg-2">
-                        <div class="dropdown">
-                            <button class="form-select text-start dropdown-toggle" type="button" id="filterAutorizacion" data-bs-toggle="dropdown" aria-expanded="false">
-                                Autorización para enviar comunicaciones comerciales
-                            </button>
-                            <div class="dropdown-menu small-dropdown p-2" aria-labelledby="filterAutorizacion">
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="radio" name="autorizacionRadio" id="autorizacionAceptado">
-                                    <label class="form-check-label" for="autorizacionAceptado">Aceptado</label>
-                                </div>
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" name="autorizacionRadio" id="autorizacionNoAceptado">
-                                    <label class="form-check-label" for="autorizacionNoAceptado">No aceptado</label>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button class="btn btn-sm btn-outline-secondary" id="borrarAutorizacion">Borrar</button>
-                                    <button class="btn btn-sm btn-primary" id="aplicarAutorizacion">Aplicar</button>
-                                </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="dropdown">
+                        <button class="form-select form-select-sm text-start dropdown-toggle truncate-text" type="button" id="filterAutorizacion" data-bs-toggle="dropdown" aria-expanded="false">
+                            Autorización para enviar comunicaciones comerciales
+                        </button>
+                        <div class="dropdown-menu compact-dropdown" aria-labelledby="filterAutorizacion">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="autorizacionRadio" id="autorizacionAceptado">
+                                <label class="form-check-label" for="autorizacionAceptado">Aceptado</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="autorizacionRadio" id="autorizacionNoAceptado">
+                                <label class="form-check-label" for="autorizacionNoAceptado">No aceptado</label>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-sm btn-outline-secondary" id="borrarAutorizacion">Borrar</button>
+                                <button class="btn btn-sm btn-primary" id="aplicarAutorizacion">Aplicar</button>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2">
-                        <div class="dropdown">
-                            <button class="form-select text-start dropdown-toggle" type="button" id="filterContacto" data-bs-toggle="dropdown" aria-expanded="false">
-                                Datos de contacto
-                            </button>
-                            <div class="dropdown-menu small-dropdown p-2" aria-labelledby="filterContacto">
-                                <h6 class="dropdown-header">Número de teléfono</h6>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="radio" name="telefonoRadio" id="telefonoDisponible">
-                                    <label class="form-check-label" for="telefonoDisponible">Disponible</label>
-                                </div>
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" name="telefonoRadio" id="telefonoNoDisponible">
-                                    <label class="form-check-label" for="telefonoNoDisponible">No disponible</label>
-                                </div>
-                                
-                                <h6 class="dropdown-header">Email</h6>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="radio" name="emailRadio" id="emailDisponible">
-                                    <label class="form-check-label" for="emailDisponible">Disponible</label>
-                                </div>
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" name="emailRadio" id="emailNoDisponible">
-                                    <label class="form-check-label" for="emailNoDisponible">No disponible</label>
-                                </div>
-                                
-                                <div class="d-flex justify-content-between">
-                                    <button class="btn btn-sm btn-outline-secondary" id="borrarContacto">Borrar</button>
-                                    <button class="btn btn-sm btn-primary" id="aplicarContacto">Aplicar</button>
-                                </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="dropdown">
+                        <button class="form-select form-select-sm text-start dropdown-toggle truncate-text" type="button" id="filterContacto" data-bs-toggle="dropdown" aria-expanded="false">
+                            Datos de contacto
+                        </button>
+                        <div class="dropdown-menu compact-dropdown" aria-labelledby="filterContacto">
+                            <h6 class="dropdown-header">Número de teléfono</h6>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="telefonoRadio" id="telefonoDisponible">
+                                <label class="form-check-label" for="telefonoDisponible">Disponible</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="telefonoRadio" id="telefonoNoDisponible">
+                                <label class="form-check-label" for="telefonoNoDisponible">No disponible</label>
+                            </div>
+                            
+                            <h6 class="dropdown-header">Email</h6>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="emailRadio" id="emailDisponible">
+                                <label class="form-check-label" for="emailDisponible">Disponible</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="emailRadio" id="emailNoDisponible">
+                                <label class="form-check-label" for="emailNoDisponible">No disponible</label>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-sm btn-outline-secondary" id="borrarContacto">Borrar</button>
+                                <button class="btn btn-sm btn-primary" id="aplicarContacto">Aplicar</button>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2">
-                        <div class="dropdown">
-                            <button class="form-select text-start dropdown-toggle" type="button" id="filterEstado" data-bs-toggle="dropdown" aria-expanded="false">
-                                Estado del paciente
-                            </button>
-                            <div class="dropdown-menu small-dropdown p-2" aria-labelledby="filterEstado">
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="radio" name="estadoRadio" id="estadoActivo">
-                                    <label class="form-check-label" for="estadoActivo">Activo</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="radio" name="estadoRadio" id="estadoFallecido">
-                                    <label class="form-check-label" for="estadoFallecido">Fallecido</label>
-                                </div>
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" name="estadoRadio" id="estadoInactivo">
-                                    <label class="form-check-label" for="estadoInactivo">Inactivo</label>
-                                </div>
-                                
-                                <div class="d-flex justify-content-between">
-                                    <button class="btn btn-sm btn-outline-secondary" id="borrarEstado">Borrar</button>
-                                    <button class="btn btn-sm btn-primary" id="aplicarEstado">Aplicar</button>
-                                </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="dropdown">
+                        <button class="form-select form-select-sm text-start dropdown-toggle truncate-text" type="button" id="filterEstado" data-bs-toggle="dropdown" aria-expanded="false">
+                            Estado del paciente
+                        </button>
+                        <div class="dropdown-menu compact-dropdown" aria-labelledby="filterEstado">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="estadoRadio" id="estadoActivo">
+                                <label class="form-check-label" for="estadoActivo">Activo</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="estadoRadio" id="estadoFallecido">
+                                <label class="form-check-label" for="estadoFallecido">Fallecido</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="estadoRadio" id="estadoInactivo">
+                                <label class="form-check-label" for="estadoInactivo">Inactivo</label>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-sm btn-outline-secondary" id="borrarEstado">Borrar</button>
+                                <button class="btn btn-sm btn-primary" id="aplicarEstado">Aplicar</button>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-1">
-                        <div class="dropdown">
-                            <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="ordenarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                Ordenar por
-                            </button>
-                            <div class="dropdown-menu small-dropdown p-2" aria-labelledby="ordenarDropdown">
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="radio" name="ordenarRadio" id="ordenarNombre">
-                                    <label class="form-check-label" for="ordenarNombre">Nombre</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="radio" name="ordenarRadio" id="ordenarApellido">
-                                    <label class="form-check-label" for="ordenarApellido">Apellido</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="radio" name="ordenarRadio" id="ordenarUltimaVisita">
-                                    <label class="form-check-label" for="ordenarUltimaVisita">Última visita realizada</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="radio" name="ordenarRadio" id="ordenarSiguienteVisita">
-                                    <label class="form-check-label" for="ordenarSiguienteVisita">Siguiente visita programada</label>
-                                </div>
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" name="ordenarRadio" id="ordenarNumeroPaciente">
-                                    <label class="form-check-label" for="ordenarNumeroPaciente">Número de paciente</label>
-                                </div>
-                                
-                                <div class="d-flex justify-content-end">
-                                    <button class="btn btn-sm btn-primary" id="aplicarOrdenar">Aplicar</button>
-                                </div>
+                </div>
+                <div class="col-lg-1">
+                    <div class="dropdown">
+                        <button class="form-select form-select-sm text-start dropdown-toggle" type="button" id="ordenarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Ordenar por
+                        </button>
+                        <div class="dropdown-menu compact-dropdown" aria-labelledby="ordenarDropdown">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="ordenarRadio" id="ordenarNombre">
+                                <label class="form-check-label" for="ordenarNombre">Nombre</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="ordenarRadio" id="ordenarApellido">
+                                <label class="form-check-label" for="ordenarApellido">Apellido</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="ordenarRadio" id="ordenarUltimaVisita">
+                                <label class="form-check-label" for="ordenarUltimaVisita">Última visita realizada</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="ordenarRadio" id="ordenarSiguienteVisita">
+                                <label class="form-check-label" for="ordenarSiguienteVisita">Siguiente visita programada</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="ordenarRadio" id="ordenarNumeroPaciente">
+                                <label class="form-check-label" for="ordenarNumeroPaciente">Número de paciente</label>
+                            </div>
+                            
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-sm btn-primary" id="aplicarOrdenar">Aplicar</button>
                             </div>
                         </div>
                     </div>
@@ -174,10 +171,10 @@
                     <p class="mb-0 small">Se han encontrado <strong>{{ pacientes|length }}</strong> resultados</p>
                 </div>
                 <div class="dropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="editarListaDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="editarListaDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         Editar lista de pacientes <i class="fas fa-caret-down"></i>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end small-dropdown" aria-labelledby="editarListaDropdown">
+                    <ul class="dropdown-menu dropdown-menu-end compact-dropdown" aria-labelledby="editarListaDropdown">
                         <li><a class="dropdown-item" href="#">Fusionar pacientes</a></li>
                         <li><a class="dropdown-item" href="#">Eliminar pacientes</a></li>
                         <li><a class="dropdown-item" href="#">Transferir el control de datos de pacientes</a></li>
@@ -186,7 +183,7 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover table-sm">
                     <thead>
                         <tr>
                             <th>NOMBRE Y APELLIDOS</th>
@@ -234,7 +231,7 @@
 
     <!-- Modal Añadir Paciente -->
     <div class="modal fade" id="addPatientModal" tabindex="-1" aria-labelledby="addPatientModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered compact-modal">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addPatientModalLabel">Añadir paciente</h5>
@@ -242,28 +239,28 @@
                 </div>
                 <div class="modal-body">
                     <form id="newPatientForm">
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="nombre" class="form-label">Nombre del paciente*</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            <input type="text" class="form-control form-control-sm" id="nombre" name="nombre" required>
                         </div>
                         
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="apellidos" class="form-label">Apellidos*</label>
-                            <input type="text" class="form-control" id="apellidos" name="apellidos" required>
+                            <input type="text" class="form-control form-control-sm" id="apellidos" name="apellidos" required>
                         </div>
                         
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="telefono" class="form-label">Teléfono</label>
-                            <div class="input-group">
+                            <div class="input-group input-group-sm">
                                 <span class="input-group-text">+34</span>
-                                <input type="tel" class="form-control" id="telefono" name="telefono">
+                                <input type="tel" class="form-control form-control-sm" id="telefono" name="telefono">
                             </div>
                         </div>
                         
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email">
-                            <div class="form-text text-muted small mt-1">
+                            <input type="email" class="form-control form-control-sm" id="email" name="email">
+                            <div class="form-text text-muted mb-2 small">
                                 Usaremos estos datos de contacto para enviar notificaciones, mensajes de chat y documentos. 
                                 Asegúrate de que pertenezcan al paciente o a una persona autorizada.
                             </div>
@@ -275,7 +272,7 @@
                             </a>
                         </div>
                         
-                        <div class="mb-4">
+                        <div class="mb-3">
                             <label class="form-label">Tipo de paciente</label>
                             <div class="d-flex">
                                 <div class="form-check me-4">
@@ -295,8 +292,8 @@
                     </form>
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="savePatientBtn">Guardar sin datos de contacto</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="savePatientBtn">Guardar sin datos de contacto</button>
                 </div>
             </div>
         </div>
