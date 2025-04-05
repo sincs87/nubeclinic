@@ -1,68 +1,214 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Pacientes - NubeClinic</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/panel.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-</head>
-<body>
+{% extends "layout.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/panel.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pacientes.css') }}">
+{% endblock %}
+
+{% block content %}
 <div class="panel-container">
     {% include 'components/sidebar.html' %}
 
     <div class="panel-content">
-        <div class="panel-header">
+        <div class="panel-header d-flex justify-content-between align-items-center mb-4">
             <h1 class="panel-title">Pacientes</h1>
-            <div class="panel-actions">
-                <select class="panel-select">
-                    <option>Autorización para enviar comunicaciones comerciales</option>
-                </select>
-                <select class="panel-select">
-                    <option>Datos de contacto</option>
-                </select>
-                <select class="panel-select">
-                    <option>Estado del paciente</option>
-                </select>
-                <button class="panel-button-outline">Ordenar por</button>
-                <button class="panel-button-outline">Editar lista de pacientes</button>
-                <button class="panel-button-primary">+ Añadir paciente</button>
+            <div class="d-flex">
+                <div class="dropdown me-2">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="importarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Importar pacientes <i class="fas fa-caret-down"></i>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="importarDropdown">
+                        <li><a class="dropdown-item" href="#">Desde el ordenador</a></li>
+                        <li><a class="dropdown-item" href="#">Desde el teléfono</a></li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary" id="addPatientBtn">
+                    <i class="fas fa-plus"></i> Añadir paciente
+                </button>
             </div>
         </div>
 
-        <div class="panel-subtitle">Se han encontrado <strong>{{ pacientes|length }}</strong> resultados</div>
+        <div class="panel-filters mb-4">
+            <div class="row g-3">
+                <div class="col-lg-5">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input type="text" class="form-control border-start-0" placeholder="Escribe nombre, teléfono, ID o número de paciente" id="searchPatient">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="dropdown">
+                        <button class="form-select text-start dropdown-toggle" type="button" id="filterAutorizacion" data-bs-toggle="dropdown" aria-expanded="false">
+                            Autorización para enviar comunicaciones comerciales
+                        </button>
+                        <div class="dropdown-menu w-100 p-3" aria-labelledby="filterAutorizacion">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="autorizacionRadio" id="autorizacionAceptado">
+                                <label class="form-check-label" for="autorizacionAceptado">Aceptado</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="autorizacionRadio" id="autorizacionNoAceptado">
+                                <label class="form-check-label" for="autorizacionNoAceptado">No aceptado</label>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-sm btn-outline-secondary" id="borrarAutorizacion">Borrar</button>
+                                <button class="btn btn-sm btn-primary" id="aplicarAutorizacion">Aplicar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="dropdown">
+                        <button class="form-select text-start dropdown-toggle" type="button" id="filterContacto" data-bs-toggle="dropdown" aria-expanded="false">
+                            Datos de contacto
+                        </button>
+                        <div class="dropdown-menu w-100 p-3" aria-labelledby="filterContacto">
+                            <h6 class="dropdown-header">Número de teléfono</h6>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="telefonoRadio" id="telefonoDisponible">
+                                <label class="form-check-label" for="telefonoDisponible">Disponible</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="telefonoRadio" id="telefonoNoDisponible">
+                                <label class="form-check-label" for="telefonoNoDisponible">No disponible</label>
+                            </div>
+                            
+                            <h6 class="dropdown-header">Email</h6>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="emailRadio" id="emailDisponible">
+                                <label class="form-check-label" for="emailDisponible">Disponible</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="emailRadio" id="emailNoDisponible">
+                                <label class="form-check-label" for="emailNoDisponible">No disponible</label>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-sm btn-outline-secondary" id="borrarContacto">Borrar</button>
+                                <button class="btn btn-sm btn-primary" id="aplicarContacto">Aplicar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="dropdown">
+                        <button class="form-select text-start dropdown-toggle" type="button" id="filterEstado" data-bs-toggle="dropdown" aria-expanded="false">
+                            Estado del paciente
+                        </button>
+                        <div class="dropdown-menu w-100 p-3" aria-labelledby="filterEstado">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="estadoRadio" id="estadoActivo">
+                                <label class="form-check-label" for="estadoActivo">Activo</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="estadoRadio" id="estadoFallecido">
+                                <label class="form-check-label" for="estadoFallecido">Fallecido</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="estadoRadio" id="estadoInactivo">
+                                <label class="form-check-label" for="estadoInactivo">Inactivo</label>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-sm btn-outline-secondary" id="borrarEstado">Borrar</button>
+                                <button class="btn btn-sm btn-primary" id="aplicarEstado">Aplicar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="ordenarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Ordenar por
+                        </button>
+                        <div class="dropdown-menu p-3" aria-labelledby="ordenarDropdown">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="ordenarRadio" id="ordenarNombre">
+                                <label class="form-check-label" for="ordenarNombre">Nombre</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="ordenarRadio" id="ordenarApellido">
+                                <label class="form-check-label" for="ordenarApellido">Apellido</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="ordenarRadio" id="ordenarUltimaVisita">
+                                <label class="form-check-label" for="ordenarUltimaVisita">Última visita realizada</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="ordenarRadio" id="ordenarSiguienteVisita">
+                                <label class="form-check-label" for="ordenarSiguienteVisita">Siguiente visita programada</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="ordenarRadio" id="ordenarNumeroPaciente">
+                                <label class="form-check-label" for="ordenarNumeroPaciente">Número de paciente</label>
+                            </div>
+                            
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-sm btn-primary" id="aplicarOrdenar">Aplicar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <div class="panel-table-container">
-            <table class="panel-table">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <p class="mb-0">Se han encontrado <strong>{{ pacientes|length }}</strong> resultados</p>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="editarListaDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    Editar lista de pacientes <i class="fas fa-caret-down"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="editarListaDropdown">
+                    <li><a class="dropdown-item" href="#">Fusionar pacientes</a></li>
+                    <li><a class="dropdown-item" href="#">Eliminar pacientes</a></li>
+                    <li><a class="dropdown-item" href="#">Transferir el control de datos de pacientes</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Nombre y Apellidos</th>
-                        <th>Número de Paciente</th>
-                        <th>Email</th>
-                        <th>Teléfono</th>
-                        <th>Última visita</th>
-                        <th>Siguiente visita</th>
-                        <th>Documento de identidad</th>
-                        <th>Autorización para enviar comunicaciones comerciales</th>
+                        <th>NOMBRE Y APELLIDOS</th>
+                        <th>NÚMERO DE PACIENTE</th>
+                        <th>EMAIL</th>
+                        <th>TELÉFONO</th>
+                        <th>ÚLTIMA VISITA</th>
+                        <th>SIGUIENTE VISITA</th>
+                        <th>DOCUMENTO DE IDENTIDAD</th>
+                        <th>AUTORIZACIÓN PARA ENVIAR COMUNICACIONES COMERCIALES</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for paciente in pacientes %}
                     <tr>
                         <td>{{ paciente.nombre }} {{ paciente.apellidos }}</td>
-                        <td>{{ paciente.numero_paciente }}</td>
+                        <td>{{ paciente.id|truncate(5, True, '') }}</td>
                         <td>
                             {% if paciente.email %}
                                 {{ paciente.email }}
                             {% else %}
-                                <a href="#" class="link-add">Añadir email</a>
+                                <a href="#" class="add-email-link">
+                                    <i class="fas fa-plus-circle text-primary me-1"></i> Añadir email
+                                </a>
                             {% endif %}
                         </td>
-                        <td>{{ paciente.telefono }}</td>
+                        <td>{% if paciente.telefono %}+34 {{ paciente.telefono }}{% else %}-{% endif %}</td>
                         <td>{{ paciente.ultima_visita or '-' }}</td>
-                        <td>{{ paciente.siguiente_visita or 'Crear cita' }}</td>
+                        <td>
+                            {% if paciente.siguiente_visita %}
+                                {{ paciente.siguiente_visita }}
+                            {% else %}
+                                <a href="#" class="create-appointment-link text-primary">Crear cita</a>
+                            {% endif %}
+                        </td>
                         <td>{{ paciente.dni or '-' }}</td>
-                        <td>{{ paciente.autorizacion }}</td>
+                        <td>{{ paciente.autorizacion or 'Aceptado' }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -70,5 +216,78 @@
         </div>
     </div>
 </div>
-</body>
-</html>
+
+<!-- Modal Añadir Paciente -->
+<div class="modal fade" id="addPatientModal" tabindex="-1" aria-labelledby="addPatientModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title" id="addPatientModalLabel">Añadir paciente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-3">
+                <form id="newPatientForm">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre del paciente*</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="apellidos" class="form-label">Apellidos*</label>
+                        <input type="text" class="form-control" id="apellidos" name="apellidos" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <div class="input-group">
+                            <span class="input-group-text">+34</span>
+                            <input type="tel" class="form-control" id="telefono" name="telefono">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email">
+                        <div class="form-text text-muted mt-2">
+                            Usaremos estos datos de contacto para enviar notificaciones, mensajes de chat y documentos. 
+                            Asegúrate de que pertenezcan al paciente o a una persona autorizada.
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <a href="#" id="addPhoneLink" class="text-primary">
+                            <i class="fas fa-plus"></i> Añadir otro teléfono
+                        </a>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Tipo de paciente</label>
+                        <div class="d-flex">
+                            <div class="form-check me-4">
+                                <input class="form-check-input" type="radio" name="tipo_paciente" id="tipoPacientePrivado" value="Privado" checked>
+                                <label class="form-check-label" for="tipoPacientePrivado">
+                                    Privado
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipo_paciente" id="tipoPacienteAseguradora" value="De aseguradora">
+                                <label class="form-check-label" for="tipoPacienteAseguradora">
+                                    De aseguradora
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-0 d-flex justify-content-between">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="savePatientBtn">Guardar sin datos de contacto</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/pacientes.js') }}"></script>
+{% endblock %}
