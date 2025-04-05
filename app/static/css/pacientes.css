@@ -169,33 +169,44 @@
 }
 
 /* Modal */
+/* Modal diseño limpio */
+.modal-content {
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    border: none;
+}
+
 .modal-header {
-    padding: 15px 20px;
+    padding: 16px 24px;
     border-bottom: 1px solid #e9ecef;
 }
 
+.modal-title {
+    font-size: 20px;
+    font-weight: 500;
+}
+
 .modal-body {
-    padding: 20px;
+    padding: 24px;
 }
 
 .modal-footer {
-    padding: 15px 20px;
+    padding: 16px 24px;
     border-top: 1px solid #e9ecef;
 }
 
-.modal-title {
-    font-size: 18px;
-    font-weight: 500;
-}
-
+/* Formulario del popup */
 .form-label {
     font-weight: 500;
     font-size: 14px;
-    margin-bottom: 6px;
 }
 
-.form-control-sm {
-    height: 31px;
+.form-control-sm, .form-control {
+    font-size: 14px;
+    height: 36px;
+}
+
+.input-group-sm .input-group-text {
     font-size: 14px;
 }
 
@@ -203,6 +214,30 @@
     font-size: 12px;
     color: #666;
 }
+
+/* Botones */
+.modal-footer .btn {
+    font-size: 14px;
+    height: 36px;
+    padding: 0 16px;
+}
+
+.modal-footer .btn-primary {
+    background-color: #009587;
+    border-color: #009587;
+    color: #fff;
+}
+
+.modal-footer .btn-outline-secondary {
+    border-color: #ccc;
+    color: #333;
+}
+
+/* Radio buttons alineados horizontalmente */
+.d-flex.gap-3 .form-check {
+    margin-right: 12px;
+}
+
 
 /* Responsive */
 @media (max-width: 1200px) {
