@@ -15,14 +15,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Custom CSS -->
-    <!-- Ajusta la ruta según tu estructura de carpetas -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pacientes.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/panel.css') }}">
-
+    
+    <!-- CSRF Token para seguridad en peticiones AJAX -->
+    <meta name="csrf-token" content="{{ csrf_token() if csrf_token else '' }}">
 </head>
 <body>
     <!-- Sidebar -->
-    <!-- Ajusta la ruta del include a tu estructura real de componentes -->
     {% include 'components/sidebar.html' %}
 
     <!-- Main content -->
@@ -157,8 +157,6 @@
                         </div>
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-sm btn-primary" id="aplicarOrdenar">Aplicar</button>
-                            <button class="btn btn-sm btn-outline-secondary" id="borrarOrdenar">Borrar</button>
-
                         </div>
                     </div>
                 </div>
@@ -167,7 +165,7 @@
             <!-- Conteo de resultados y menú de edición -->
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
-                    <p class="mb-0 small">Se han encontrado <strong>0</strong> resultados</p>
+                    <p class="mb-0 small">Se han encontrado <strong>{{ total_pacientes|default(0) }}</strong> resultados</p>
                 </div>
                 <div class="dropdown">
                     <button class="btn btn-outline-secondary" type="button" id="editarListaDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -181,9 +179,9 @@
                 </div>
             </div>
 
-            <!-- Tabla con estructura base (sin datos dinámicos) -->
+            <!-- Tabla de pacientes -->
             <div class="table-responsive">
-                <table class="table">
+                <table class="table pacientes-tabla">
                     <thead>
                         <tr>
                             <th>NOMBRE Y APELLIDOS</th>
@@ -197,24 +195,60 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Ejemplo de fila estática -->
-                        <tr>
-                            <td>John Doe</td>
-                            <td>00001</td>
-                            <td>
-                                <a href="#" class="add-email-link">
-                                    <i class="fas fa-plus-circle text-primary me-1"></i> Añadir email
-                                </a>
-                            </td>
-                            <td>+34 123456789</td>
-                            <td>-</td>
-                            <td>
-                                <a href="#" class="create-appointment-link text-primary">Crear cita</a>
-                            </td>
-                            <td>-</td>
-                            <td>Aceptado</td>
-                        </tr>
-                        <!-- Repetir filas según tus datos desde la BD -->
+                        {% if pacientes %}
+                            {% for paciente in pacientes %}
+                                <tr data-id="{{ paciente.id }}">
+                                    <td>{{ paciente.nombre }} {{ paciente.apellidos }}</td>
+                                    <td>{{ '%05d' % loop.index }}</td>
+                                    <td>
+                                        {% if paciente.email %}
+                                            {{ paciente.email }}
+                                        {% else %}
+                                            <a href="javascript:void(0)" class="add-email-link" data-id="{{ paciente.id }}">
+                                                <i class="fas fa-plus-circle text-primary me-1"></i> Añadir email
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if paciente.telefono %}
+                                            +34 {{ paciente.telefono }}
+                                        {% else %}
+                                            <a href="javascript:void(0)" class="add-phone-link" data-id="{{ paciente.id }}">
+                                                <i class="fas fa-plus-circle text-primary me-1"></i> Añadir teléfono
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if paciente.ultima_visita %}
+                                            {{ paciente.ultima_visita.strftime('%d-%m-%Y %H:%M') }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if paciente.siguiente_visita %}
+                                            {{ paciente.siguiente_visita.strftime('%d-%m-%Y %H:%M') }}
+                                        {% else %}
+                                            <a href="#" class="create-appointment-link text-primary">Crear cita</a>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if paciente.dni %}
+                                            {{ paciente.dni }}
+                                        {% else %}
+                                            <a href="javascript:void(0)" class="add-dni-link" data-id="{{ paciente.id }}">
+                                                <i class="fas fa-plus-circle text-primary me-1"></i> Añadir DNI
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ paciente.autorizacion }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="8" class="text-center py-4">No hay pacientes registrados</td>
+                            </tr>
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
@@ -285,7 +319,7 @@
                 
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary btn-sm" id="savePatientBtn">Guardar sin datos de contacto</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="savePatientBtn">Guardar</button>
                 </div>
             </div>
         </div>
@@ -293,7 +327,8 @@
 
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Archivo JS personalizado para esta página (opcional) -->
+    
+    <!-- Archivo JS personalizado para esta página -->
     <script src="{{ url_for('static', filename='js/pacientes.js') }}"></script>
 </body>
 </html>

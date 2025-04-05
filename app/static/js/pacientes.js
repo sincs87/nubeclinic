@@ -160,6 +160,15 @@ document.addEventListener('DOMContentLoaded', function() {
     popoverTriggerList.map(function(popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl);
     });
+
+    // Configurar edición inline para emails
+    setupInlineEmailEditing();
+    
+    // Configurar edición inline para DNI
+    setupInlineDniEditing();
+    
+    // Configurar edición inline para teléfonos
+    setupInlinePhoneEditing();
 });
 
 // Función para validar el formulario
@@ -393,72 +402,372 @@ function ordenarTabla(criterio) {
     });
 }
 
-// Función para añadir email a un paciente existente
-function addEmailToPaciente(pacienteId) {
-    const email = prompt('Por favor, ingresa el email del paciente:');
+// FUNCIONALIDAD DE EDICIÓN INLINE PARA EMAILS
+function setupInlineEmailEditing() {
+    // Seleccionar todos los enlaces de añadir email
+    const addEmailLinks = document.querySelectorAll('.add-email-link');
     
-    if (email) {
-        fetch(`/pacientes/${pacienteId}/agregar-email`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCsrfToken()
-            },
-            body: JSON.stringify({ email })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.reload();
-            } else {
-                alert('Error al guardar el email');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error al guardar el email');
+    addEmailLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Obtener el ID del paciente
+            const pacienteId = this.getAttribute('data-id');
+            const parentCell = this.parentNode;
+            
+            // Reemplazar el enlace con un input
+            parentCell.innerHTML = `
+                <input type="email" class="form-control form-control-sm inline-email-input" placeholder="Añadir email">
+            `;
+            
+            // Enfocar el input
+            const emailInput = parentCell.querySelector('.inline-email-input');
+            emailInput.focus();
+            
+            // Guardar email al presionar Enter
+            emailInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const email = this.value.trim();
+                    if (email) {
+                        guardarEmail(pacienteId, email, parentCell);
+                    } else {
+                        restaurarEnlaceEmail(parentCell, pacienteId);
+                    }
+                }
+            });
+            
+            // Guardar email al quitar el foco
+            emailInput.addEventListener('blur', function() {
+                const email = this.value.trim();
+                if (email) {
+                    guardarEmail(pacienteId, email, parentCell);
+                } else {
+                    restaurarEnlaceEmail(parentCell, pacienteId);
+                }
+            });
         });
-    }
+    });
 }
 
-// Necesitamos actualizar también la ruta para crear pacientes
-// Esta función permite crear un paciente desde el modal
-function guardarPaciente() {
-    const nombre = document.getElementById('nombre').value;
-    const apellidos = document.getElementById('apellidos').value;
-    const telefono = document.getElementById('telefono').value;
-    const email = document.getElementById('email').value;
-    const tipoPaciente = document.querySelector('input[name="tipo_paciente"]:checked').value;
+function guardarEmail(pacienteId, email, parentCell) {
+    // Validar el email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert('El email no es válido');
+        const emailInput = parentCell.querySelector('.inline-email-input');
+        emailInput.focus();
+        return;
+    }
     
-    const data = {
-        nombre: nombre,
-        apellidos: apellidos,
-        telefono: telefono,
-        email: email,
-        tipo_paciente: tipoPaciente
-    };
+    // Mostrar indicador de carga
+    parentCell.innerHTML = '<div class="spinner-border spinner-border-sm text-primary" role="status"></div>';
     
-    fetch('/pacientes/crear', {
+    // Enviar la solicitud para guardar el email
+    fetch(`/pacientes/${pacienteId}/agregar-email`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRFToken': getCsrfToken()
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify({ email: email })
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Cerrar modal y recargar página
-            const modal = bootstrap.Modal.getInstance(document.getElementById('addPatientModal'));
-            modal.hide();
-            window.location.reload();
+            // Mostrar el email guardado
+            parentCell.textContent = email;
         } else {
-            alert('Error al guardar el paciente');
+            alert('Error al guardar el email: ' + (data.error || 'Error desconocido'));
+            restaurarEnlaceEmail(parentCell, pacienteId);
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Error al guardar el paciente');
+        alert('Error al guardar el email');
+        restaurarEnlaceEmail(parentCell, pacienteId);
+    });
+}
+
+function restaurarEnlaceEmail(parentCell, pacienteId) {
+    parentCell.innerHTML = `
+        <a href="javascript:void(0)" class="add-email-link" data-id="${pacienteId}">
+            <i class="fas fa-plus-circle text-primary me-1"></i> Añadir email
+        </a>
+    `;
+    
+    // Re-adjuntar el evento click
+    const newLink = parentCell.querySelector('.add-email-link');
+    newLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const id = this.getAttribute('data-id');
+        const cell = this.parentNode;
+        
+        cell.innerHTML = `
+            <input type="email" class="form-control form-control-sm inline-email-input" placeholder="Añadir email">
+        `;
+        
+        const input = cell.querySelector('.inline-email-input');
+        input.focus();
+        
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const value = this.value.trim();
+                if (value) {
+                    guardarEmail(id, value, cell);
+                } else {
+                    restaurarEnlaceEmail(cell, id);
+                }
+            }
+        });
+        
+        input.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value) {
+                guardarEmail(id, value, cell);
+            } else {
+                restaurarEnlaceEmail(cell, id);
+            }
+        });
+    });
+}
+
+// FUNCIONALIDAD DE EDICIÓN INLINE PARA DNI
+function setupInlineDniEditing() {
+    const addDniLinks = document.querySelectorAll('.add-dni-link');
+    
+    addDniLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const pacienteId = this.getAttribute('data-id');
+            const parentCell = this.parentNode;
+            
+            parentCell.innerHTML = `
+                <input type="text" class="form-control form-control-sm inline-dni-input" placeholder="Añadir DNI">
+            `;
+            
+            const dniInput = parentCell.querySelector('.inline-dni-input');
+            dniInput.focus();
+            
+            dniInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const dni = this.value.trim();
+                    if (dni) {
+                        guardarDni(pacienteId, dni, parentCell);
+                    } else {
+                        restaurarEnlaceDni(parentCell, pacienteId);
+                    }
+                }
+            });
+            
+            dniInput.addEventListener('blur', function() {
+                const dni = this.value.trim();
+                if (dni) {
+                    guardarDni(pacienteId, dni, parentCell);
+                } else {
+                    restaurarEnlaceDni(parentCell, pacienteId);
+                }
+            });
+        });
+    });
+}
+
+function guardarDni(pacienteId, dni, parentCell) {
+    parentCell.innerHTML = '<div class="spinner-border spinner-border-sm text-primary" role="status"></div>';
+    
+    fetch(`/pacientes/${pacienteId}/agregar-dni`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCsrfToken()
+        },
+        body: JSON.stringify({ dni: dni })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            parentCell.textContent = dni;
+        } else {
+            alert('Error al guardar el DNI: ' + (data.error || 'Error desconocido'));
+            restaurarEnlaceDni(parentCell, pacienteId);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al guardar el DNI');
+        restaurarEnlaceDni(parentCell, pacienteId);
+    });
+}
+
+function restaurarEnlaceDni(parentCell, pacienteId) {
+    parentCell.innerHTML = `
+        <a href="javascript:void(0)" class="add-dni-link" data-id="${pacienteId}">
+            <i class="fas fa-plus-circle text-primary me-1"></i> Añadir DNI
+        </a>
+    `;
+    
+    const newLink = parentCell.querySelector('.add-dni-link');
+    newLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const id = this.getAttribute('data-id');
+        const cell = this.parentNode;
+        
+        cell.innerHTML = `
+            <input type="text" class="form-control form-control-sm inline-dni-input" placeholder="Añadir DNI">
+        `;
+        
+        const input = cell.querySelector('.inline-dni-input');
+        input.focus();
+        
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const value = this.value.trim();
+                if (value) {
+                    guardarDni(id, value, cell);
+                } else {
+                    restaurarEnlaceDni(cell, id);
+                }
+            }
+        });
+        
+        input.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value) {
+                guardarDni(id, value, cell);
+            } else {
+                restaurarEnlaceDni(cell, id);
+            }
+        });
+    });
+}
+
+// FUNCIONALIDAD DE EDICIÓN INLINE PARA TELÉFONO
+function setupInlinePhoneEditing() {
+    const addPhoneLinks = document.querySelectorAll('.add-phone-link');
+    
+    addPhoneLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const pacienteId = this.getAttribute('data-id');
+            const parentCell = this.parentNode;
+            
+            parentCell.innerHTML = `
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text">+34</span>
+                    <input type="tel" class="form-control form-control-sm inline-phone-input" placeholder="Añadir teléfono">
+                </div>
+            `;
+            
+            const phoneInput = parentCell.querySelector('.inline-phone-input');
+            phoneInput.focus();
+            
+            phoneInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const telefono = this.value.trim();
+                    if (telefono) {
+                        guardarTelefono(pacienteId, telefono, parentCell);
+                    } else {
+                        restaurarEnlaceTelefono(parentCell, pacienteId);
+                    }
+                }
+            });
+            
+            phoneInput.addEventListener('blur', function() {
+                const telefono = this.value.trim();
+                if (telefono) {
+                    guardarTelefono(pacienteId, telefono, parentCell);
+                } else {
+                    restaurarEnlaceTelefono(parentCell, pacienteId);
+                }
+            });
+        });
+    });
+}
+
+function guardarTelefono(pacienteId, telefono, parentCell) {
+    // Validar el formato del teléfono (solo números y al menos 9 dígitos)
+    const phoneRegex = /^[0-9]{9,}$/;
+    if (!phoneRegex.test(telefono)) {
+        alert('El número de teléfono debe contener al menos 9 dígitos');
+        const phoneInput = parentCell.querySelector('.inline-phone-input');
+        phoneInput.focus();
+        return;
+    }
+    
+    parentCell.innerHTML = '<div class="spinner-border spinner-border-sm text-primary" role="status"></div>';
+    
+    fetch(`/pacientes/${pacienteId}/agregar-telefono`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCsrfToken()
+        },
+        body: JSON.stringify({ telefono: telefono })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            parentCell.textContent = `+34 ${telefono}`;
+        } else {
+            alert('Error al guardar el teléfono: ' + (data.error || 'Error desconocido'));
+            restaurarEnlaceTelefono(parentCell, pacienteId);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al guardar el teléfono');
+        restaurarEnlaceTelefono(parentCell, pacienteId);
+    });
+}
+
+function restaurarEnlaceTelefono(parentCell, pacienteId) {
+    parentCell.innerHTML = `
+        <a href="javascript:void(0)" class="add-phone-link" data-id="${pacienteId}">
+            <i class="fas fa-plus-circle text-primary me-1"></i> Añadir teléfono
+        </a>
+    `;
+    
+    const newLink = parentCell.querySelector('.add-phone-link');
+    newLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const id = this.getAttribute('data-id');
+        const cell = this.parentNode;
+        
+        cell.innerHTML = `
+            <div class="input-group input-group-sm">
+                <span class="input-group-text">+34</span>
+                <input type="tel" class="form-control form-control-sm inline-phone-input" placeholder="Añadir teléfono">
+            </div>
+        `;
+        
+        const input = cell.querySelector('.inline-phone-input');
+        input.focus();
+        
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const value = this.value.trim();
+                if (value) {
+                    guardarTelefono(id, value, cell);
+                } else {
+                    restaurarEnlaceTelefono(cell, id);
+                }
+            }
+        });
+        
+        input.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value) {
+                guardarTelefono(id, value, cell);
+            } else {
+                restaurarEnlaceTelefono(cell, id);
+            }
+        });
     });
 }
