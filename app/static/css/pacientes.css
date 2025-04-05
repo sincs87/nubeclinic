@@ -2,9 +2,9 @@
 
 /* Layout básico */
 .main-content {
+    margin-left: 60px;
     background-color: #fff;
     min-height: 100vh;
-    padding: 0 24px;
 }
 
 /* Título de la página con línea inferior */
@@ -27,9 +27,7 @@
     display: flex;
     justify-content: flex-end;
     margin-bottom: 20px;
-    gap: 10px;
 }
-
 
 .action-buttons .btn {
     margin-left: 10px;
@@ -246,6 +244,30 @@
         width: 100% !important;
     }
 }
+
+/* Alineación con el sidebar y espaciado visual idéntico a Doctoralia Pro */
+.main-content {
+    background-color: #fff;
+    min-height: 100vh;
+    padding: 0 24px;
+    margin-left: 60px;
+}
+
+/* Título alineado y con borde inferior */
+.pacientes-titulo {
+    font-size: 24px;
+    font-weight: 500;
+    margin: 0;
+    padding: 28px 0 16px;
+    color: #333;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* Filtros con estructura flex para separación perfecta */
+.filtros-pacientes {
+    gap: 10px;
+}
+
 .filtros-pacientes > div {
     min-width: 180px;
 }
@@ -255,4 +277,29 @@
     font-size: 14px;
     padding: 0 30px 0 12px;
     background-position: right 10px center;
+    white-space: nowrap;
+}
+
+.filtros-pacientes .input-group {
+    height: 36px;
+}
+
+.filtros-pacientes .input-group-text {
+    background-color: #fff;
+    border-color: #ddd;
+    border-right: none;
+}
+
+.filtros-pacientes .form-control {
+    border-left: none;
+    height: 36px;
+    font-size: 14px;
+}
+
+/* Botones separados correctamente */
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    gap: 10px;
 }
