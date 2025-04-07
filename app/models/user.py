@@ -21,6 +21,8 @@ class User(db.Model):
     tiene_suscripcion = db.Column(db.Boolean, default=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     tenant_id = db.Column(db.String(36), nullable=False)
+    reset_token = db.Column(db.String(255), nullable=True)
+    reset_token_expiration = db.Column(db.DateTime, nullable=True)
     
     def __repr__(self):
         return f'<User {self.email}>'
