@@ -1,6 +1,7 @@
 from app import db
 from datetime import datetime
 from sqlalchemy.dialects.postgresql import ARRAY
+from werkzeug.security import generate_password_hash
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -23,7 +24,7 @@ class User(db.Model):
     tenant_id = db.Column(db.String(36), nullable=False)
     reset_token = db.Column(db.String(255), nullable=True)
     reset_token_expiration = db.Column(db.DateTime, nullable=True)
-    
+
     def __repr__(self):
         return f'<User {self.email}>'
     
@@ -53,5 +54,6 @@ class User(db.Model):
     
     def get_id(self):
         return str(self.id)
-reset_token = db.Column(db.String(120), nullable=True)
-reset_token_expiration = db.Column(db.DateTime, nullable=True)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
