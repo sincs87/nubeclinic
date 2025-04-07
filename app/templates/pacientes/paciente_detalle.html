@@ -1,195 +1,143 @@
-
+{# templates/pacientes/paciente_detalle.html #}
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Ficha del paciente</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/panel.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/pacientes.css') }}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    body {
-        background-color: #f5f6fa;
-        font-family: 'Poppins', sans-serif;
-        margin: 0;
-        padding: 0;
-    }
-    .container-paciente {
-        display: flex;
-        height: 100vh;
-    }
-    .sidebar {
-        flex-shrink: 0;
-    }
-    .main-panel {
-        flex-grow: 1;
-        padding: 40px;
-        max-width: 1400px;
-        margin: auto;
-    }
-    .perfil-box {
-        background-color: #fff;
-        border-radius: 8px;
-        padding: 30px;
-        width: 300px;
-    }
-    .perfil-box .icono {
-        width: 80px;
-        height: 80px;
-        background-color: #cbd1d9;
-        color: #fff;
-        border-radius: 50%;
-        font-weight: 600;
-        font-size: 28px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 15px;
-    }
-    .perfil-box p {
-        margin-bottom: 8px;
-        font-size: 14px;
-        color: #6b7280;
-    }
-    .ficha-form {
-        background-color: #fff;
-        border-radius: 8px;
-        padding: 30px;
-        flex-grow: 1;
-    }
-    .ficha-form label {
-        font-weight: 500;
-        margin-bottom: 4px;
-    }
-    .ficha-form .form-control {
-        border-radius: 8px;
-        font-size: 14px;
-    }
-    .form-section-title {
-        font-weight: 600;
-        font-size: 16px;
-        margin: 30px 0 15px;
-    }
-    .nav-tabs .nav-link.active {
-        border-bottom: 2px solid #1abc9c;
-        font-weight: 600;
-        color: #1abc9c;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Ficha del paciente - NubeClinic</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/panel.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pacientes.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container-paciente">
-    {% include 'components/sidebar.html' %}
+    <div class="d-flex">
+        {% include 'components/sidebar.html' %}
 
-    <div class="main-panel d-flex">
-        <div class="perfil-box me-5">
-            <div class="text-center">
-                <div class="icono mx-auto">{{ paciente.nombre[0] }}{{ paciente.apellidos[0] }}</div>
-                <h6>{{ paciente.nombre }} {{ paciente.apellidos }}</h6>
-                <p class="text-muted small">Nº {{ paciente.id|string|slice(0, 5) }}</p>
-                <hr>
-                {% if paciente.email %}<p><i class="fa fa-envelope me-2"></i>{{ paciente.email }}</p>{% endif %}
-                {% if paciente.telefono %}<p><i class="fa fa-phone me-2"></i>{{ paciente.telefono }}</p>{% endif %}
-            </div>
-            <div class="mt-4">
-                <label class="form-label fw-bold">Notas</label>
-                <textarea name="notas" rows="4" class="form-control">{{ paciente.notas or '' }}</textarea>
-            </div>
-            <div class="mt-4">
-                <label class="form-label fw-bold">Otra información médica</label>
-                <ul class="list-unstyled small text-muted ps-3 mt-2">
-                    <li>Alergias</li>
-                    <li>Medicación</li>
-                    <li>Antecedentes médicos</li>
-                    <li>Otros</li>
-                </ul>
+        <div class="main-content container-fluid px-5 py-4">
+            <div class="row">
+                <!-- Lado izquierdo -->
+                <div class="col-md-4 col-lg-3">
+                    <div class="card p-4">
+                        <div class="profile-pic bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; font-size: 24px;">
+                            {{ paciente.nombre[0] }}{{ paciente.apellidos[0] }}
+                        </div>
+                        <h6 class="text-center mb-1">{{ paciente.nombre }} {{ paciente.apellidos }}</h6>
+                        <p class="text-muted text-center small">Nº {{ paciente.id|string|slice(0,5) }}</p>
+
+                        <div class="d-flex justify-content-around my-2">
+                            <i class="fas fa-calendar-plus text-muted"></i>
+                            <i class="fas fa-notes-medical text-muted"></i>
+                            <i class="fas fa-user-circle text-muted"></i>
+                            <i class="fas fa-ellipsis-h text-muted"></i>
+                        </div>
+
+                        <div class="small text-muted">
+                            {% if paciente.email %}<p><i class="fas fa-envelope me-2"></i>{{ paciente.email }}</p>{% endif %}
+                            {% if paciente.telefono %}<p><i class="fas fa-phone me-2"></i>{{ paciente.telefono }}</p>{% endif %}
+                        </div>
+
+                        <hr>
+                        <label class="fw-bold">Notas</label>
+                        <textarea class="form-control small" name="notas" rows="4">{{ paciente.notas or '' }}</textarea>
+
+                        <hr>
+                        <label class="fw-bold">Otra información médica</label>
+                        <ul class="list-unstyled small text-muted mt-2">
+                            <li>Alergias</li>
+                            <li>Medicación</li>
+                            <li>Antecedentes médicos</li>
+                            <li>Otros</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Formulario principal -->
+                <div class="col-md-8 col-lg-9">
+                    <form method="POST" class="card p-4">
+                        <ul class="nav nav-tabs mb-4">
+                            <li class="nav-item"><a class="nav-link active" href="#">Datos del paciente</a></li>
+                            <li class="nav-item"><a class="nav-link disabled" href="#">Historial clínico</a></li>
+                            <li class="nav-item"><a class="nav-link disabled" href="#">Citas</a></li>
+                            <li class="nav-item"><a class="nav-link disabled" href="#">Lista de pagos</a></li>
+                        </ul>
+
+                        <h6 class="mb-3 fw-bold">Datos generales del paciente</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nombre*</label>
+                                <input type="text" class="form-control" name="nombre" value="{{ paciente.nombre }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Apellidos*</label>
+                                <input type="text" class="form-control" name="apellidos" value="{{ paciente.apellidos }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Fecha de nacimiento</label>
+                                <input type="date" class="form-control" name="fecha_nacimiento" value="{{ paciente.fecha_nacimiento }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Género</label>
+                                <select class="form-control" name="genero">
+                                    <option value="">Selecciona una opción</option>
+                                    <option value="Hombre" {% if paciente.genero == 'Hombre' %}selected{% endif %}>Hombre</option>
+                                    <option value="Mujer" {% if paciente.genero == 'Mujer' %}selected{% endif %}>Mujer</option>
+                                    <option value="Otro" {% if paciente.genero == 'Otro' %}selected{% endif %}>Otro</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Tipo de paciente</label><br>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="tipo_paciente" value="Privado" {% if paciente.tipo_paciente == 'Privado' %}checked{% endif %}>
+                                    <label class="form-check-label">Privado</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="tipo_paciente" value="De aseguradora" {% if paciente.tipo_paciente == 'De aseguradora' %}checked{% endif %}>
+                                    <label class="form-check-label">De aseguradora</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h6 class="mt-4 mb-3 fw-bold">Datos administrativos y contacto</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Estado del paciente</label>
+                                <select class="form-control" name="estado">
+                                    <option value="Activo" {% if paciente.estado == 'Activo' %}selected{% endif %}>Activo</option>
+                                    <option value="Inactivo" {% if paciente.estado == 'Inactivo' %}selected{% endif %}>Inactivo</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Número de documento</label>
+                                <input type="text" class="form-control" name="dni" value="{{ paciente.dni }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" name="telefono" value="{{ paciente.telefono }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email" value="{{ paciente.email }}">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Ciudad</label>
+                                <input type="text" class="form-control" name="ciudad" value="{{ paciente.ciudad }}">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Provincia</label>
+                                <input type="text" class="form-control" name="provincia" value="{{ paciente.provincia }}">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Nacionalidad</label>
+                                <input type="text" class="form-control" name="nacionalidad" value="{{ paciente.nacionalidad }}">
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-
-        <form class="ficha-form w-100" method="POST">
-            <ul class="nav nav-tabs mb-4">
-                <li class="nav-item"><a class="nav-link active" href="#">Datos del paciente</a></li>
-                <li class="nav-item"><a class="nav-link disabled" href="#">Historial clínico</a></li>
-                <li class="nav-item"><a class="nav-link disabled" href="#">Citas</a></li>
-                <li class="nav-item"><a class="nav-link disabled" href="#">Lista de pagos</a></li>
-            </ul>
-
-            <div class="form-section-title">Datos generales del paciente</div>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label>Nombre*</label>
-                    <input type="text" class="form-control" name="nombre" value="{{ paciente.nombre }}" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Apellidos*</label>
-                    <input type="text" class="form-control" name="apellidos" value="{{ paciente.apellidos }}" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Fecha de nacimiento</label>
-                    <input type="date" class="form-control" name="fecha_nacimiento" value="{{ paciente.fecha_nacimiento }}">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Género</label>
-                    <select class="form-control" name="genero">
-                        <option value="">Selecciona una opción</option>
-                        <option value="Hombre" {% if paciente.genero == 'Hombre' %}selected{% endif %}>Hombre</option>
-                        <option value="Mujer" {% if paciente.genero == 'Mujer' %}selected{% endif %}>Mujer</option>
-                        <option value="Otro" {% if paciente.genero == 'Otro' %}selected{% endif %}>Otro</option>
-                    </select>
-                </div>
-                <div class="col-md-12 mb-3">
-                    <label>Tipo de paciente</label><br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="tipo_paciente" value="Privado" {% if paciente.tipo_paciente == 'Privado' %}checked{% endif %}>
-                        <label class="form-check-label">Privado</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="tipo_paciente" value="De aseguradora" {% if paciente.tipo_paciente == 'De aseguradora' %}checked{% endif %}>
-                        <label class="form-check-label">De aseguradora</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-section-title">Datos administrativos y contacto</div>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label>Estado del paciente</label>
-                    <select class="form-control" name="estado">
-                        <option value="Activo" {% if paciente.estado == 'Activo' %}selected{% endif %}>Activo</option>
-                        <option value="Inactivo" {% if paciente.estado == 'Inactivo' %}selected{% endif %}>Inactivo</option>
-                    </select>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Número de documento</label>
-                    <input type="text" class="form-control" name="dni" value="{{ paciente.dni }}">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Teléfono</label>
-                    <input type="text" class="form-control" name="telefono" value="{{ paciente.telefono }}">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Email</label>
-                    <input type="email" class="form-control" name="email" value="{{ paciente.email }}">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Ciudad</label>
-                    <input type="text" class="form-control" name="ciudad" value="{{ paciente.ciudad }}">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Provincia</label>
-                    <input type="text" class="form-control" name="provincia" value="{{ paciente.provincia }}">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Nacionalidad</label>
-                    <input type="text" class="form-control" name="nacionalidad" value="{{ paciente.nacionalidad }}">
-                </div>
-            </div>
-
-            <div class="text-end mt-4">
-                <button type="submit" class="btn btn-primary">Guardar cambios</button>
-            </div>
-        </form>
     </div>
-</div>
 </body>
 </html>
