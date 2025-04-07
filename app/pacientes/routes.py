@@ -401,9 +401,9 @@ def agregar_dni(paciente_id):
         db.session.rollback()
         return jsonify({"success": False, "error": str(e)})
     
-@pacientes_bp.route("/<string:paciente_id>/edit", methods=["GET"])
+@pacientes_bp.route("/<string:paciente_id>/edit", methods=["POST"], endpoint="pacientes.actualizar_paciente")
 @login_required
-def editar_paciente(paciente_id):
+def actualizar_paciente(paciente_id):
     user_id = session.get("user_id")
     user = db.session.get(User, user_id)
 
