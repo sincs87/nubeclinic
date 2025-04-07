@@ -276,4 +276,56 @@
 .filtros-pacientes .dropdown-menu .d-flex {
     margin-top: 16px;
 }
+body {
+    background-color: #ffffff !important;
+    font-family: 'Poppins', sans-serif;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 1.5rem;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    color: #6c757d;
+    font-weight: 500;
+    padding: 12px 20px;
+}
+
+.nav-tabs .nav-link.active {
+    color: #2d9c8b;
+    border-bottom: 2px solid #2d9c8b;
+    background-color: transparent;
+    font-weight: 600;
+}
+
+.shadow-sm {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.form-label {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+input.form-control,
+select.form-control {
+    border-radius: 8px;
+    font-size: 0.95rem;
+    padding: 8px 12px;
+    border: 1px solid #dcdcdc;
+    background-color: #fff;
+}
+
+textarea.form-control {
+    border-radius: 8px;
+    font-size: 0.95rem;
+    padding: 10px;
+}
+
+h6 {
+    font-size: 1rem;
+    font-weight: 600;
+}
 

@@ -26,16 +26,17 @@ body {
 
 /* Sidebar */
 .sidebar {
-    width: 60px;
-    height: 100vh;
-    background-color: #ffffff;
-    border-right: 1px solid var(--gray-300);
     position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
+    left: 0px;
+    top: 0px;
+    background: rgb(255, 255, 255);
+    bottom: 0px;
+    border-right: 1px solid rgb(216, 218, 218);
+    width: 70px;
+    padding: 5px 10px 10px;
+    display: inline-block;
+    z-index: 1040;
+    box-sizing: border-box;
 }
 
 .sidebar-top {
