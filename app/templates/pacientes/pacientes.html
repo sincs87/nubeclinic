@@ -332,4 +332,46 @@
     <!-- Archivo JS personalizado para esta página -->
     <script src="{{ url_for('static', filename='js/pacientes.js') }}"></script>
 </body>
+<script>
+    // Activar navegación al hacer clic en la fila
+    document.querySelectorAll("tr[data-id]").forEach(fila => {
+      fila.style.cursor = "pointer";
+      fila.addEventListener("click", () => {
+        const id = fila.getAttribute("data-id");
+        if (id) {
+          window.location.href = `/pacientes/${id}/edit`;
+        }
+      });
+    });
+  
+    // Evitar que se dispare el click de la fila si se hace clic en un enlace interno
+    document.querySelectorAll(".add-email-link, .add-phone-link, .add-dni-link, .create-appointment-link").forEach(enlace => {
+      enlace.addEventListener("click", e => {
+        e.stopPropagation();
+        // Aquí puedes lanzar un modal o lo que quieras
+      });
+    });
+  </script>
+  
+<script>
+  // Activar navegación al hacer clic en la fila
+  document.querySelectorAll("tr[data-id]").forEach(fila => {
+    fila.style.cursor = "pointer";
+    fila.addEventListener("click", () => {
+      const id = fila.getAttribute("data-id");
+      if (id) {
+        window.location.href = `/pacientes/${id}/edit`;
+      }
+    });
+  });
+
+  // Evitar que se dispare el click de la fila si se hace clic en un enlace interno
+  document.querySelectorAll(".add-email-link, .add-phone-link, .add-dni-link, .create-appointment-link").forEach(enlace => {
+    enlace.addEventListener("click", e => {
+      e.stopPropagation();
+      // Aquí puedes lanzar un modal o lo que quieras
+    });
+  });
+</script>
+
 </html>

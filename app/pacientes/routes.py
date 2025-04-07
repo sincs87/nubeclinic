@@ -400,3 +400,22 @@ def agregar_dni(paciente_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"success": False, "error": str(e)})
+    
+@pacientes_bp.route("/<string:paciente_id>/edit", methods=["GET"])
+@login_required
+def editar_paciente(paciente_id):
+    user_id = session.get("user_id")
+    user = db.session.get(User, user_id)
+
+    if not user:
+        flash("Sesión inválida", "danger")
+        session.clear()
+        return redirect(url_for("auth.login"))
+
+    paciente = Paciente.query.filter_by(id=paciente_id, user_id=user_id).first()
+
+    if not paciente:
+        flash("Paciente no encontrado", "danger")
+        return redirect(url_for("pacientes.listar_pacientes"))  # o donde rediriges si no lo encuentra
+
+    return render_template("pacientes/paciente_detalle.html", paciente=paciente)
