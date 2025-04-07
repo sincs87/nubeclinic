@@ -102,7 +102,7 @@ def login():
             session["user_id"] = str(user.id)
             session["user_name"] = user.name
             session["user_email"] = user.email
-            return redirect(url_for("panel.panel_inicio"))
+            return redirect(url_for("calendario.calendario_inicio"))
         else:
             error = "Credenciales incorrectas"
             flash("Email o contraseña incorrectos. Por favor, inténtalo de nuevo.", "danger")
