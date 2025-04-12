@@ -3,28 +3,60 @@
       <a href="{{ url_for('main.index') }}" class="sidebar-logo">
         <img src="{{ url_for('static', filename='img/ico.png') }}" alt="NubeClinic" width="30" height="30">
       </a>
-      <a href="{{ url_for('calendario.calendario_inicio') }}" class="sidebar-item {% if request.path.startswith('/calendario') %}active{% endif %}">
-        <i class="far fa-calendar-alt"></i>
+      <a href="{{ url_for('calendario.calendario_inicio') }}" class="sidebar-item {% if request.path.startswith('/panel') %}active{% endif %}">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M6 3a1 1 0 0 1 2 0v1h8V3a1 1 0 1 1 2 0v1h1a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1V3ZM5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9H5Zm2 3.5a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm4 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm5-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2ZM8 15a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm3 1a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm5-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/>
+        </svg>
       </a>
       <a href="{{ url_for('pacientes.lista_pacientes') }}" class="sidebar-item {% if request.path.startswith('/pacientes') %}active{% endif %}">
-        <i class="far fa-user"></i>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M16 10c1.66 0 2.99-1.34 2.99-3S17.66 4 16 4c-1.66 0-3 1.34-3 3s1.34 3 3 3Zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 4 8 4C6.34 4 5 5.34 5 7s1.34 3 3 3Zm0 2c-2.33 0-7 1.17-7 3.5V19c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5c0-2.33-4.67-3.5-7-3.5Zm8 0c-.29 0-.62.02-.97.05.02.01.03.03.04.04 1.14.83 1.93 1.94 1.93 3.41V19c0 .35-.07.69-.18 1H22c.55 0 1-.45 1-1v-3.5c0-2.33-4.67-3.5-7-3.5Z"></path>
+        </svg>
       </a>
-      <a href="#" class="sidebar-item"><i class="fas fa-desktop"></i></a>
-      <a href="#" class="sidebar-item"><i class="fas fa-bars"></i></a>
-      <a href="#" class="sidebar-item"><i class="far fa-file-alt"></i></a>
-      <a href="#" class="sidebar-item"><i class="far fa-chart-bar"></i></a>
-      <a href="#" class="sidebar-item"><i class="fas fa-cog"></i></a>
-      <a href="#" class="sidebar-item"><i class="fas fa-user-cog"></i></a>
+      <a href="#" class="sidebar-item">        
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M20 2H4c-1.1 0-1.99.9-1.99 2l-.008 17.23c0 1.026 1.36 1.388 1.868.497L6 18h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2ZM9 10a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path>    
+        </svg>
+      </a>
+
+      <a href="#" class="sidebar-item">        
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M6.4 9.2h.2c.77 0 1.4.63 1.4 1.4v7c0 .77-.63 1.4-1.4 1.4h-.2c-.77 0-1.4-.63-1.4-1.4v-7c0-.77.63-1.4 1.4-1.4ZM12 5c.77 0 1.4.63 1.4 1.4v11.2c0 .77-.63 1.4-1.4 1.4-.77 0-1.4-.63-1.4-1.4V6.4c0-.77.63-1.4 1.4-1.4Zm5.6 8c.77 0 1.4.63 1.4 1.4v3.2c0 .77-.63 1.4-1.4 1.4-.77 0-1.4-.63-1.4-1.4v-3.2c0-.77.63-1.4 1.4-1.4Z"></path>    
+        </svg>
+        </a>
+
+      <a href="#" class="sidebar-item">        
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M1 18V8c0-.55.45-1 1-1s1 .45 1 1v9a1 1 0 0 0 1 1h15c.55 0 1 .45 1 1s-.45 1-1 1H3c-1.1 0-2-.9-2-2ZM23 7V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7Zm-9 6c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3Zm5-7.5h2a.5.5 0 0 1 .5.5v2h-.25A2.247 2.247 0 0 1 19 5.75V5.5Zm2.5 6.5v2a.5.5 0 0 1-.5.5h-2v-.25A2.247 2.247 0 0 1 21.25 12h.25ZM9 14.5H7a.5.5 0 0 1-.5-.5v-2h.25A2.247 2.247 0 0 1 9 14.25v.25ZM6.5 8V6a.5.5 0 0 1 .5-.5h2v.25A2.247 2.247 0 0 1 6.75 8H6.5Z"></path>    
+        </svg></a>
+
+      <a href="#" class="sidebar-item">        
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M21 2.21a.47.47 0 0 0-.35.15l-.79.79c-.2.2-.51.2-.71 0l-.79-.79c-.2-.2-.51-.2-.71 0l-.79.79c-.2.2-.51.2-.71 0l-.79-.79c-.2-.2-.51-.2-.71 0l-.79.79c-.2.2-.51.2-.71 0l-.79-.79c-.2-.2-.51-.2-.71 0l-.79.79c-.2.2-.51.2-.71 0l-.8-.8c-.2-.2-.51-.2-.71 0l-.79.8c-.2.2-.51.2-.71 0l-.79-.8c-.2-.2-.51-.2-.71 0l-.79.8c-.2.2-.51.2-.71 0l-.79-.8A.5.5 0 0 0 3 2.21V21.8c.13 0 .26-.05.35-.15l.79-.79c.2-.2.51-.2.71 0l.79.79c.2.2.51.2.71 0l.79-.79c.2-.2.51-.2.71 0l.79.79c.2.2.51.2.71 0l.79-.79c.2-.2.51-.2.71 0l.79.79c.2.2.51.2.71 0l.79-.79c.2-.2.51-.2.71 0l.79.79c.2.2.51.2.71 0l.79-.79c.2-.2.51-.2.71 0l.79.79c.2.2.51.2.71 0l.79-.79c.2-.2.51-.2.71 0l.79.79c.1.1.23.15.35.15V2.21H21ZM17 17H7c-.55 0-1-.45-1-1s.45-1 1-1h10c.55 0 1 .45 1 1s-.45 1-1 1Zm0-4H7c-.55 0-1-.45-1-1s.45-1 1-1h10c.55 0 1 .45 1 1s-.45 1-1 1Zm0-4H7c-.55 0-1-.45-1-1s.45-1 1-1h10c.55 0 1 .45 1 1s-.45 1-1 1Z"></path>        </svg></a>
+
+      <a href="#" class="sidebar-item">        
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M19 5a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v11h8c.55 0 1 .45 1 1v2c0 .55.45 1 1 1s1-.45 1-1V5ZM6 4v12H4c-.55 0-1 .45-1 1v2c0 1.66 1.34 3 3 3h12c1.66 0 3-1.34 3-3V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2Zm4 3a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2h-2a1 1 0 0 1-1-1Zm5 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm-4 2a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2h-2Zm4 1a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm-4 2a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2h-2Zm4 1a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" clip-rule="evenodd"></path>        </svg></a>
+
+            <a href="{{ url_for('ajustes.ajustes_inicio') }}"
+            class="sidebar-item {% if request.path.startswith('/ajustes') %}active{% endif %}"
+            title="Ajustes">       
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path d="m9.81 2.757-.419 1.678a7.95 7.95 0 0 0-.895.371l-1.483-.89a1 1 0 0 0-1.222.15L4.067 5.792a1 1 0 0 0-.15 1.222l.89 1.483a7.806 7.806 0 0 0-.372.895l-1.678.42a1 1 0 0 0-.757.97v2.438a1 1 0 0 0 .757.97l1.678.42c.106.307.23.606.371.895l-.89 1.483a1 1 0 0 0 .15 1.222l1.725 1.724a1 1 0 0 0 1.222.15l1.483-.89c.289.142.588.266.895.372l.42 1.677a1 1 0 0 0 .97.758h2.438a1 1 0 0 0 .97-.758l.42-1.677c.307-.106.606-.23.895-.371l1.483.89a1 1 0 0 0 1.222-.15l1.724-1.725a1 1 0 0 0 .15-1.222l-.89-1.483c.142-.289.266-.588.372-.895l1.677-.42a1 1 0 0 0 .758-.97v-2.438a1 1 0 0 0-.758-.97l-1.677-.42a7.955 7.955 0 0 0-.371-.895l.89-1.483a1 1 0 0 0-.15-1.222l-1.725-1.724a1 1 0 0 0-1.222-.15l-1.483.89a7.936 7.936 0 0 0-.895-.372l-.42-1.678A1 1 0 0 0 13.22 2h-2.438a1 1 0 0 0-.97.757ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Z"></path>        </svg></a>
+
     </div>
   
     <div class="sidebar-bottom">
-      <a href="#" class="sidebar-item"><i class="fas fa-bullseye"></i></a>
-      <a href="#" class="sidebar-item"><i class="far fa-question-circle"></i></a>
+
       <a href="#" class="sidebar-item position-relative">
-        <i class="far fa-bell"></i>
-        <span class="notification-badge">2</span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M18 10v7h1c.55 0 1 .45 1 1s-.45 1-1 1H5c-.55 0-1-.45-1-1s.45-1 1-1h1v-7c0-2.79 1.91-5.14 4.5-5.8v-.7c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v.7c2.59.66 4.5 3.01 4.5 5.8Zm-4 10c0 1.1-.9 2-2 2s-2-.9-2-2h4Z"></path>
+        </svg>
       </a>
-      <a href="#" class="sidebar-item"><i class="far fa-user-circle"></i></a>
+      <a href="{{ url_for('auth.perfil_inicio') }}" class="sidebar-item {% if request.path.startswith('/auth/perfil') %}active{% endif %}"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 11c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Zm0 2c-2.67 0-8 1.34-8 4v3c0 .55.45 1 1 1h14c.55 0 1-.45 1-1v-3c0-2.66-5.33-4-8-4Z"></path>
+      </svg>
+      </a>
     </div>
   </div>
   

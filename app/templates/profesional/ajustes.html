@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/panel.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ajustes.css') }}">
+
+    <!-- CSRF Token para seguridad en peticiones AJAX -->
+    <meta name="csrf-token" content="{{ csrf_token() if csrf_token else '' }}">
+</head>
+
+{% block title %}Ajustes{% endblock %}
+
+{% block content %}
+
+<div class="ajustes-container">
+    {% include 'components/sidebar.html' %}
+
+    <div class="ajustes-content">
+        <h1 class="ajustes-title">Ajustes</h1>
+        <p class="ajustes-subtitle">Configura cómo funciona tu agenda y adáptala a las necesidades de tu clínica</p>
+        
+        <div class="ajustes-sections">
+            <!-- Columna izquierda -->
+            <div class="ajustes-column">
+                <div class="ajustes-section">
+                    <h2 class="section-title">Ajustes generales</h2>
+                    
+                    <!-- Servicios -->
+                    <div class="ajustes-item">
+                        <div class="item-icon green">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                            </svg>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Servicios</h3>
+                            <p class="item-description">Gestiona los servicios que ofreces</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Agendas -->
+                    <div class="ajustes-item">
+                        <div class="item-icon light-green">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Agendas</h3>
+                            <p class="item-description">Gestiona la configuración de tus agendas</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Usuarios y permisos -->
+                    <div class="ajustes-item">
+                        <div class="item-icon blue">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Usuarios y permisos</h3>
+                            <p class="item-description">Asigna roles y permisos de acceso</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Salas -->
+                    <div class="ajustes-item">
+                        <div class="item-icon light-blue">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="9" y1="14" x2="15" y2="14"></line>
+                            </svg>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Salas</h3>
+                            <p class="item-description">Asigna salas a tus calendarios</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Notificaciones y dispositivos -->
+                    <div class="ajustes-item">
+                        <div class="item-icon orange">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                            </svg>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Notificaciones y dispositivos</h3>
+                            <p class="item-description">Gestiona las notificaciones y los dispositivos conectados</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Descargar datos -->
+                    <div class="ajustes-item">
+                        <div class="item-icon teal">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Descargar datos</h3>
+                            <p class="item-description">Descarga los datos almacenados en Doctoralia</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Direcciones -->
+                    <div class="ajustes-item">
+                        <div class="item-icon purple">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Direcciones</h3>
+                            <p class="item-description">Añade y edita tus direcciones</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Importar datos -->
+                    <div class="ajustes-item">
+                        <div class="item-icon cyan">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Importar datos</h3>
+                            <p class="item-description">Trae a Doctoralia los datos que necesites</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Aseguradoras -->
+                    <div class="ajustes-item">
+                        <div class="item-icon amber">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                                <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                                <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                            </svg>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Aseguradoras <span class="novedad">Novedad</span></h3>
+                            <p class="item-description">Gestiona las aseguradoras con las que trabajas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Columna derecha -->
+            <div class="ajustes-column">
+                <div class="ajustes-section">
+                    <h2 class="section-title">Comunicación con pacientes</h2>
+                    
+                    <!-- Notas para pacientes -->
+                    <div class="ajustes-item">
+                        <div class="item-icon green">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"></path>
+                                <line x1="9" y1="9" x2="10" y2="9"></line>
+                                <line x1="9" y1="13" x2="15" y2="13"></line>
+                                <line x1="9" y1="17" x2="15" y2="17"></line>
+                            </svg>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Notas para pacientes</h3>
+                            <p class="item-description">Envía notas a tus pacientes antes de sus citas</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Mensajes -->
+                    <div class="ajustes-item">
+                        <div class="item-icon light-green">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Mensajes</h3>
+                            <p class="item-description">Recibe mensajes y crea y edita plantillas</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="ajustes-section">
+                    <h2 class="section-title">Documentos</h2>
+                    
+                    <!-- Documentación para pacientes -->
+                    <div class="ajustes-item">
+                        <div class="item-icon blue">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Documentación para pacientes</h3>
+                            <p class="item-description">Crea y gestiona los documentos que necesitas</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Diseños de impresión -->
+                    <div class="ajustes-item">
+                        <div class="item-icon light-blue">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                                <rect x="6" y="14" width="12" height="8"></rect>
+                            </svg>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Diseños de impresión para expedientes clínicos</h3>
+                            <p class="item-description">Crea y edita diseños imprimibles</p>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>

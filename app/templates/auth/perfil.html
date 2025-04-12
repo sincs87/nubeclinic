@@ -1,0 +1,119 @@
+
+{% block content %}
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/panel.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
+<div class="perfil-container">
+    {% include 'components/sidebar.html' %}
+    
+    <div class="main-content">
+        <div class="profile-layout">
+            <!-- Menú lateral izquierdo -->
+            <div class="profile-sidebar">
+                <ul class="profile-menu">
+                    <li class="profile-menu-item active">
+                        <span>Lista de perfiles</span>
+                    </li>
+                    <li class="profile-menu-item">
+                        <a href="{{ url_for('auth.configuracion') }}">Mi cuenta</a>
+                    </li>
+                    </li>
+                    <li class="profile-menu-item">
+                        <span>Facturas</span>
+                    </li>
+                    <li class="profile-menu-item">
+                        <span>Cerrar sesión</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Contenido principal -->
+            <div class="profile-content">
+                <div class="content-header">
+                    <h1 class="content-title">Listado de perfiles</h1>
+                    <button class="btn-blue">Acceso a editar perfiles</button>
+                </div>
+                
+                <div class="content-body">
+                    <div class="profile-table">
+                        <!-- Cabecera de la tabla -->
+                        <div class="table-header">
+                            <div class="th perfil-col">Perfil</div>
+                            <div class="th agenda-col">Mi Cuenta</div>
+                            <div class="th opiniones-col">Facturas</div>
+                            <div class="th completado-col">Cerrar sesión</div>
+                        </div>
+                        
+                        <!-- Filas de datos -->
+                        <div class="table-row">
+                            <div class="td perfil-col">
+                                <div class="profile-info">
+                                    <div class="profile-avatar">
+                                        <img src="{{ url_for('static', filename='img/default-avatar.png') }}" alt="Avatar">
+                                    </div>
+                                    <span class="profile-name">Deea Psicología y Logopedia</span>
+                                </div>
+                            </div>
+                            <div class="td agenda-col">
+                                <span class="status-tag">Inactiva</span>
+                            </div>
+                            <div class="td opiniones-col">
+                                <a href="#" class="opinion-link">100</a>
+                            </div>
+                            <div class="td completado-col">
+                                <span class="percentage">100%</span>
+                            </div>
+                            <div class="td acciones-col">
+                                <div class="action-buttons">
+                                    <button class="btn-edit">Editar</button>
+                                    <button class="btn-options">
+                                        <svg viewBox="0 0 24 24" class="options-icon">
+                                            <circle cx="12" cy="6" r="2"></circle>
+                                            <circle cx="12" cy="12" r="2"></circle>
+                                            <circle cx="12" cy="18" r="2"></circle>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="table-row">
+                            <div class="td perfil-col">
+                                <div class="profile-info">
+                                    <div class="profile-avatar">
+                                        <img src="{{ url_for('static', filename='img/default-avatar.png') }}" alt="Avatar">
+                                    </div>
+                                    <span class="profile-name">Elisa Muñoz Jordán</span>
+                                </div>
+                            </div>
+                            <div class="td agenda-col">
+                                <span class="status-tag">Inactiva</span>
+                            </div>
+                            <div class="td opiniones-col">
+                                <a href="#" class="opinion-link">9</a>
+                            </div>
+                            <div class="td completado-col">
+                                <span class="percentage">72%</span>
+                            </div>
+                            <div class="td acciones-col">
+                                <div class="action-buttons">
+                                    <button class="btn-options">
+                                        <svg viewBox="0 0 24 24" class="options-icon">
+                                            <circle cx="12" cy="6" r="2"></circle>
+                                            <circle cx="12" cy="12" r="2"></circle>
+                                            <circle cx="12" cy="18" r="2"></circle>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Puedes añadir más filas siguiendo el mismo patrón -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

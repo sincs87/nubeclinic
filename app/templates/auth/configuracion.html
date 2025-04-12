@@ -1,0 +1,103 @@
+
+{% block content %}
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/panel.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/configuracion.css') }}">
+<div class="dashboard-container">
+    {% include 'components/sidebar.html' %}
+    
+    <div class="main-content">
+        <div class="config-container">
+            <div class="config-card">
+                <h1 class="config-title">Configuración de la cuenta</h1>
+                <p class="config-subtitle">* Campo obligatorio</p>
+                
+                <form method="POST" action="{{ url_for('auth.configuracion') }}" class="config-form">
+                    <!-- Campo Nombre -->
+                    <div class="form-group">
+                        <label for="nombre" class="form-label">Nombre *</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="nombre" name="nombre" class="form-control" 
+                                   value="{{ user.name if user else '' }}" required>
+                            <button type="button" class="btn-help">
+                                <svg viewBox="0 0 24 24" class="help-icon">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" fill="none"></circle>
+                                    <path d="M12 16v-4M12 8h.01" stroke="currentColor" stroke-linecap="round"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Campo Apellidos -->
+                    <div class="form-group">
+                        <label for="apellidos" class="form-label">Apellidos *</label>
+                        <input type="text" id="apellidos" name="apellidos" class="form-control" 
+                               value="{{ user.surname if user else '' }}" required>
+                    </div>
+                    
+                    <!-- Campo Contraseña -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">Contraseña *</label>
+                        <div class="password-group">
+                            <a href="{{ url_for('auth.cambiar_password') }}" class="link-change">Cambiar mi contraseña</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Campo Teléfono -->
+                    <div class="form-group">
+                        <label for="telefono" class="form-label">Número de teléfono *</label>
+                        <input type="tel" id="telefono" name="telefono" class="form-control" 
+                               value="{{ user.phone if user else '' }}" required>
+                    </div>
+                    
+                    <!-- Campo Nombre de usuario -->
+                    <div class="form-group">
+                        <label for="username" class="form-label">Cambiar nombre de usuario</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="username" name="username" class="form-control" 
+                                   value="Paciente">
+                            <button type="button" class="btn-help">
+                                <svg viewBox="0 0 24 24" class="help-icon">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" fill="none"></circle>
+                                    <path d="M12 16v-4M12 8h.01" stroke="currentColor" stroke-linecap="round"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Campo Email -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">Correo electrónico *</label>
+                        <div class="email-group">
+                            <span class="current-email">{{ user.email if user else 'info@deea.es' }}</span>
+                            <a href="{{ url_for('auth.cambiar_email') }}" class="link-change">( Cambiar email )</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Seguridad de la cuenta -->
+                    <div class="form-group">
+                        <label class="form-label">Seguridad de la cuenta</label>
+                        <a href="{{ url_for('auth.verificacion_dos_pasos') }}" class="link-config">Configura la verificación en dos pasos</a>
+                    </div>
+                    
+                    <!-- Botones de acción -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn-save">Guardar</button>
+                        <button type="button" class="btn-cancel">Cancelar</button>
+                    </div>
+                </form>
+                
+                <div class="privacy-notice">
+                    <p>Para más información sobre cómo utilizamos sus datos personales <a href="#" class="link-privacy">haga clic aquí</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/configuracion.css') }}">
+{% endblock %}

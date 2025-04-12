@@ -31,6 +31,10 @@ def create_app(config_class=Config):
     from app.pacientes.routes import pacientes_bp
     app.register_blueprint(pacientes_bp)
 
+    from app.ajustes.routes import ajustes
+    app.register_blueprint(ajustes)
+
+
 
 
     return app

@@ -11,6 +11,21 @@ from flask import current_app
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
+@auth_bp.route("/perfil")
+def perfil_inicio():
+    """Ruta principal para la página de perfil"""
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Debes iniciar sesión para ver esta página", "warning")
+        return redirect(url_for("auth.login"))
+        
+    user = db.session.get(User, user_id)
+    if not user:
+        session.clear()
+        return redirect(url_for("auth.login"))
+        
+    return render_template("auth/perfil.html", user=user)
+
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -304,5 +319,22 @@ def reset_password(token):
         return redirect(url_for('auth.login'))
 
     return render_template('auth/reset_password.html', token=token)
+
+# Añadir estas rutas a tu archivo auth_bp.py existente
+
+@auth_bp.route("/configuracion")
+def configuracion():
+    """Ruta principal para la página de perfil"""
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Debes iniciar sesión para ver esta página", "warning")
+        return redirect(url_for("auth.configuracion"))
+        
+    user = db.session.get(User, user_id)
+    if not user:
+        session.clear()
+        return redirect(url_for("auth.configuracion"))
+        
+    return render_template("auth/configuracion.html", user=user)
 
 
