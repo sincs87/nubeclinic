@@ -3,9 +3,11 @@ const config = {
     today: new Date(), // Día actual
     selectedDate: new Date(), // Día seleccionado (inicialmente hoy)
     currentMonth: new Date(), // Mes actual para mostrar en el mini calendario
-    timeSlotHeight: 60, // Altura en px de cada franja horaria
+    timeSlotHeight: 15, // Altura en px de cada franja de 15 minutos
     zoomLevel: 1, // Nivel de zoom inicial
-    viewType: 'day' // Tipo de vista inicial: 'day', 'week', 'list', 'hours'
+    viewType: 'day', // Tipo de vista inicial: 'day', 'week', 'list', 'hours'
+    selectedSlot: null, // Slot horario seleccionado
+    currentTime: new Date() // Hora actual
 };
 
 // Meses en español
@@ -18,23 +20,28 @@ const months = [
 // Días de la semana en español
 const weekdays = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 
-
-
 // Inicialización
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Inicializando calendario...');
     
-    // DESCOMENTAR PARA PRUEBAS
-// COMENTAR ESTA LÍNEA EN PRODUCCIÓN
-// simulateDate();    
     // Inicializar calendario
     initCalendar();
     
     // Configurar eventos
     setupEventListeners();
     
-    // Forzar scroll a 0
-    forceScrollToTop();
+    // Aplicar un único desplazamiento al cargar
+    setTimeout(() => {
+        // Solo aplicar si estamos viendo el día de hoy
+        if (isSameDay(config.today, config.selectedDate)) {
+            scrollToCurrentTime();
+        } else {
+            forceScrollToTop();
+        }
+    }, 500);
+    
+    // Actualizar la hora actual cada minuto
+    setInterval(updateCurrentTime, 60000);
 });
 
 // Inicializar el calendario
@@ -117,7 +124,6 @@ function generateCalendarGrid() {
             dayElement.classList.add('selected');
         }
 
-
         dayElement.addEventListener('click', function () {
             selectDay(currentDay);
         });
@@ -126,8 +132,7 @@ function generateCalendarGrid() {
     }
 }
 
-
-// Generar franjas horarias
+// Generar franjas horarias con divisiones de 15 minutos
 function generateTimeSlots() {
     const timeSlots = document.getElementById('timeSlots');
     if (!timeSlots) {
@@ -137,33 +142,234 @@ function generateTimeSlots() {
     
     timeSlots.innerHTML = '';
     
-    // Crear un espaciador invisible para asegurar que la primera hora sea visible
+    // Crear un espaciador visible para asegurar que la primera hora sea visible
     const spacer = document.createElement('div');
     spacer.className = 'time-slot-spacer';
-    spacer.style.height = '0';
+    spacer.style.height = '20px';  // Aumentado para dar más espacio
     spacer.style.padding = '0';
     spacer.style.margin = '0';
-    spacer.style.visibility = 'hidden';
     timeSlots.appendChild(spacer);
+    
+    // Obtener la hora actual
+    const currentHour = config.currentTime.getHours();
+    const currentMinute = config.currentTime.getMinutes();
     
     // Generar franjas hora por hora desde 01:00 hasta 23:00
     for (let hour = 1; hour <= 23; hour++) {
-        const timeSlot = document.createElement('div');
-        timeSlot.className = 'time-slot';
-        timeSlot.style.height = `${config.timeSlotHeight * config.zoomLevel}px`;
+        // Crear el contenedor de la hora
+        const hourContainer = document.createElement('div');
+        hourContainer.className = 'hour-container';
+        hourContainer.dataset.hour = hour;
         
+        // Crear la etiqueta de la hora
         const timeLabel = document.createElement('span');
         timeLabel.className = 'time-label';
         timeLabel.textContent = `${hour.toString().padStart(2, '0')}:00`;
+        hourContainer.appendChild(timeLabel);
         
-        timeSlot.appendChild(timeLabel);
-        timeSlots.appendChild(timeSlot);
+        // Crear 4 slots de 15 minutos dentro de cada hora
+        for (let minute = 0; minute < 60; minute += 15) {
+            const timeSlot = document.createElement('div');
+            timeSlot.className = 'time-slot';
+            timeSlot.dataset.hour = hour;
+            timeSlot.dataset.minute = minute;
+            timeSlot.dataset.time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+            
+            // Establecer altura según zoom
+            timeSlot.style.height = `${config.timeSlotHeight * config.zoomLevel}px`;
+            
+            // Marcar slot de hora actual si corresponde
+            if (isSameDay(config.currentTime, config.selectedDate) && 
+                hour === currentHour && 
+                minute <= currentMinute && 
+                minute + 15 > currentMinute) {
+                timeSlot.classList.add('current-time');
+                
+                // Añadir línea indicadora de hora actual
+                const currentTimeLine = document.createElement('div');
+                currentTimeLine.className = 'current-time-line';
+                
+                // Calcular posición dentro del slot (0-100%)
+                const minutePosition = ((currentMinute - minute) / 15) * 100;
+                currentTimeLine.style.top = `${minutePosition}%`;
+                
+                timeSlot.appendChild(currentTimeLine);
+            }
+            
+            // Añadir eventos para selección
+            timeSlot.addEventListener('click', function(e) {
+                e.preventDefault();
+                selectTimeSlot(hour, minute);
+            });
+            
+            hourContainer.appendChild(timeSlot);
+        }
+        
+        timeSlots.appendChild(hourContainer);
     }
     
     console.log('Franjas horarias generadas');
     
     // Forzar scroll a 0 otra vez para asegurarnos
     setTimeout(forceScrollToTop, 10);
+}
+
+// Seleccionar franja horaria
+function selectTimeSlot(hour, minute) {
+    // Limpiar selección previa
+    clearSelectedTimeSlots();
+    
+    // Guardar slot seleccionado
+    config.selectedSlot = {
+        hour: hour,
+        minute: minute
+    };
+    
+    // Calcular la hora y minuto final (1 hora después)
+    let endHour = hour;
+    let endMinute = minute;
+    
+    // Seleccionar el slot actual y los 3 siguientes (total 1 hora)
+    for (let i = 0; i < 4; i++) {
+        const slotHour = endHour;
+        const slotMinute = endMinute;
+        
+        // Seleccionar el slot actual
+        const slot = document.querySelector(`.time-slot[data-hour="${slotHour}"][data-minute="${slotMinute}"]`);
+        if (slot) {
+            slot.classList.add('selected');
+        }
+        
+        // Calcular el siguiente slot
+        endMinute += 15;
+        if (endMinute >= 60) {
+            endMinute = 0;
+            endHour++;
+        }
+    }
+    
+    // Mostrar panel lateral de citas con la hora seleccionada
+    showAppointmentPanel(hour, minute);
+}
+
+// Limpiar selección de slots
+function clearSelectedTimeSlots() {
+    document.querySelectorAll('.time-slot.selected').forEach(slot => {
+        slot.classList.remove('selected');
+    });
+    
+    config.selectedSlot = null;
+}
+
+// Mostrar panel lateral para crear cita
+function showAppointmentPanel(hour, minute) {
+    // Verificar si el panel ya existe
+    let appointmentPanel = document.querySelector('.appointment-panel');
+    
+    // Si no existe, utilizar el template existente en el HTML
+    if (!appointmentPanel || appointmentPanel.style.display === 'none') {
+        appointmentPanel = document.getElementById('appointmentPanelTemplate');
+        if (appointmentPanel) {
+            appointmentPanel.style.display = 'flex';
+        } else {
+            console.error('No se encontró el panel de citas');
+            return;
+        }
+    }
+    
+    // Formatear fecha y hora para mostrar
+    const selectedDate = config.selectedDate;
+    const formattedDate = `${weekdays[selectedDate.getDay()]}., ${selectedDate.getDate()} de ${months[selectedDate.getMonth()].substring(0, 3).toLowerCase()} de ${selectedDate.getFullYear()}`;
+    const startTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    
+    // Actualizar los datos en el panel
+    const dateElement = document.getElementById('appointmentDate');
+    const timeElement = document.getElementById('appointmentTime');
+    
+    if (dateElement) dateElement.textContent = formattedDate;
+    if (timeElement) timeElement.textContent = startTime;
+    
+    // Añadir evento para cerrar el panel si no está ya configurado
+    const closeBtn = appointmentPanel.querySelector('.close-btn');
+    if (closeBtn && !closeBtn.hasEventListener) {
+        closeBtn.addEventListener('click', function() {
+            closeAppointmentPanel();
+        });
+        closeBtn.hasEventListener = true;
+    }
+    
+    const cancelBtn = appointmentPanel.querySelector('.btn-light');
+    if (cancelBtn && !cancelBtn.hasEventListener) {
+        cancelBtn.addEventListener('click', function() {
+            closeAppointmentPanel();
+        });
+        cancelBtn.hasEventListener = true;
+    }
+    
+// Añadir eventos a los botones de cerrar alertas
+    const alertCloseButtons = appointmentPanel.querySelectorAll('.alert-close');
+    alertCloseButtons.forEach(button => {
+        if (!button.hasEventListener) {
+            button.addEventListener('click', function() {
+                const alert = this.closest('.alert');
+                if (alert) {
+                    alert.style.display = 'none';
+                }
+            });
+            button.hasEventListener = true;
+        }
+    });
+    
+// Añadir eventos a los títulos de sección para expandir/contraer
+    const sectionTitles = appointmentPanel.querySelectorAll('.section-title');
+    sectionTitles.forEach(title => {
+        if (!title.hasEventListener) {
+            title.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('.collapse-icon');
+                
+                if (content.style.display === 'none') {
+                    content.style.display = 'block';
+                    if (icon) icon.classList.remove('fa-chevron-down');
+                    if (icon) icon.classList.add('fa-chevron-up');
+                } else {
+                    content.style.display = 'none';
+                    if (icon) icon.classList.remove('fa-chevron-up');
+                    if (icon) icon.classList.add('fa-chevron-down');
+                }
+            });
+            title.hasEventListener = true;
+        }
+    });
+    
+    // Mostrar el panel y ajustar el contenedor principal
+    setTimeout(() => {
+        appointmentPanel.classList.add('show');
+        document.querySelector('.calendar-container').classList.add('panel-open');
+    }, 10);
+}
+
+// Función para cerrar el panel de citas
+function closeAppointmentPanel() {
+    const appointmentPanel = document.getElementById('appointmentPanelTemplate');
+    const calendarContainer = document.querySelector('.calendar-container');
+    
+    if (appointmentPanel) {
+        appointmentPanel.classList.remove('show');
+        
+        // Esperar a que termine la animación para ocultar completamente
+        setTimeout(() => {
+            appointmentPanel.style.display = 'none';
+            
+            // Restaurar el ancho original del contenedor principal
+            if (calendarContainer) {
+                calendarContainer.classList.remove('panel-open');
+            }
+            
+            // Limpiar la selección
+            clearSelectedTimeSlots();
+        }, 300); // La misma duración que la transición CSS
+    }
 }
 
 // Actualizar visualización del mes
@@ -207,7 +413,6 @@ function updateCalendarView() {
     forceScrollToTop();
 }
 
-
 // Navegar al mes anterior
 function navigateToPreviousMonth() {
     const newMonth = new Date(config.currentMonth);
@@ -244,8 +449,12 @@ function navigateToPreviousDay() {
     }
     
     updateCalendarView();
+    
+    // Si cambiamos a hoy, centrar en la hora actual
+    if (isSameDay(config.today, config.selectedDate)) {
+        setTimeout(scrollToCurrentTime, 300);
+    }
 }
-
 
 // Navegar al día siguiente
 function navigateToNextDay() {
@@ -263,8 +472,12 @@ function navigateToNextDay() {
     }
     
     updateCalendarView();
+    
+    // Si cambiamos a hoy, centrar en la hora actual
+    if (isSameDay(config.today, config.selectedDate)) {
+        setTimeout(scrollToCurrentTime, 300);
+    }
 }
-
 
 // Ir a hoy
 function goToToday() {
@@ -272,6 +485,9 @@ function goToToday() {
     config.currentMonth = new Date(config.today.getFullYear(), config.today.getMonth(), 1);
     
     updateCalendarView();
+    
+    // Al ir a hoy, centrar en la hora actual
+    setTimeout(scrollToCurrentTime, 300);
 }
 
 // Seleccionar un día específico
@@ -284,8 +500,12 @@ function selectDay(date) {
     }
 
     updateCalendarView();
+    
+    // Si seleccionamos hoy, centrar en la hora actual
+    if (isSameDay(config.today, config.selectedDate)) {
+        setTimeout(scrollToCurrentTime, 300);
+    }
 }
-
 
 // Aumentar zoom
 function zoomIn() {
@@ -341,8 +561,6 @@ function getCurrentWeekLabel(date) {
     return `Semana del ${start.getDate()}/${start.getMonth() + 1} al ${end.getDate()}/${end.getMonth() + 1}`;
 }
 
-
-
 // Obtener texto para el tipo de vista
 function getViewTypeText(viewType) {
     switch (viewType) {
@@ -360,6 +578,20 @@ function forceScrollToTop() {
     if (calendarGrid) {
         calendarGrid.scrollTop = 0;
         console.log('Scroll forzado a 0');
+        
+        // Asegurar que la primera hora es visible
+        const firstHour = document.querySelector('.hour-container[data-hour="1"]');
+        if (firstHour) {
+            // Asegurar que el primer slot está completamente visible
+            const headerHeight = document.querySelector('.main-header').offsetHeight;
+            const topOffset = firstHour.getBoundingClientRect().top;
+            const mainContentTop = document.querySelector('.main-content').getBoundingClientRect().top;
+            
+            if (topOffset - mainContentTop < headerHeight + 5) {
+                // Si está parcialmente oculta, ajustar scroll
+                calendarGrid.scrollTop = 0;
+            }
+        }
     }
 }
 
@@ -375,11 +607,81 @@ function formatDate(date) {
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 }
 
-// Llamada adicional para asegurar scrollTop=0
+// Función para actualizar la hora actual
+function updateCurrentTime() {
+    config.currentTime = new Date();
+    
+    // Actualizar la visualización de la hora actual
+    const currentTimeSlot = document.querySelector('.current-time');
+    if (currentTimeSlot) {
+        currentTimeSlot.classList.remove('current-time');
+        const timeLine = currentTimeSlot.querySelector('.current-time-line');
+        if (timeLine) timeLine.remove();
+    }
+    
+    // Solo actualizar si estamos viendo el día actual
+    if (isSameDay(config.currentTime, config.selectedDate)) {
+        const currentHour = config.currentTime.getHours();
+        const currentMinute = config.currentTime.getMinutes();
+        const minuteSlot = Math.floor(currentMinute / 15) * 15;
+        
+        const newCurrentSlot = document.querySelector(`.time-slot[data-hour="${currentHour}"][data-minute="${minuteSlot}"]`);
+        if (newCurrentSlot) {
+            newCurrentSlot.classList.add('current-time');
+            
+            // Añadir línea indicadora de hora actual
+            const currentTimeLine = document.createElement('div');
+            currentTimeLine.className = 'current-time-line';
+            
+            // Calcular posición dentro del slot (0-100%)
+            const minutePosition = ((currentMinute - minuteSlot) / 15) * 100;
+            currentTimeLine.style.top = `${minutePosition}%`;
+            
+            newCurrentSlot.appendChild(currentTimeLine);
+            
+            // Centrar la vista en la hora actual si estamos viendo el día actual
+            scrollToCurrentTime();
+        }
+    }
+}
+
+// Función para desplazarse hasta la hora actual
+function scrollToCurrentTime() {
+    const calendarGrid = document.querySelector('.calendar-grid');
+    if (!calendarGrid) return;
+    
+    // Solo centrar en hora actual si estamos viendo el día de hoy
+    if (!isSameDay(config.today, config.selectedDate)) {
+        forceScrollToTop();
+        return;
+    }
+    
+    const currentHour = config.currentTime.getHours();
+    // Buscar 2 horas antes para centrar (o la primera hora si no hay suficientes)
+    const targetHour = Math.max(1, currentHour - 2);
+    const targetSlot = document.querySelector(`.hour-container[data-hour="${targetHour}"]`);
+    
+    if (targetSlot) {
+        // Usar un temporizador para asegurar que los elementos estén renderizados
+        setTimeout(() => {
+            // Calcular la posición para centrar considerando la altura del header
+            const headerHeight = document.querySelector('.main-header').offsetHeight || 0;
+            const targetTop = targetSlot.offsetTop - headerHeight - 50; // 50px de margen adicional
+            
+            // Aplicar el scroll
+            calendarGrid.scrollTop = targetTop;
+            console.log(`Scroll a hora ${targetHour}:00, posición: ${targetTop}px`);
+        }, 200);
+    } else {
+        forceScrollToTop();
+    }
+}
+
+// Llamada adicional para asegurar scroll adecuado
 window.addEventListener('load', function() {
-    forceScrollToTop();
-    setTimeout(forceScrollToTop, 100);
-    setTimeout(forceScrollToTop, 500);
+    scrollToCurrentTime();
+    setTimeout(scrollToCurrentTime, 100);
+    setTimeout(scrollToCurrentTime, 500);
 });
 
 function generateWeekView() {
@@ -415,10 +717,52 @@ function generateWeekView() {
         header.textContent = `${weekdays[dayDate.getDay()]}, ${dayDate.getDate()} ${months[dayDate.getMonth()]} ${dayDate.getFullYear()}`;
         dayColumn.appendChild(header);
 
-        // Aquí podrías agregar las franjas horarias o citas para ese día
-        // Por ejemplo, si quisieras replicar el comportamiento de generateTimeSlots(),
-        // podrías crear un contenedor para las horas y llenarlo según la lógica que necesites.
-
+        // Contenedor para las franjas horarias del día
+        const daySlots = document.createElement('div');
+        daySlots.className = 'day-slots';
+        
+        // Generar franjas horarias para este día
+        for (let hour = 1; hour <= 23; hour++) {
+            // Contenedor de la hora
+            const hourContainer = document.createElement('div');
+            hourContainer.className = 'hour-container';
+            hourContainer.dataset.hour = hour;
+            hourContainer.dataset.day = i;
+            
+            // Etiqueta de la hora
+            const timeLabel = document.createElement('span');
+            timeLabel.className = 'time-label';
+            timeLabel.textContent = `${hour.toString().padStart(2, '0')}:00`;
+            hourContainer.appendChild(timeLabel);
+            
+            // 4 slots de 15 minutos
+            for (let minute = 0; minute < 60; minute += 15) {
+                const timeSlot = document.createElement('div');
+                timeSlot.className = 'time-slot';
+                timeSlot.dataset.hour = hour;
+                timeSlot.dataset.minute = minute;
+                timeSlot.dataset.day = i;
+                timeSlot.dataset.time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                
+                // Altura según zoom
+                timeSlot.style.height = `${config.timeSlotHeight * config.zoomLevel}px`;
+                
+                // Evento de clic
+                timeSlot.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const slotDay = new Date(startOfWeek);
+                    slotDay.setDate(startOfWeek.getDate() + parseInt(this.dataset.day));
+                    config.selectedDate = slotDay;
+                    selectTimeSlot(hour, minute);
+                });
+                
+                hourContainer.appendChild(timeSlot);
+            }
+            
+            daySlots.appendChild(hourContainer);
+        }
+        
+        dayColumn.appendChild(daySlots);
         weekContainer.appendChild(dayColumn);
     }
 

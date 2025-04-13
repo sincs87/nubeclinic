@@ -338,3 +338,12 @@ def configuracion():
     return render_template("auth/configuracion.html", user=user)
 
 
+@auth_bp.route("/cambiar-email")
+def cambiar_email():
+    flash("Funcionalidad aún no disponible", "info")
+    return redirect(url_for("auth.configuracion"))
+
+@auth_bp.route("/verificacion-dos-pasos")
+def verificacion_dos_pasos():
+    flash("Funcionalidad aún no disponible", "info")
+    return redirect(url_for("auth.configuracion"))

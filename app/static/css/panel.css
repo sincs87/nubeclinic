@@ -12,6 +12,9 @@
     --gray-700: #495057;
     --gray-800: #343a40;
     --gray-900: #212529;
+    --success-color: #00b39f;
+    --warning-color: #f39c12;
+    --danger-color: #e53935;
 }
 
 /* Estilos generales */
@@ -30,9 +33,9 @@ body {
     --primary-light: #e8f1ff;
     --hover-bg: #f0f2f5;
     --icon-color: #636c72;
-  }
+}
   
-  .sidebar {
+.sidebar {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -44,27 +47,27 @@ body {
     justify-content: space-between;
     align-items: center;
     z-index: 10;
-  }
+}
   
-  /* Logo centrado */
-  .sidebar-logo {
+/* Logo centrado */
+.sidebar-logo {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 60px;
     padding: 10px 0;
-  }
+}
   
-  /* Contenedor navegación */
-  .sidebar-nav,
-  .sidebar-bottom {
+/* Contenedor navegación */
+.sidebar-nav,
+.sidebar-bottom {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+}
   
-  /* Ítem de icono */
-  .sidebar-item {
+/* Ítem de icono */
+.sidebar-item {
     width: 50px;
     height: 50px;
     border-radius: 8px;
@@ -74,30 +77,30 @@ body {
     justify-content: center;
     transition: background 0.2s ease, color 0.2s ease;
     position: relative;
-  }
+}
   
-  /* Icono SVG o <i> dentro */
-  .sidebar-item i,
-  .sidebar-item svg {
+/* Icono SVG o <i> dentro */
+.sidebar-item i,
+.sidebar-item svg {
     width: 24px;
     height: 24px;
     margin: 2px;
-  }
+}
   
-  /* Hover */
-  .sidebar-item:hover {
+/* Hover */
+.sidebar-item:hover {
     background-color: var(--hover-bg);
     cursor: pointer;
-  }
+}
   
-  /* Activo */
-  .sidebar-item.active {
+/* Activo */
+.sidebar-item.active {
     background-color: var(--primary-light);
     color: var(--primary-color);
-  }
+}
   
-  /* Notificación */
-  .notification-badge {
+/* Notificación */
+.notification-badge {
     position: absolute;
     top: 6px;
     right: 6px;
@@ -107,8 +110,7 @@ body {
     padding: 2px 6px;
     border-radius: 10px;
     line-height: 1;
-  }
-  
+}
 
 /* Main content */
 .main-content {
@@ -124,6 +126,7 @@ body {
     flex-grow: 1;
     overflow: hidden;
     height: 100vh;
+    position: relative;
 }
 
 /* Columna del calendario lateral */
@@ -133,44 +136,44 @@ body {
     background-color: #f9fafa;
     border-right: 1px solid #dee2e6;
     font-family: 'Poppins', sans-serif;
-  }
+}
   
-  .month-navigation {
+.month-navigation {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 16px;
-  }
+}
   
-  .month-nav {
+.month-nav {
     display: flex;
     align-items: center;
     gap: 16px;
-  }
+}
   
-  .month-title {
+.month-title {
     font-size: 16px;
     font-weight: 600;
     color: #212529;
-  }
+}
   
-  .header-btn {
+.header-btn {
     border: none;
     background: transparent;
     padding: 6px;
     font-size: 16px;
     color: #343a40;
     cursor: pointer;
-  }
+}
 
-  .weekday-header {
+.weekday-header {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     font-size: 14px;
     color: #6c757d;
     margin-bottom: 8px;
     text-align: center;
-  }
+}
 
 .weekday {
     text-align: center;
@@ -357,32 +360,17 @@ body {
     font-size: 13px;
 }
 
-/* Rejilla del calendario - Solución radical con posición absoluta */
-/* Asegurar que el contenedor principal tenga altura suficiente */
-/* Añadir al principio de panel.css */
+/* Rejilla del calendario */
 .calendar-grid {
-    padding-top: 0 !important;
-    margin-top: -10px !important; /* Espaciador negativo para forzar visibilidad */
-}
-
-.time-slots {
-    margin-top: 10px !important;
-}
-
-.time-slot:first-child {
-    margin-top: 10px !important;
-    position: relative !important;
-    z-index: 5 !important;
-}
-
-.time-slot:first-child .time-label {
-    top: 0 !important;
-}
-
-/* Franja horaria individual */
-.time-slot {
+    flex: 1;
+    overflow-y: auto;
     position: relative;
-    height: 60px;
+    padding-top: 15px; /* Añadido padding superior para evitar que la primera hora quede oculta */
+}
+
+/* Contenedor de hora (contiene 4 slots de 15 min) */
+.hour-container {
+    position: relative;
     border-top: 1px solid var(--gray-300);
 }
 
@@ -396,6 +384,47 @@ body {
     background-color: white;
     padding: 0 4px;
     z-index: 5;
+}
+
+/* Franja horaria individual (15 min) */
+.time-slot {
+    position: relative;
+    height: 15px;
+    border-bottom: 1px dotted rgba(222, 226, 230, 0.5);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+/* Highlight para hora actual */
+.time-slot.current-time {
+    background-color: rgba(255, 193, 7, 0.1);
+}
+
+/* Línea indicadora de hora actual */
+.current-time-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #ff9800;
+    z-index: 20;
+}
+
+/* Highlight para slot seleccionado */
+.time-slot.selected {
+    background-color: rgba(26, 115, 232, 0.1);
+}
+
+/* Highlight para slot con cita */
+.time-slot.appointment {
+    background-color: rgba(26, 115, 232, 0.2);
+    border-left: 3px solid var(--primary-color);
+}
+
+/* Highlight para slot bloqueado */
+.time-slot.blocked {
+    background-color: rgba(108, 117, 125, 0.1);
+    border-left: 3px solid var(--gray-500);
 }
 
 /* Sección de filtros */
@@ -590,72 +619,8 @@ input:checked + .slider:before {
     font-size: 13px;
     margin-left: 5px;
 }
-/* Añadir esto al final de tu panel.css para solucionar problemas específicos */
 
-/* Solución para la primera hora (01:00) */
-.time-slot-spacer {
-    height: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-    visibility: hidden !important;
-}
-
-.time-slot:first-of-type {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-    border-top: none !important;
-}
-
-.time-slot:first-of-type .time-label {
-    top: 0 !important;
-}
-
-/* Asegurar que el calendario tenga suficiente espacio */
-.calendar-main {
-    display: flex !important;
-    flex-direction: column !important;
-    height: 100% !important;
-}
-
-.calendar-grid {
-    flex: 1 !important;
-    overflow-y: auto !important;
-    padding-top: 0 !important;
-    margin-top: 0 !important;
-}
-
-/* Etiquetas de tiempo claramente visibles */
-.time-label {
-    z-index: 10 !important;
-    background-color: white !important;
-    padding: 0 4px !important;
-}
-
-/* Clarificar días seleccionados vs días actuales en mini calendario */
-.mini-calendar-day.today {
-    background-color: var(--primary-color) !important;
-    color: white !important;
-    font-weight: bold !important;
-    border: none !important;
-}
-
-.mini-calendar-day.selected:not(.today) {
-    background-color: rgba(74, 144, 226, 0.15) !important;
-    color: var(--gray-700) !important;
-    border: 1px solid var(--primary-color) !important;
-}
-
-/* Botones más claramente interactivos */
-.header-btn {
-    min-width: 28px !important;
-}
-
-/* Pequeña modificación al menú desplegable */
-.dropdown-menu {
-    max-height: 80vh !important;
-    overflow-y: auto !important;
-}
+/* Vista semanal */
 .week-view-container {
     display: flex;
     height: 100%;
@@ -681,19 +646,20 @@ input:checked + .slider:before {
     color: white;
     border-bottom: 1px solid var(--gray-300);
 }
+
 .dropdown-menu .option-item {
     padding: 8px 16px;
     margin-bottom: 8px;
     font-size: 14px;
-    color: var(--primary-color); /* Mantiene el color de tu marca */
+    color: var(--primary-color);
 }
 
 /* Si deseas que el checkbox y el label tengan más separación */
 .dropdown-menu .option-item .form-check {
     margin-right: 8px;
 }
-/* Estilos específicos para módulo pacientes */
 
+/* Estilos específicos para módulo pacientes */
 .pacientes-tabla th {
     font-weight: 500;
     color: #4a4a4a;
@@ -715,4 +681,691 @@ input:checked + .slider:before {
 .popup-card h5 {
     font-weight: 600;
     color: #00b39f;
+}
+
+/* Estilos para el panel lateral de citas */
+.appointment-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 390px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -1px 0 5px rgba(0,0,0,0.08);
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    border-left: 1px solid var(--gray-300);
+}
+
+.appointment-panel.show {
+    transform: translateX(0);
+}
+
+/* Cuando el panel está activo, el contenido principal se desplaza */
+.calendar-container.panel-open {
+    transition: margin-right 0.3s ease;
+    margin-right: 390px;
+}
+
+/* Estilos para el panel lateral de citas */
+.appointment-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 390px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -1px 0 5px rgba(0,0,0,0.08);
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    border-left: 1px solid var(--gray-300);
+}
+
+.appointment-panel.show {
+    transform: translateX(0);
+}
+
+/* Cuando el panel está activo, el contenido principal se desplaza */
+.calendar-container.panel-open {
+    transition: margin-right 0.3s ease;
+    margin-right: 390px;
+}
+
+/* Header del panel */
+.panel-header {
+    padding: 0;
+    border-bottom: 1px solid var(--gray-300);
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+}
+
+.panel-header .nav-tabs {
+    border-bottom: none;
+    display: flex;
+    flex-grow: 1;
+    margin-bottom: 0;
+}
+
+.panel-header .nav-item {
+    flex: 1;
+    text-align: center;
+}
+
+.panel-header .nav-link {
+    padding: 5px 0;
+    font-size: 15px;
+    color: var(--gray-700);
+    border: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    margin: 0;
+    width: 100%;
+    transition: none;
+}
+
+.panel-header .nav-link.active {
+    color: var(--primary-color);
+    font-weight: 500;
+    border-bottom: 2px solid var(--primary-color);
+    background-color: transparent;
+}
+
+.panel-header .close-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: var(--gray-700);
+    cursor: pointer;
+    padding: 15px;
+    line-height: 1;
+}
+
+/* Cuerpo del panel */
+.panel-body {
+    padding: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+    background-color: #f9fafa;
+}
+
+/* Secciones del panel */
+.panel-section {
+    background-color: #fff;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--gray-300);
+}
+
+.section-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--gray-800);
+    margin: 0;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.section-title .collapse-icon {
+    font-size: 16px;
+    color: var(--gray-600);
+}
+
+.section-content {
+    padding: 0 20px 16px;
+}
+
+/* Campos de formulario */
+.field-group {
+    margin-bottom: 14px;
+}
+
+.field-group label {
+    font-size: 13px;
+    color: var(--gray-700);
+    margin-bottom: 6px;
+    display: block;
+    font-weight: 500;
+}
+
+/* Input con icono */
+.input-icon-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-600);
+    font-size: 14px;
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: #fff;
+}
+
+/* Campos de entrada de fecha y hora */
+.date-picker, .time-picker {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #fff;
+    transition: border-color 0.2s;
+}
+
+.date-picker:hover, .time-picker:hover {
+    border-color: var(--primary-color);
+}
+
+.date-picker .input-icon, .time-picker .input-icon {
+    position: static;
+    transform: none;
+    margin-right: 10px;
+}
+
+.personalized-tag {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--primary-color);
+}
+
+/* Select personalizado */
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper::after {
+    content: '\f078';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: 12px;
+    color: var(--gray-600);
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.form-select, .form-control {
+    font-size: 14px;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    width: 100%;
+    background-color: #fff;
+    color: var(--gray-800);
+    transition: border-color 0.2s;
+    appearance: none;
+}
+
+.form-select:focus, .form-control:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: none;
+}
+
+/* Paciente */
+.patient-select-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.patient-select-wrapper .form-control {
+    padding-left: 35px;
+}
+
+.add-patient-btn {
+    color: var(--primary-color);
+    font-size: 14px;
+    padding: 0;
+    margin-top: 8px;
+    text-align: left;
+    text-decoration: none;
+}
+
+.add-patient-btn:hover {
+    text-decoration: underline;
+}
+
+/* Especialista */
+.specialist-field {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.specialist-icon-wrapper {
+    margin-right: 10px;
+}
+
+.specialist-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #53a1fd;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.specialist-info {
+    flex-grow: 1;
+}
+
+.specialist-name {
+    font-weight: 500;
+}
+
+.expand-icon {
+    color: var(--gray-600);
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+/* Checkbox personalizado */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    margin-bottom: 16px;
+}
+
+.custom-checkbox {
+    margin-right: 8px;
+}
+
+.checkbox-label {
+    font-size: 14px;
+    margin-bottom: 0;
+    margin-right: auto;
+}
+
+/* Duración y precio */
+.duration-price-row {
+    display: flex;
+    gap: 15px;
+}
+
+.duration-field {
+    flex: 1;
+}
+
+.price-field {
+    width: 100px;
+}
+
+.price-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.price-symbol {
+    position: absolute;
+    right: 12px;
+    font-size: 14px;
+    color: var(--gray-700);
+}
+
+.price-field .form-control {
+    padding-right: 25px;
+}
+
+/* Botón añadir servicio */
+.add-service-btn {
+    color: var(--primary-color);
+    font-size: 14px;
+    padding: 0;
+    margin-top: 5px;
+    text-align: left;
+    text-decoration: none;
+}
+
+.add-service-btn:hover {
+    text-decoration: underline;
+}
+
+/* Alertas */
+.alerts-container {
+    padding: 10px 20px;
+}
+
+.alert {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 15px;
+    border-radius: 4px;
+    font-size: 13px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.alert-warning {
+    background-color: #fff8e1;
+    color: #856404;
+    border: 1px solid #ffe8a1;
+}
+
+.alert-icon {
+    flex-shrink: 0;
+    margin-right: 10px;
+    color: var(--warning-color);
+    margin-top: 2px;
+}
+
+.alert-content {
+    flex-grow: 1;
+}
+
+.alert-close {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: var(--gray-600);
+    padding: 0 5px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+/* Footer */
+.panel-footer {
+    padding: 15px 20px;
+    border-top: 1px solid var(--gray-300);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    background-color: #fff;
+}
+
+.btn {
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-light {
+    background-color: #fff;
+    color: var(--gray-700);
+    border: 1px solid var(--gray-300);
+}
+
+.btn-light:hover {
+    background-color: var(--gray-100);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    min-width: 120px;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.panel-body {
+    padding: 6px;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.panel-body h5 {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray-800);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.panel-body h5:first-child {
+    margin-top: 0;
+}
+
+.panel-body h5 .collapse-icon {
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--gray-600);
+}
+
+.panel-body label {
+    font-size: 14px;
+    color: var(--gray-700);
+    margin-bottom: 8px;
+    display: block;
+    font-weight: 500;
+}
+
+.date-picker, .time-picker {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    background-color: #fff;
+    transition: border-color 0.2s;
+}
+
+.date-picker:hover, .time-picker:hover {
+    border-color: var(--primary-color);
+}
+
+.date-picker i, .time-picker i {
+    margin-right: 12px;
+    color: var(--gray-600);
+}
+
+.form-select, .form-control {
+    font-size: 14px;
+    padding: 12px 16px;
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    width: 100%;
+    margin-bottom: 12px;
+    background-color: #fff;
+    color: var(--gray-800);
+    transition: border-color 0.2s;
+}
+
+.form-select:focus, .form-control:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
+}
+
+.panel-footer {
+    padding: 15px;
+    border-top: 1px solid var(--gray-300);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn {
+    font-size: 13px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-light {
+    background-color: var(--gray-200);
+    color: var(--gray-700);
+    border: 1px solid var(--gray-300);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.btn-outline-primary {
+    background-color: white;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.alert {
+    padding: 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.alert-warning {
+    background-color: #fff8e1;
+    color: #856404;
+    border: 1px solid #ffe8a1;
+}
+
+.alert-warning i {
+    margin-right: 10px;
+    color: #f39c12;
+}
+
+.alert .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+    color: var(--gray-600);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Añadir padding superior para el botón "Añadir paciente" */
+.add-patient-btn {
+    margin-top: 8px;
+}
+
+/* Estilo específico para el selector de paciente */
+.patient-select-container {
+    position: relative;
+}
+
+.patient-select-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-600);
+}
+
+.patient-select {
+    padding-left: 40px !important;
+}
+
+/* Estilos para citas */
+.appointment-card {
+    background-color: rgba(26, 115, 232, 0.15);
+    border-left: 3px solid var(--primary-color);
+    padding: 8px;
+    font-size: 12px;
+    border-radius: 4px 0 0 4px;
+    margin: 1px 0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.appointment-card:hover {
+    background-color: rgba(26, 115, 232, 0.25);
+}
+
+.appointment-card .title {
+    font-weight: 500;
+    color: var(--gray-800);
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.appointment-card .subtitle {
+    color: var(--gray-600);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Bloques de tiempo */
+.time-block {
+    height: 60px;
+    position: relative;
+}
+
+/* Especificidad para slots disponibles */
+.time-slot:hover:not(.selected):not(.appointment):not(.blocked) {
+    background-color: rgba(26, 115, 232, 0.05);
+}
+
+/* Vista de día - slots de 15 minutos */
+.day-slots {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+/* Correcciones específicas */
+.time-slot-spacer {
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    visibility: hidden !important;
+}
+
+.hour-container:first-of-type {
+    margin-top: 10px !important;
+    padding-top: 0 !important;
+    border-top: none !important;
+}
+
+.hour-container:first-of-type .time-label {
+    top: -9px !important;
+    background-color: white;
+    padding: 0 4px;
+    z-index: 10;
 }

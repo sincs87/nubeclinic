@@ -40,7 +40,7 @@
                     <div class="form-group">
                         <label for="password" class="form-label">Contraseña *</label>
                         <div class="password-group">
-                            <a href="{{ url_for('auth.cambiar_password') }}" class="link-change">Cambiar mi contraseña</a>
+                            <a href="{{ url_for('auth.reset_password', token='TOKEN_TEMPORAL') }}">Cambiar contraseña</a>
                         </div>
                     </div>
                     
@@ -97,7 +97,3 @@
 </div>
 {% endblock %}
 
-{% block styles %}
-{{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/configuracion.css') }}">
-{% endblock %}

@@ -33,8 +33,5 @@ def create_app(config_class=Config):
 
     from app.ajustes.routes import ajustes
     app.register_blueprint(ajustes)
-
-
-
-
+    
     return app

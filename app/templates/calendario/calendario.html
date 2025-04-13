@@ -1,4 +1,202 @@
-<!DOCTYPE html>
+<!-- Appointment Panel Template (Hidden by default) -->
+            <div class="appointment-panel" id="appointmentPanelTemplate" style="display: none;">
+                <div class="panel-header">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Cita</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Bloqueo</a>
+                        </li>
+                    </ul>
+                    <button class="close-btn" id="closeAppointmentPanel">×</button>
+                </div>
+                <div class="panel-body">
+                    <!-- Bloque 1: Paciente -->
+                    <div class="panel-section">
+                        <h5 class="section-title">
+                            <span>Paciente</span>
+                            <i class="fas fa-chevron-up collapse-icon"></i>
+                        </h5>
+                        <div class="section-content">
+                            <div class="input-icon-wrapper">
+                                <i class="fas fa-user input-icon"></i>
+                                <input type="text" class="form-control" placeholder="Buscar paciente por nombre, teléfono o DNI">
+                            </div>
+                            <button class="btn btn-link add-patient-btn">Añadir paciente</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Bloque 2: Detalles de la cita -->
+                    <div class="panel-section">
+                        <h5 class="section-title">
+                            <span>Detalles de la cita</span>
+                            <i class="fas fa-chevron-up collapse-icon"></i>
+                        </h5>
+                        <div class="section-content">
+                            <div class="field-group">
+                                <label>Fecha</label>
+                                <div class="input-container date-picker">
+                                    <i class="fas fa-calendar input-icon"></i>
+                                    <span id="appointmentDate">dom., 13 de abr de 2025</span>
+                                </div>
+                            </div>
+                            
+                            <div class="field-group">
+                                <label>Hora</label>
+                                <div class="input-container time-picker">
+                                    <i class="fas fa-clock input-icon"></i>
+                                    <span id="appointmentTime">12:30</span>
+                                    <span class="personalized-tag">Personalizado</span>
+                                </div>
+                            </div>
+                            
+                            <div class="field-group checkbox-field">
+                                <div class="checkbox-container">
+                                    <input class="custom-checkbox" type="checkbox" id="repeatAppointment">
+                                    <label class="checkbox-label" for="repeatAppointment">No se repite</label>
+                                    <i class="fas fa-chevron-down expand-icon"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="field-group">
+                                <label>Especialista</label>
+                                <div class="specialist-field">
+                                    <div class="specialist-icon-wrapper">
+                                        <div class="specialist-icon">MR</div>
+                                    </div>
+                                    <div class="specialist-info">
+                                        <span class="specialist-name">Martínez Riera, Naomi María</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down expand-icon"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="field-group">
+                                <label>Servicio</label>
+                                <div class="select-wrapper">
+                                    <select class="form-select">
+                                        <option>Primera visita Psicología</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="field-group duration-price-row">
+                                <div class="duration-field">
+                                    <label>Duración</label>
+                                    <div class="select-wrapper">
+                                        <select class="form-select">
+                                            <option>60 min</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="price-field">
+                                    <label>Precio</label>
+                                    <div class="price-input-wrapper">
+                                        <input type="text" class="form-control" value="60">
+                                        <div class="price-symbol">€</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-link add-service-btn">Añadir servicio</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Bloque 3: Pago -->
+                    <div class="panel-section">
+                        <h5 class="section-title">
+                            <span>Pago</span>
+                            <i class="fas fa-chevron-up collapse-icon"></i>
+                        </h5>
+                        <div class="section-content">
+                            <div class="total-amount">
+                                <i class="fas fa-coins"></i>
+                                <span>Total, 0 €</span>
+                            </div>
+                            
+                            <div class="field-group">
+                                <div class="select-wrapper">
+                                    <select class="form-select">
+                                        <option>No pagada</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="field-group">
+                                <div class="select-wrapper">
+                                    <select class="form-select">
+                                        <option>Sin bono asociado</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bloque 4: Notas -->
+                    <div class="panel-section">
+                        <h5 class="section-title">
+                            <span>Notas</span>
+                            <i class="fas fa-chevron-down collapse-icon"></i>
+                        </h5>
+                        <div class="section-content" style="display: none;">
+                            <textarea class="form-control notes-area" placeholder="Añadir notas"></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Bloque 5: Notificaciones -->
+                    <div class="panel-section">
+                        <h5 class="section-title">
+                            <span>¿Qué notificaciones le enviamos?</span>
+                            <i class="fas fa-chevron-down collapse-icon"></i>
+                        </h5>
+                        <div class="section-content" style="display: none;">
+                            <div class="notification-option">
+                                <input type="checkbox" id="notif-confirm" class="custom-checkbox">
+                                <label for="notif-confirm">Confirmación de cita</label>
+                                <i class="fas fa-info-circle info-icon"></i>
+                            </div>
+                            <div class="notification-option">
+                                <input type="checkbox" id="notif-reminder" class="custom-checkbox">
+                                <label for="notif-reminder">Recordatorio de cita</label>
+                            </div>
+                            <div class="notification-option">
+                                <input type="checkbox" id="notif-invite" class="custom-checkbox">
+                                <label for="notif-invite">Invitación a reservar online</label>
+                                <i class="fas fa-info-circle info-icon"></i>
+                            </div>
+                            <div class="notification-option">
+                                <input type="checkbox" id="notif-opinion" class="custom-checkbox">
+                                <label for="notif-opinion">Solicitud de opinión</label>
+                                <i class="fas fa-info-circle info-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alerts-container">
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle alert-icon"></i>
+                            <div class="alert-content">
+                                Está creando una cita que tuvo lugar en el pasado. Por favor, cambie la fecha para activar las notificaciones
+                            </div>
+                            <button class="alert-close">×</button>
+                        </div>
+                        
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle alert-icon"></i>
+                            <div class="alert-content">
+                                Esta cita está fuera del horario de trabajo habitual
+                            </div>
+                            <button class="alert-close">×</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <button class="btn btn-light">Cerrar</button>
+                    <button class="btn btn-primary">Crear cita</button>
+                </div>
+            </div>
+                <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -187,6 +385,205 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Appointment Panel Template (Hidden by default) -->
+            <div class="appointment-panel" id="appointmentPanelTemplate" style="display: none;">
+                <div class="panel-header">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Cita</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Bloqueo</a>
+                        </li>
+                    </ul>
+                    <button class="close-btn" id="closeAppointmentPanel">×</button>
+                </div>
+                <div class="panel-body">
+                    <!-- Bloque 1: Paciente -->
+                    <div class="panel-section">
+                        <h5 class="section-title">
+                            <span>Paciente</span>
+                            <i class="fas fa-chevron-up collapse-icon"></i>
+                        </h5>
+                        <div class="section-content">
+                            <div class="input-icon-wrapper">
+                                <i class="fas fa-user input-icon"></i>
+                                <input type="text" class="form-control" placeholder="Buscar paciente por nombre, teléfono o DNI">
+                            </div>
+                            <button class="btn btn-link add-patient-btn">Añadir paciente</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Bloque 2: Detalles de la cita -->
+                    <div class="panel-section">
+                        <h5 class="section-title">
+                            <span>Detalles de la cita</span>
+                            <i class="fas fa-chevron-up collapse-icon"></i>
+                        </h5>
+                        <div class="section-content">
+                            <div class="field-group">
+                                <label>Fecha</label>
+                                <div class="input-container date-picker">
+                                    <i class="fas fa-calendar input-icon"></i>
+                                    <span id="appointmentDate">dom., 13 de abr de 2025</span>
+                                </div>
+                            </div>
+                            
+                            <div class="field-group">
+                                <label>Hora</label>
+                                <div class="input-container time-picker">
+                                    <i class="fas fa-clock input-icon"></i>
+                                    <span id="appointmentTime">12:30</span>
+                                    <span class="personalized-tag">Personalizado</span>
+                                </div>
+                            </div>
+                            
+                            <div class="field-group checkbox-field">
+                                <div class="checkbox-container">
+                                    <input class="custom-checkbox" type="checkbox" id="repeatAppointment">
+                                    <label class="checkbox-label" for="repeatAppointment">No se repite</label>
+                                    <i class="fas fa-chevron-down expand-icon"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="field-group">
+                                <label>Especialista</label>
+                                <div class="specialist-field">
+                                    <div class="specialist-icon-wrapper">
+                                        <div class="specialist-icon">MR</div>
+                                    </div>
+                                    <div class="specialist-info">
+                                        <span class="specialist-name">Martínez Riera, Naomi María</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down expand-icon"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="field-group">
+                                <label>Servicio</label>
+                                <div class="select-wrapper">
+                                    <select class="form-select">
+                                        <option>Primera visita Psicología</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="field-group duration-price-row">
+                                <div class="duration-field">
+                                    <label>Duración</label>
+                                    <div class="select-wrapper">
+                                        <select class="form-select">
+                                            <option>60 min</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="price-field">
+                                    <label>Precio</label>
+                                    <div class="price-input-wrapper">
+                                        <input type="text" class="form-control" value="60">
+                                        <div class="price-symbol">€</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-link add-service-btn">Añadir servicio</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Bloque 3: Pago -->
+                    <div class="panel-section">
+                        <h5 class="section-title">
+                            <span>Pago</span>
+                            <i class="fas fa-chevron-up collapse-icon"></i>
+                        </h5>
+                        <div class="section-content">
+                            <div class="total-amount">
+                                <i class="fas fa-coins"></i>
+                                <span>Total, 0 €</span>
+                            </div>
+                            
+                            <div class="field-group">
+                                <div class="select-wrapper">
+                                    <select class="form-select">
+                                        <option>No pagada</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="field-group">
+                                <div class="select-wrapper">
+                                    <select class="form-select">
+                                        <option>Sin bono asociado</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bloque 4: Notas -->
+                    <div class="panel-section">
+                        <h5 class="section-title">
+                            <span>Notas</span>
+                            <i class="fas fa-chevron-down collapse-icon"></i>
+                        </h5>
+                        <div class="section-content" style="display: none;">
+                            <textarea class="form-control notes-area" placeholder="Añadir notas"></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Bloque 5: Notificaciones -->
+                    <div class="panel-section">
+                        <h5 class="section-title">
+                            <span>¿Qué notificaciones le enviamos?</span>
+                            <i class="fas fa-chevron-down collapse-icon"></i>
+                        </h5>
+                        <div class="section-content" style="display: none;">
+                            <div class="notification-option">
+                                <input type="checkbox" id="notif-confirm" class="custom-checkbox">
+                                <label for="notif-confirm">Confirmación de cita</label>
+                                <i class="fas fa-info-circle info-icon"></i>
+                            </div>
+                            <div class="notification-option">
+                                <input type="checkbox" id="notif-reminder" class="custom-checkbox">
+                                <label for="notif-reminder">Recordatorio de cita</label>
+                            </div>
+                            <div class="notification-option">
+                                <input type="checkbox" id="notif-invite" class="custom-checkbox">
+                                <label for="notif-invite">Invitación a reservar online</label>
+                                <i class="fas fa-info-circle info-icon"></i>
+                            </div>
+                            <div class="notification-option">
+                                <input type="checkbox" id="notif-opinion" class="custom-checkbox">
+                                <label for="notif-opinion">Solicitud de opinión</label>
+                                <i class="fas fa-info-circle info-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alerts-container">
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle alert-icon"></i>
+                            <div class="alert-content">
+                                Está creando una cita que tuvo lugar en el pasado. Por favor, cambie la fecha para activar las notificaciones
+                            </div>
+                            <button class="alert-close">×</button>
+                        </div>
+                        
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle alert-icon"></i>
+                            <div class="alert-content">
+                                Esta cita está fuera del horario de trabajo habitual
+                            </div>
+                            <button class="alert-close">×</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <button class="btn btn-light">Cerrar</button>
+                    <button class="btn btn-primary">Crear cita</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -199,15 +596,20 @@
     <!-- Scroll fix -->
     <script>
         window.addEventListener('load', function() {
-            function forceScrollToTop() {
+            // Una única función para intentar el centrado
+            setTimeout(() => {
                 const calendarGrid = document.querySelector('.calendar-grid');
-                if (calendarGrid) calendarGrid.scrollTop = 0;
-            }
-            forceScrollToTop();
-            setTimeout(forceScrollToTop, 100);
-            setTimeout(forceScrollToTop, 500);
-            setTimeout(forceScrollToTop, 1000);
-            window.addEventListener('resize', () => setTimeout(forceScrollToTop, 100));
+                const currentHour = new Date().getHours();
+                const targetHour = Math.max(1, currentHour - 2);
+                const targetSlot = document.querySelector(`.hour-container[data-hour="${targetHour}"]`);
+                
+                if (calendarGrid && targetSlot) {
+                    const headerHeight = document.querySelector('.main-header').offsetHeight || 0;
+                    const targetTop = targetSlot.offsetTop - headerHeight - 50;
+                    calendarGrid.scrollTop = targetTop;
+                    console.log('Centrado final aplicado');
+                }
+            }, 800);
         });
     </script>
 </body>
